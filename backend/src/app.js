@@ -6,7 +6,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: [
+      "http://localhost:5173",
+      "https://wallaclone.codesthenos.duckdns.org",
+    ],
     credentials: true,
   })
 );
