@@ -1,9 +1,11 @@
 {
   "name": "wallaclone-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "dev": "node --env-file-if-exists=.env --watch src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -11,5 +13,11 @@
   "description": "",
   "engines": {
     "node": "22.14.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
   }
 }
