@@ -5,7 +5,7 @@ function App() {
   const [test, setTest] = useState<String>('Loading...')
 
   useEffect(()=> {
-    fetch('http://18.214.166.58:3333/test') // Fetch de test al endpoint /test
+    fetch('https://api.wallaclone.codesthenos.duckdns.org:3333/test') // Fetch de test al endpoint /test
     .then(res => res.json())
     .then(data => setTest(data.test))
     .catch(err => {
