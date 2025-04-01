@@ -2,22 +2,22 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [prueba, setPrueba] = useState<String>('Loading...')
+  const [test, setTest] = useState<String>('Loading...')
 
   useEffect(()=> {
-    fetch('http://localhost:3000/test') // Fetch de prueba al endpoint /test
+    fetch('http://localhost:3000/test') // Fetch de test al endpoint /test
     .then(res => res.json())
-    .then(data => setPrueba(data.prueba))
+    .then(data => setTest(data.test))
     .catch(err => {
       console.error(err)
-      setPrueba('Error loading data')
+      setTest('Error loading data')
     })
   }, [])
 
   return (
     <>
       <div>
-        <h1>{prueba}</h1>
+        <h1>{test}</h1>
       </div>
     </>
   )
