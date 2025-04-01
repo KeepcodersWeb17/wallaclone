@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [test, setTest] = useState<String>('Loading...')
+  const [test, setTest] = useState<string>('Loading...')
 
   useEffect(()=> {
-    fetch('https://api.wallaclone.codesthenos.duckdns.org:3333/test') // Fetch de test al endpoint /test
+    fetch('https://api.wallaclone.codesthenos.duckdns.org/test') // Fetch de test al endpoint /test
     .then(res => res.json())
     .then(data => setTest(data.test))
     .catch(err => {
