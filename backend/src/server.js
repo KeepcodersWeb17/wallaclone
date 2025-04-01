@@ -2,7 +2,7 @@ import http from "node:http";
 import app from "./app.js";
 import { PORT } from "../config.js";
 
-const port = PORT || 3000;
+const port = PORT || 3333;
 
 const server = http.createServer(app);
 
