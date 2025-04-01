@@ -1,11 +1,11 @@
 {
   "name": "wallaclone-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node src/server.js",
-    "dev": "cross-env NODE_ENV=development nodemon src/server.js"
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "dev": "node --env-file-if-exists=.env --watch src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -15,8 +15,6 @@
     "node": "22.14.0"
   },
   "dependencies": {
-    "cross-env": "^7.0.3",
-    "dotenv": "^16.4.7",
     "express": "^5.1.0"
   },
   "devDependencies": {
