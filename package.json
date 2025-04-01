@@ -1,0 +1,23 @@
+{
+  "name": "wallaclone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KeepcodersWeb17/wallaclone.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KeepcodersWeb17/wallaclone/issues"
+  },
+  "homepage": "https://github.com/KeepcodersWeb17/wallaclone#readme",
+  "description": "",
+  "engines": {
+    "node": "22.14.0"
+  }
+}
