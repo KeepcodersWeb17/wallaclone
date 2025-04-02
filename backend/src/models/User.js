@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    statics: {
+      hashPassword: async function (clearPassword) {
+        return await bcrypt.hash(clearPassword, 10);
+      },
+    },
   }
 );
 
