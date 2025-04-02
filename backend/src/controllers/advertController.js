@@ -38,3 +38,22 @@ export const getAdvert = async (req, res, next) => {
         next(error)
     }
 }
+
+export const deleteAdvert = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        const deletedAdvert = await Advert.findOneAndDelete({
+            _id: id,
+            owner: req.user.id
+        })
+
+        if (!deletedAdvert) {
+            return next(createHttpError(404, 'Advert not found or not owned by user'))
+        }
+
+        res.json({ message: 'Advert deleted' })
+    } catch (error) {
+        next(error)
+    }
+}
