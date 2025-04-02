@@ -57,3 +57,25 @@ export const deleteAdvert = async (req, res, next) => {
         next(error)
     }
 }
+
+export const updateAdvert = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const updatedData = req.body
+
+        const updatedAdvert = await Advert.findOneAndUpdate({
+            _id: id,
+            owner: req.user.id},
+            updatedData,
+            { new: true }
+        )
+
+        if (!updatedAdvert) {
+            return next(createHttpError(404, 'Advert not found or not owned by user'))
+        }
+
+        res.json({ message: 'Advert updated', advert: updateAdvert })
+    } catch (error) {
+        next(error)
+    }
+}
