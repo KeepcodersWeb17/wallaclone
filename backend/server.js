@@ -1,6 +1,6 @@
 import http from "node:http";
-import app from "./app.js";
-import { connectMongoDB } from "./lib/connectMongoDB.js";
+import app from "./src/app.js";
+import { connectMongoDB } from "./src/lib/connectMongoDB.js";
 
 const port = process.env.PORT || 3333;
 
