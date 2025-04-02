@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema(
         return await bcrypt.hash(clearPassword, 10);
       },
     },
+    methods: {
+      comparePassword: async function (clearPassword) {
+        return await bcrypt.compare(clearPassword, this.password);
+      },
+    },
   }
 );
 
