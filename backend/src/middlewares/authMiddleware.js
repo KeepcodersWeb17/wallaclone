@@ -21,9 +21,21 @@ export const isAuthenticated = (req, res, next) => {
 };
 
 export const checkUserOwnership = (req, res, next) => {
-  // get userId from the request params
-  // get userId from the request user object
-  // compare the two userIds
-  // if they are not equal, return an error
-  // if they are equal, call next()
+  const userId = req.params.id;
+
+  if (!userId) {
+    const error = new Error("User ID not provided");
+    error.status = 400;
+    next(error);
+    return;
+  }
+
+  if (userId !== req.user.id) {
+    const error = new Error("You are not authorized to access this resource");
+    error.status = 403;
+    next(error);
+    return;
+  }
+
+  next();
 };
