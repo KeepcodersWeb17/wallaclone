@@ -93,3 +93,10 @@ export const updateUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteUser = (req, res, next) => {
+  // get userId from request user object
+  // find user by id and delete it
+  // if user not found, send error response
+  // if user found, send success response
+};
