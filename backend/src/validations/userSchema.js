@@ -1,6 +1,6 @@
 import z from "zod";
 
-const userSchema = z.object({
+export const userSchema = z.object({
   username: z
     .string()
     .trim()
@@ -17,4 +17,7 @@ const userSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters long" }),
 });
 
-export default userSchema;
+export const loginSchema = userSchema.pick({
+  username: true,
+  password: true,
+});
