@@ -5,7 +5,7 @@ export const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
+    let user = await User.findOne({ username });
 
     if (!user) {
       const error = new Error("Incorrect username or password");
