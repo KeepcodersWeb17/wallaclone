@@ -7,9 +7,16 @@ export const login = async (req, res, next) => {
 
     const user = await User.findOne({ username });
 
+    if (!user) {
+      const error = new Error("Incorrect username or password");
+      error.status = 401;
+      next(error);
+      return;
+    }
+
     const isPasswordCorrect = await user.comparePassword(password);
 
-    if (!user || !isPasswordCorrect) {
+    if (!isPasswordCorrect) {
       const error = new Error("Incorrect username or password");
       error.status = 401;
       next(error);
