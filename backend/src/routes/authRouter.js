@@ -5,5 +5,6 @@ import { validateLogin as validateUser } from "../middlewares/validateMiddleware
 const router = express.Router();
 
 router.post("/login", validateUser, login);
+router.get("/logout", isAuthenticated, logout);
 
 export default router;
