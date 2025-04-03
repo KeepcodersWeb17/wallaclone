@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import Advert from "../models/Advert.js";
 
 export const isAuthenticated = (req, res, next) => {
   if (!req.cookies.accessToken) {
@@ -19,4 +18,12 @@ export const isAuthenticated = (req, res, next) => {
     req.user = user;
     next();
   });
+};
+
+export const checkUserOwnership = (req, res, next) => {
+  // get userId from the request params
+  // get userId from the request user object
+  // compare the two userIds
+  // if they are not equal, return an error
+  // if they are equal, call next()
 };
