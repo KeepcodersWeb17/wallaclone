@@ -1,5 +1,10 @@
 import express from "express";
-import { createUser, getUser } from "../controllers/userController.js";
+import {
+  createUser,
+  getUser,
+  updateUser,
+  deleteUser,
+} from "../controllers/userController.js";
 import { validateUser } from "../middlewares/validateMiddleware.js";
 import { isAuthenticated, isUserOwner } from "../middlewares/authMiddleware.js";
 
