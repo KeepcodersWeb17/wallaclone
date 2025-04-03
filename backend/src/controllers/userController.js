@@ -56,12 +56,40 @@ export const getUser = async (req, res, next) => {
   }
 };
 
-export const updateUser = (req, res, next) => {
-  //  get userId from request params
-  //  get new user details from request body
-  // check if username or email already exists
-  // if exists, return error response
-  // if not, update user details in database
-  // return success response
-  // logout user by clearing cookies
+export const updateUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+
+    const { username, email, password } = req.body;
+
+    const user = await User.findOne({ $or: [{ email }, { username }] });
+
+    if (user) {
+      if (user.email === email) {
+        const error = new Error("Email already exists");
+        error.status = 400;
+        next(error);
+        return;
+      }
+
+      if (user.username === username) {
+        const error = new Error("Username already exists");
+        error.status = 400;
+        next(error);
+        return;
+      }
+    }
+
+    const hashedPassword = await User.hashPassword(password);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username, email, password: hashedPassword },
+      { new: true }
+    );
+
+    res.status(200).json({ updatedUser });
+  } catch (error) {
+    next(error);
+  }
 };
