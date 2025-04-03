@@ -20,7 +20,7 @@ export const login = async (req, res, next) => {
       expiresIn: "7d",
     });
 
-    res.cookie("access_token", accessToken, {
+    res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: false, // set to true in production
       sameSite: "none",
