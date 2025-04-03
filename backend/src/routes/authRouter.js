@@ -1,8 +1,8 @@
 import express from "express";
-import { vaidateLogin } from "../middlewares/validateUser.js";
+import { validateLogin } from "../middlewares/validateUser.js";
 
 const router = express.Router();
 
-router.post("/login", vaidateLogin);
+router.post("/login", validateLogin);
 
 export default router;
