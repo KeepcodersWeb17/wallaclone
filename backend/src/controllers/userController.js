@@ -36,3 +36,16 @@ export const createUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUser = (req, res, next) => {
+  try {
+    // Get user ID from request parameters
+    // Check if user ID is provided
+    // If not, return an error response
+    // If user ID is provided, find the user in the database
+    // If user is found, return user data
+    // If user is not found, return an error response
+  } catch (error) {
+    next(error);
+  }
+};
