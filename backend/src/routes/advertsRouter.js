@@ -15,5 +15,9 @@ import { isAuthenticated } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 router.post("/", isAuthenticated, validateCreateAdvert, createAdvert);
+router.get("/", getAllAdverts);
+router.get("/:id", getAdvert);
+router.put("/:id", isAuthenticated, validateUpdateAdvert, updateAdvert);
+router.delete("/:id", isAuthenticated, deleteAdvert);
 
 export default router;

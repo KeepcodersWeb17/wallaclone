@@ -91,7 +91,7 @@ export const updateAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    res.json({ message: "Advert updated", advert: updateAdvert });
+    res.json({ message: "Advert updated", advert: updatedAdvert });
   } catch (error) {
     next(error);
   }
