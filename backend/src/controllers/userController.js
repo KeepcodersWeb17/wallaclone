@@ -37,14 +37,27 @@ export const createUser = async (req, res, next) => {
   }
 };
 
-export const getUser = (req, res, next) => {
+export const getUser = async (req, res, next) => {
   try {
-    // Get user ID from request parameters
-    // Check if user ID is provided
-    // If not, return an error response
-    // If user ID is provided, find the user in the database
-    // If user is found, return user data
-    // If user is not found, return an error response
+    const userId = req.params.id;
+
+    if (!userId) {
+      const error = new Error("User ID not provided");
+      error.status = 400;
+      next(error);
+      return;
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      next(error);
+      return;
+    }
+
+    res.status(200).json({ user });
   } catch (error) {
     next(error);
   }
