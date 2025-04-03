@@ -1,11 +1,19 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import authRouter from "./routes/authRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 
 const app = express();
 
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
+
+app.use(morgan("dev"));
 
 app.use(
   cors({
@@ -17,12 +25,11 @@ app.use(
   })
 );
 
-app.use(morgan("dev"));
-
 app.get("/test", (req, res) => {
   res.json({ test: "Servidor funcionando" });
 });
 
+app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 
 // 404 error handler
