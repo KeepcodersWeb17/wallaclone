@@ -6,10 +6,10 @@ export const login = async (req, res, next) => {
     const { username, password } = req.body;
 
     let user = await User.findOne({ username });
-    
+
     if (!user) {
       user = await User.findOne({ email: username });
-    
+
       if (!user) {
         const error = new Error("Incorrect username or password");
         error.status = 401;
@@ -39,6 +39,20 @@ export const login = async (req, res, next) => {
     });
 
     res.status(200).json({ accessToken });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout = (req, res) => {
+  try {
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "none",
+    });
+
+    res.status(200).json({ message: "Logout successfully" });
   } catch (error) {
     next(error);
   }
