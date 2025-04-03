@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/authRouter.js";
 import usersRouter from "./routes/usersRouter.js";
+import advertsRouter from "./routes/advertsRouter.js";
 
 const app = express();
 
@@ -31,6 +32,8 @@ app.get("/test", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
+
+app.use("/adverts", advertsRouter);
 
 // 404 error handler
 app.use((req, res, next) => {
