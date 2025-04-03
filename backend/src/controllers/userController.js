@@ -55,3 +55,13 @@ export const getUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateUser = (req, res, next) => {
+  //  get userId from request params
+  //  get new user details from request body
+  // check if username or email already exists
+  // if exists, return error response
+  // if not, update user details in database
+  // return success response
+  // logout user by clearing cookies
+};
