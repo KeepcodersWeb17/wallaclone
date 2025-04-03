@@ -20,7 +20,7 @@ export const isAuthenticated = (req, res, next) => {
   });
 };
 
-export const checkUserOwnership = (req, res, next) => {
+export const isUserOwner = (req, res, next) => {
   const userId = req.params.id;
 
   if (!userId) {
