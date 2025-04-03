@@ -12,4 +12,5 @@ Create a .env file inside the backend directory and add the following environmen
 
 ```
 PORT = 3000
+MONGO_URI = "mongodb+srv://<username>:<password>@..."
 ```
