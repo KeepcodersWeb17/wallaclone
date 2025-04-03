@@ -1,5 +1,14 @@
-import { Advert } from "../models/advertModel"
+import { Advert } from "../models/Advert"
 import createHttpError from 'http-errors'
+
+export const getAllAdverts = async (req, res, next) => {
+    try {
+      const adverts = await Advert.find().populate('owner', 'username')
+      res.json({ adverts })
+    } catch (error) {
+      next(error)
+    }
+  }
 
 export const createAdvert = async (req, res, next ) => {
     try {
