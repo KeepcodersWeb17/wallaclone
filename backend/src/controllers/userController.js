@@ -41,13 +41,6 @@ export const getUser = async (req, res, next) => {
   try {
     const userId = req.params.id;
 
-    if (!userId) {
-      const error = new Error("User ID not provided");
-      error.status = 400;
-      next(error);
-      return;
-    }
-
     const user = await User.findById(userId);
 
     if (!user) {
