@@ -59,7 +59,9 @@ export const deleteAdvert = async (req, res, next) => {
     })
 
     if (!deletedAdvert) {
-      return next(createHttpError(404, 'Advert not found or not owned by user'))
+      const error = new Error('Advert not found or not owned by user')
+      error.status = 404
+      return next(error)
     }
 
     res.json({ message: 'Advert deleted' })
@@ -83,7 +85,9 @@ export const updateAdvert = async (req, res, next) => {
     )
 
     if (!updatedAdvert) {
-      return next(createHttpError(404, 'Advert not found or not owned by user'))
+      const error = new Error('Advert not found or not owned by user')
+      error.status = 404
+      return next(error)
     }
 
     res.json({ message: 'Advert updated', advert: updateAdvert })
