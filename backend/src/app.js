@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import authRouter from "./routes/authRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 
 const app = express();
@@ -23,6 +24,7 @@ app.get("/test", (req, res) => {
   res.json({ test: "Servidor funcionando" });
 });
 
+app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 
 // 404 error handler
