@@ -8,11 +8,15 @@ export const createUser = async (req, res, next) => {
 
     if (user) {
       if (user.email === email) {
-        res.status(400).json({ error: "Email already exists" });
+        const error = new Error("Email already exists");
+        error.status = 400;
+        next(error);
         return;
       }
       if (user.username === username) {
-        res.status(400).json({ error: "Username already exists" });
+        const error = new Error("Username already exists");
+        error.status = 400;
+        next(error);
         return;
       }
     }
