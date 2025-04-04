@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import Advert from "../models/Advert.js";
 
 export const isAuthenticated = (req, res, next) => {
   if (!req.cookies.accessToken) {
