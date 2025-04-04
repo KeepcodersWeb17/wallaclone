@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import { deleteAllAdverts } from "./advertController.js";
 
 export const createUser = async (req, res, next) => {
   try {
@@ -39,7 +40,7 @@ export const createUser = async (req, res, next) => {
 
 export const getUser = async (req, res, next) => {
   try {
-    const userId = req.params.id;
+    const userId = req.user.id;
 
     const user = await User.findById(userId);
 
@@ -108,6 +109,8 @@ export const deleteUser = async (req, res, next) => {
       next(error);
       return;
     }
+
+    deleteAllAdverts(req, res, next);
 
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
