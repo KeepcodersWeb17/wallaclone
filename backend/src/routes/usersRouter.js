@@ -5,14 +5,17 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/userController.js";
-import { validateUser } from "../middlewares/validateMiddleware.js";
+import {
+  validateUpdateUser,
+  validateUser,
+} from "../middlewares/validateMiddleware.js";
 import { isAuthenticated } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 router.post("/", validateUser, createUser);
 router.get("/", isAuthenticated, getUser);
-router.put("/", isAuthenticated, validateUser, updateUser);
+router.put("/", isAuthenticated, validateUpdateUser, updateUser);
 router.delete("/", isAuthenticated, deleteUser);
 
 export default router;
