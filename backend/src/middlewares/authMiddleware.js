@@ -19,23 +19,3 @@ export const isAuthenticated = (req, res, next) => {
     next();
   });
 };
-
-export const isUserOwner = (req, res, next) => {
-  const userId = req.params.id;
-
-  if (!userId) {
-    const error = new Error("User ID not provided");
-    error.status = 400;
-    next(error);
-    return;
-  }
-
-  if (userId !== req.user.id) {
-    const error = new Error("You are not authorized to access this resource");
-    error.status = 403;
-    next(error);
-    return;
-  }
-
-  next();
-};
