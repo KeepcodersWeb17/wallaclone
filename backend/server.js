@@ -2,7 +2,7 @@ import http from "node:http";
 import app from "./src/app.js";
 import { connectMongoDB } from "./src/lib/connectMongoDB.js";
 
-const port = process.env.PORT || 3333;
+const port = process.env.PORT || 3000;
 
 const server = http.createServer(app);
 
