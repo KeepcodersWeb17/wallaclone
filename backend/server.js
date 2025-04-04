@@ -6,11 +6,7 @@ const port = process.env.PORT || 3333;
 
 const server = http.createServer(app);
 
-try {
-  await connectMongoDB();
-} catch (error) {
-  console.error(error.message);
-}
+await connectMongoDB();
 
 server.on("error", (error) => console.error(error));
 
