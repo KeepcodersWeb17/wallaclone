@@ -21,3 +21,5 @@ export const loginSchema = userSchema.pick({
   username: true,
   password: true,
 });
+
+export const updateUserSchema = userSchema.partial();
