@@ -1,4 +1,4 @@
-### create new user
+### 1. create user with invalid data (should fail)
 POST http://localhost:4000/users
 Content-Type: application/json
 
@@ -9,18 +9,18 @@ Content-Type: application/json
 }
 
 
-### create new user
+### 2. create user with valid data (should succeed)
 POST http://localhost:4000/users
 Content-Type: application/json
 
 {
     "username": "testuser1",
-    "email": "testuser2@example.com",
+    "email": "testuser1@example.com",
     "password":"123456"
 }
 
 
-### login
+### 3. login with invalid data (should fail)
 POST http://localhost:4000/auth/login
 Content-Type: application/json
 
@@ -30,21 +30,21 @@ Content-Type: application/json
 }
 
 
-### login
+### 4. login with valid data (should succeed)
 POST http://localhost:4000/auth/login
 Content-Type: application/json
 
 {
-    "username":"testuser2@example.com",
+    "username":"testuser1@example.com",
     "password":"123456"
 }
 
 
-### Get user 
+### 5. Get user info (needs auth if protected
 GET http://localhost:4000/users
 
 
-### Update user email 
+### 6. Update user email (optional: needs auth)
 PUT http://localhost:4000/users
 Content-Type: application/json
 
@@ -52,10 +52,8 @@ Content-Type: application/json
     "email":"testuser@example.com"
 }
 
-### Delete user
-DELETE http://localhost:4000/users
 
-### create new advert
+### 7. Create advert (should succeed)
 POST http://localhost:4000/adverts
 Content-Type: application/json
 
@@ -69,7 +67,11 @@ Content-Type: application/json
 }
 
 
-### Update advert of other user
+### 8. Get all adverts (should succeed)
+GET http://localhost:4000/adverts
+
+
+### 9. Update advert with invalid ID (should fail)
 PUT http://localhost:4000/adverts/67ef9b6111c523d220177b5f
 Content-Type: application/json
 
@@ -78,7 +80,7 @@ Content-Type: application/json
 }
 
 
-### Update advert
+### 10. Update advert with valid ID (should succeed - adjust ID dynamically if needed)
 PUT http://localhost:4000/adverts/67ef9b9511c523d220177b63
 Content-Type: application/json
 
@@ -86,15 +88,14 @@ Content-Type: application/json
     "price": 200.0
 }
 
-### Delete advert of other user
+
+### 11. Delete advert from another user (should fail)
 DELETE http://localhost:4000/adverts/67ef9b6111c523d220177b5f
 
 
-### Delete advert 
+### 12. Delete advert owned by current user (should succeed - adjust ID dynamically if needed)
 DELETE http://localhost:4000/adverts/67ef9b9511c523d220177b63
 
 
-### get all adverts
-GET http://localhost:4000/adverts
-
-
+### 13. Delete user (cleanup at the end)
+DELETE http://localhost:4000/users
