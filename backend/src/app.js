@@ -21,7 +21,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://wallaclone.codesthenos.duckdns.org",
+      "https://wallaclone.keepcoders.duckdns.org",
     ],
     credentials: true,
   })
