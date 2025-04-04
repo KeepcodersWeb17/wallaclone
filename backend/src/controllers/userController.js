@@ -58,35 +58,37 @@ export const getUser = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
   try {
-    const userId = req.params.id;
+    const userId = req.user.id;
 
     const { username, email, password } = req.body;
 
-    const user = await User.findOne({ $or: [{ email }, { username }] });
+    const user = await User.findById(userId);
 
-    if (user) {
-      if (user.email === email) {
-        const error = new Error("Email already exists");
-        error.status = 400;
-        next(error);
-        return;
-      }
-
-      if (user.username === username) {
-        const error = new Error("Username already exists");
-        error.status = 400;
-        next(error);
-        return;
-      }
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      next(error);
+      return;
     }
 
-    const hashedPassword = await User.hashPassword(password);
+    const updatedData = {};
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { username, email, password: hashedPassword },
-      { new: true }
-    );
+    if (username) {
+      updatedData.username = username;
+    }
+
+    if (email) {
+      updatedData.email = email;
+    }
+
+    if (password) {
+      const hashedPassword = await User.hashPassword();
+      updatedData.password = hashedPassword;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
+      new: true,
+    });
 
     res.status(200).json({ updatedUser });
   } catch (error) {
