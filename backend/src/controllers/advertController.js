@@ -71,6 +71,15 @@ export const deleteAdvert = async (req, res, next) => {
   }
 };
 
+export const deleteAllAdverts = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    await Advert.deleteMany({ owner: userId });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateAdvert = async (req, res, next) => {
   try {
     const { id } = req.params;
