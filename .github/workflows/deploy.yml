@@ -54,8 +54,9 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 2405
-          source: "frontend/dist/*"
+          source: "frontend/dist/**"
           target: "/var/www/wallaclone-react/"
+          strip_components: 2 # Remove the first two components of the path (frontend/dist)
 
       - name: Copy backend to AWS
         uses: appleboy/scp-action@master
@@ -64,8 +65,9 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 2405
-          source: "backend/*"
+          source: "backend/**"
           target: "/home/apps/wallaclone-node/"
+          strip_components: 1 # Remove the first component of the path (backend)
 
       - name: Set permissions and install backend dependencies
         uses: appleboy/ssh-action@master
