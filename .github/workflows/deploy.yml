@@ -77,7 +77,7 @@ jobs:
           script: |
             sudo mv /home/ubuntu/wallaclone-node /home/apps/wallaclone-node
             sudo chown -R apps:apps /home/apps/wallaclone-node
-            sudo -u apps -i 
+            sudo -u apps -it
             cd /home/apps/wallaclone-node
             npm i
             logout
