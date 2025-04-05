@@ -29,6 +29,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
+          port: 2405
           script: |
             sudo rm -rf /var/www/wallaclone-react
             sudo mkdir -p /var/www/wallaclone-react
@@ -49,6 +50,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
+          port: 2405
           source: "frontend/dist/"
           target: "/var/www/wallaclone-react/"
 
@@ -58,6 +60,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
+          port: 2405
           source: "backend/"
           target: "/home/apps/wallaclone-node/"
 
@@ -67,5 +70,6 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
+          port: 2405
           script: |
             sudo chown -R apps:apps /home/apps/wallaclone-node
