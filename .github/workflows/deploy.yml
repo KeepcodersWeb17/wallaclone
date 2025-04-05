@@ -64,7 +64,7 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 2405
-          source: "backend/*"
+          source: "backend/"
           target: "/home/apps/wallaclone-node/"
 
       # - name: Install backend dependencies
