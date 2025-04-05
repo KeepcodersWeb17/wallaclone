@@ -44,8 +44,6 @@ jobs:
           port: 2405
           script: |
             sudo rm -rf /home/apps/wallaclone-node
-            sudo mkdir -p /home/apps/wallaclone-node
-            sudo chown -R ${{ secrets.AWS_USER }}:${{ secrets.AWS_USER }} /home/apps/wallaclone-node
 
       - name: Copy built frontend to AWS
         uses: appleboy/scp-action@master
