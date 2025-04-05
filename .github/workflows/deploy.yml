@@ -58,7 +58,7 @@ jobs:
           port: 2405
           source: "frontend/dist/**"
           target: "/var/www/wallaclone-react/"
-          strip_components: 2 # Remove the first two components of the path (frontend/dist)
+          strip_components: 2
 
       - name: Copy backend to AWS
         uses: appleboy/scp-action@master
@@ -69,9 +69,9 @@ jobs:
           port: 2405
           source: "backend/**"
           target: "/home/ubuntu/wallaclone-node/"
-          strip_components: 1 # Remove the first component of the path (backend)
+          strip_components: 1
 
-      - name: Set permissions and install backend dependencies
+      - name: Change permissions and reload supervisor
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
