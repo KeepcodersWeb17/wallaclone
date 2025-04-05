@@ -66,7 +66,7 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 2405
           source: "backend/**"
-          target: "/home/apps/wallaclone-node/"
+          target: "/home/ubuntu/wallaclone-node/"
           strip_components: 1 # Remove the first component of the path (backend)
 
       - name: Set permissions and install backend dependencies
@@ -77,4 +77,5 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 2405
           script: |
+            sudo mv /home/ubuntu/wallaclone-node /home/apps/wallaclone-node
             sudo chown -R apps:apps /home/apps/wallaclone-node
