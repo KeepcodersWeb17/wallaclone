@@ -40,6 +40,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
+          port: 2405
           script: |
             sudo rm -rf /home/apps/wallaclone-node
             sudo mkdir -p /home/apps/wallaclone-node
