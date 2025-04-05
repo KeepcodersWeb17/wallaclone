@@ -17,6 +17,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Build Backend
+        working-directory: backend
+        run: npm i
+
       - name: Build Frontend
         working-directory: frontend
         run: |
@@ -77,8 +81,4 @@ jobs:
           script: |
             sudo mv /home/ubuntu/wallaclone-node /home/apps/wallaclone-node
             sudo chown -R apps:apps /home/apps/wallaclone-node
-            sudo -u apps -it
-            cd /home/apps/wallaclone-node
-            npm i
-            logout
             sudo systemctl reload supervisor
