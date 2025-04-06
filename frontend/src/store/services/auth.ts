@@ -9,6 +9,7 @@ export const login = async (credentials: Credentials) => {
       method: "POST",
       headers: { "content-type": "application/json" },
       credentials: "include",
+      mode: "cors",
       body: JSON.stringify(credentials),
     }
   );
