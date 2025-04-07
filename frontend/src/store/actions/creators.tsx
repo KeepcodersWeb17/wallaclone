@@ -5,8 +5,13 @@ export const authLoginPending = () => ({
   type: "AUTH_LOGIN_PENDING",
 });
 
-export const authLoginFulfilled = () => ({
+// @ts-expect-error Lo vamos a tipar más adelante
+export const authLoginFulfilled = (userData) => ({
   type: "AUTH_LOGIN_FULFILLED",
+  payload: {
+    id: userData.id,
+    username: userData.username,
+  },
 });
 
 export const authLoginRejected = (error: string) => ({
@@ -47,8 +52,8 @@ export const authLogin = (
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      await login(credentials);
-      dispatch(authLoginFulfilled());
+      const { id, username } = await login(credentials);
+      dispatch(authLoginFulfilled({ id, username }));
     } catch (error) {
       console.error(error);
     }

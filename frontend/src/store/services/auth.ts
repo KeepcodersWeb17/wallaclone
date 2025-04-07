@@ -16,6 +16,9 @@ export const login = async (credentials: Credentials) => {
     console.error(response);
     throw new Error(response.statusText);
   }
+  const { id, username } = await response.json();
+
+  return { id, username };
 };
 
 export const logout = async () => {
