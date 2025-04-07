@@ -5,6 +5,7 @@ import configureStore from "./store/store";
 import "./index.css";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
+import { StrictMode } from "react";
 
 const response = await fetch(
   "https://api.wallaclone.keepcoders.duckdns.org/users",
@@ -21,9 +22,13 @@ const store = configureStore({
 });
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>
+  <StrictMode>
+    {/* <ErrorBoundary> */}
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
+    {/* </ErrorBoundary> */}
+  </StrictMode>
 );
