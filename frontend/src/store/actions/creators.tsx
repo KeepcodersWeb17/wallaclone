@@ -1,46 +1,46 @@
 import { login, logout } from "../services/auth";
 import type { Credentials } from "../services/auth";
 
-export const AuthLoginPending = () => ({
+export const authLoginPending = () => ({
   type: "AUTH_LOGIN_PENDING",
 });
 
-export const AuthLoginFulfilled = () => ({
+export const authLoginFulfilled = () => ({
   type: "AUTH_LOGIN_FULFILLED",
 });
 
-export const AuthLoginRejected = (error: string) => ({
+export const authLoginRejected = (error: string) => ({
   type: "AUTH_LOGIN_REJECTED",
   payload: error,
 });
 
-export const AuthLogoutPending = () => ({
+export const authLogoutPending = () => ({
   type: "AUTH_LOGOUT_PENDING",
 });
 
-export const AuthLogoutFulfilled = () => ({
+export const authLogoutFulfilled = () => ({
   type: "AUTH_LOGOUT_FULFILLED",
 });
 
-export const AuthLogoutRejected = (error: string) => ({
+export const authLogoutRejected = (error: string) => ({
   type: "AUTH_LOGOUT_REJECTED",
   payload: error,
 });
 
 // @ts-expect-error Lo vamos a tipar más adelante
-export const AuthLogout = (): AppThunk<Promise<void>> => {
+export const authLogout = (): AppThunk<Promise<void>> => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
       await logout();
-      dispatch(AuthLogoutFulfilled());
+      dispatch(authLogoutFulfilled());
     } catch (error) {
       console.error(error);
     }
   };
 };
 
-export const AuthLogin = (
+export const authLogin = (
   credentials: Credentials
   // @ts-expect-error Lo vamos a tipar más adelante
 ): AppThunk<Promise<void>> => {
@@ -48,7 +48,25 @@ export const AuthLogin = (
   return async function (dispatch) {
     try {
       await login(credentials);
-      dispatch(AuthLoginFulfilled());
+      dispatch(authLoginFulfilled());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+// @ts-expect-error Lo vamos a tipar más adelante
+export const signup = (userData) => {
+  // @ts-expect-error Lo vamos a tipar más adelante
+  return async function (dispatch) {
+    try {
+      await fetch("https://api.wallaclone.keepcoders.duckdns.org/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(userData),
+      });
+      dispatch(authLogin(userData));
     } catch (error) {
       console.error(error);
     }
