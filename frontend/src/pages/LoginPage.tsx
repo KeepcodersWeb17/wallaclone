@@ -6,6 +6,8 @@ import { authLogin, authLogout } from "../store/actions/creators";
 const LoginPage = () => {
   const isAuth = useSelector((state: State) => state.auth);
 
+  const persistedUsername = useSelector((state: State) => state.user.username);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -33,7 +35,7 @@ const LoginPage = () => {
     <>
       {isAuth ? (
         <>
-          <h2>Bienvenido {username}</h2>{" "}
+          <h2>Bienvenido {persistedUsername}</h2>{" "}
           <button onClick={handleLogout}>Logout</button>
         </>
       ) : (
