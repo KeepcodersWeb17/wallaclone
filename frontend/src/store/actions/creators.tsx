@@ -1,4 +1,3 @@
-import Cookie from "js-cookie";
 import { login } from "../services/auth";
 import type { Credentials } from "../services/auth";
 
@@ -17,7 +16,7 @@ export const AuthLoginRejected = (error: string) => ({
 
 // @ts-expect-error Lo vamos a tipar más adelante
 export const AuthLogout = (): AppThunk => (dispatch) => {
-  Cookie.remove("accessToken");
+  // fetch /logout
   dispatch({ type: "AUTH_LOGOUT" });
 };
 
