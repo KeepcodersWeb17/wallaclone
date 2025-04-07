@@ -60,12 +60,20 @@ export const signup = (userData) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      await fetch("https://api.wallaclone.keepcoders.duckdns.org/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(userData),
-      });
+      const response = await fetch(
+        "https://api.wallaclone.keepcoders.duckdns.org/users",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(userData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al crear el usuario");
+      }
+
       dispatch(authLogin(userData));
     } catch (error) {
       console.error(error);
