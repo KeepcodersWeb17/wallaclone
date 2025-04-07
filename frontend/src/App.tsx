@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -23,6 +24,9 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/404" element={<NotFoundPage />} />
+        <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </>
   );
