@@ -20,6 +20,7 @@ app.use(morgan("dev"));
 app.use(
   cors({
     origin: [
+      "http://localhost:4173",
       "http://localhost:5173",
       "https://wallaclone.keepcoders.duckdns.org",
     ],
