@@ -15,8 +15,9 @@ export const AuthLoginRejected = (error: string) => ({
 });
 
 // @ts-expect-error Lo vamos a tipar más adelante
-export const AuthLogout = (): AppThunk => (dispatch) => {
+export const AuthLogout = (): AppThunk => async (dispatch) => {
   // fetch /logout
+  await fetch("https://api.wallaclone.keepcoders.duckdns.org/auth/logout");
   dispatch({ type: "AUTH_LOGOUT" });
 };
 
