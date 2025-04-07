@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 export const isAuthenticated = (req, res, next) => {
   if (!req.cookies.accessToken) {
     const error = new Error("accessToken not provided");
-    error.statusCode = 401;
+    error.status = 401;
     next(error);
     return;
   }
@@ -11,7 +11,7 @@ export const isAuthenticated = (req, res, next) => {
   jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       const error = new Error("Invalid accessToken");
-      error.statusCode = 403;
+      error.status = 403;
       next(error);
       return;
     }
