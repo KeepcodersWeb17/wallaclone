@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -19,6 +20,7 @@ function App() {
     <>
       <h1>{test}</h1>
       <LoginPage />
+      <SignupPage />
     </>
   );
 }
