@@ -45,7 +45,7 @@ app.use((req, res, next) => {
 
 // General error handler
 app.use((err, req, res, next) => {
-  console.error(err);
+  console.error(err.message);
   if (err instanceof z.ZodError) {
     res.status(400).json({
       error: err.errors.map((error) => ({
