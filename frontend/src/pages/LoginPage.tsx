@@ -17,8 +17,8 @@ const LoginPage = () => {
     await dispatch(AuthLogin(credentials));
   };
 
-  const handleLogout = () => {
-    dispatch(AuthLogout());
+  const handleLogout = async () => {
+    await dispatch(AuthLogout());
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,4 +1,4 @@
-import { login } from "../services/auth";
+import { login, logout } from "../services/auth";
 import type { Credentials } from "../services/auth";
 
 export const AuthLoginPending = () => ({
@@ -14,11 +14,30 @@ export const AuthLoginRejected = (error: string) => ({
   payload: error,
 });
 
+export const AuthLogoutPending = () => ({
+  type: "AUTH_LOGOUT_PENDING",
+});
+
+export const AuthLogoutFulfilled = () => ({
+  type: "AUTH_LOGOUT_FULFILLED",
+});
+
+export const AuthLogoutRejected = (error: string) => ({
+  type: "AUTH_LOGOUT_REJECTED",
+  payload: error,
+});
+
 // @ts-expect-error Lo vamos a tipar más adelante
-export const AuthLogout = (): AppThunk => async (dispatch) => {
-  // fetch /logout
-  await fetch("https://api.wallaclone.keepcoders.duckdns.org/auth/logout");
-  dispatch({ type: "AUTH_LOGOUT" });
+export const AuthLogout = (): AppThunk<Promise<void>> => {
+  // @ts-expect-error Lo vamos a tipar más adelante
+  return async function (dispatch) {
+    try {
+      await logout();
+      dispatch(AuthLogoutFulfilled());
+    } catch (error) {
+      console.error(error);
+    }
+  };
 };
 
 export const AuthLogin = (
