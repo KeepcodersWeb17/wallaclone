@@ -11,13 +11,25 @@ type AuthLoginRejected = {
   payload: string;
 };
 
-type AuthLogout = {
-  type: "AUTH_LOGOUT";
+type AuthLogoutPending = {
+  type: "AUTH_LOGOUT_PENDING";
 };
+
+type AuthLogoutFulfilled = {
+  type: "AUTH_LOGOUT_FULFILLED";
+};
+
+type AuthLogoutRejected = {
+  type: "AUTH_LOGOUT_REJECTED";
+  payload: string;
+};
+
 type Action =
   | AuthLoginPending
   | AuthLoginFulfilled
   | AuthLoginRejected
-  | AuthLogout;
+  | AuthLogoutPending
+  | AuthLogoutFulfilled
+  | AuthLogoutRejected;
 
 export default Action;

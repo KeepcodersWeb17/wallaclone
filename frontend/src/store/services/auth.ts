@@ -17,3 +17,14 @@ export const login = async (credentials: Credentials) => {
     throw new Error(response.statusText);
   }
 };
+
+export const logout = async () => {
+  const response = await fetch(
+    "https://api.wallaclone.keepcoders.duckdns.org/auth/logout",
+    { credentials: "include" }
+  );
+  if (!response.ok) {
+    console.error(response);
+    throw new Error(response.statusText);
+  }
+};
