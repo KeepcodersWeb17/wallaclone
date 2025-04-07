@@ -1,7 +1,7 @@
 import Action from "../actions/types";
 import defaultState from "../state/defaultState";
 
-const user = (state = defaultState, action: Action) => {
+const user = (state = defaultState.user, action: Action) => {
   switch (action.type) {
     case "AUTH_LOGIN_FULFILLED": {
       return {

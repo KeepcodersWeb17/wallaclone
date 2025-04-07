@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import configureStore from "./store/store";
@@ -15,17 +15,15 @@ const response = await fetch(
 
 const isAuth = response.error ? false : true;
 
-console.log("Access Token:", isAuth);
+const store = configureStore({
+  auth: isAuth,
+  user: { id: response.user._id, username: response.user.username },
+});
 
-const store = configureStore({ auth: isAuth });
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    {/* <ErrorBoundary> */}
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-    {/* <ErrorBoundary> */}
-  </StrictMode>
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>
 );

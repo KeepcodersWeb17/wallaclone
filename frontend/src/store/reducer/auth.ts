@@ -1,13 +1,13 @@
 import type Action from "../actions/types";
 import defaultState from "../state/defaultState";
 
-const auth = (state = defaultState, action: Action) => {
+const auth = (state = defaultState.auth, action: Action) => {
   switch (action.type) {
     case "AUTH_LOGIN_FULFILLED": {
-      return { ...state, auth: true };
+      return true;
     }
     case "AUTH_LOGOUT_FULFILLED": {
-      return { ...state, auth: false };
+      return false;
     }
     default: {
       return state;
