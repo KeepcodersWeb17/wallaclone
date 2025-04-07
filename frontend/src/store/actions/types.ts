@@ -4,6 +4,10 @@ type AuthLoginPending = {
 
 type AuthLoginFulfilled = {
   type: "AUTH_LOGIN_FULFILLED";
+  payload: {
+    id: string;
+    username: string;
+  };
 };
 
 type AuthLoginRejected = {
