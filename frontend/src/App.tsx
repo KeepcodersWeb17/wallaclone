@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import { Routes } from "react-router-dom";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -19,8 +20,10 @@ function App() {
   return (
     <>
       <h1>{test}</h1>
-      <LoginPage />
-      <SignupPage />
+      <Routes>
+        <LoginPage />
+        <SignupPage />
+      </Routes>
     </>
   );
 }
