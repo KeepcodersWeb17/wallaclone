@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type State from "../store/state/types";
-import { AuthLogin, AuthLogout } from "../store/actions/creators";
+import { authLogin, authLogout } from "../store/actions/creators";
 
 const LoginPage = () => {
   const isAuth = useSelector((state: State) => state.auth);
@@ -14,11 +14,11 @@ const LoginPage = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const credentials = { username, password };
-    await dispatch(AuthLogin(credentials));
+    await dispatch(authLogin(credentials));
   };
 
   const handleLogout = async () => {
-    await dispatch(AuthLogout());
+    await dispatch(authLogout());
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

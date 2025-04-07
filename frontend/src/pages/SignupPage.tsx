@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { AuthLogin } from "../store/actions/creators";
+import { signup } from "../store/actions/creators";
 
 const SignupPage = () => {
   const [username, setUsername] = useState("");
@@ -23,17 +23,8 @@ const SignupPage = () => {
 
     const userData = { username, email, password };
 
-    try {
-      await fetch("https://api.wallaclone.keepcoders.duckdns.org/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(userData),
-      });
-      dispatch(AuthLogin({ username, password }));
-    } catch (error) {
-      console.error(error);
-    }
+    // @ts-expect-error Lo vamos a tipar más adelante
+    dispatch(signup(userData));
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
