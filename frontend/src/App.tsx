@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import { Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -21,8 +21,8 @@ function App() {
     <>
       <h1>{test}</h1>
       <Routes>
-        <LoginPage />
-        <SignupPage />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </>
   );
