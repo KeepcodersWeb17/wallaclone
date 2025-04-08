@@ -11,11 +11,12 @@ export const create = async (advert: Advert) => {
     }
   );
 
-  const data = await response.json();
-
-  console.log("Advert created:", data);
-
   if (!response.ok) {
     throw new Error("Error al crear el anuncio");
   }
+
+  const { _id, name, description, price, image, tags, owner } =
+    await response.json();
+
+  return { id: _id, name, description, price, image, tags, owner };
 };
