@@ -9,8 +9,10 @@ const adverts = (state = defaultState.adverts, action: Action) => {
         data: [...state.data, action.payload],
       };
     }
-    default:
-      break;
+
+    default: {
+      return state;
+    }
   }
 };
 
