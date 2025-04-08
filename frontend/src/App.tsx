@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import { Navigate, Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
+import NewAdvertPage from "./pages/NewAdvertPage";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -24,6 +25,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/adverts/new" element={<NewAdvertPage />} />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/404" element={<NotFoundPage />} />
         <Route path="*" element={<Navigate to="/404" />} />

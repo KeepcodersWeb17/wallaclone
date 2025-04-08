@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createAdvert } from "../store/actions/creators";
 
 const NewAdvertPage = () => {
   const [nameAdvert, setNameAdvert] = useState<string>("");
@@ -6,6 +8,21 @@ const NewAdvertPage = () => {
   const [priceAdvert, setPriceAdvert] = useState<number>(0);
   const [tagsAdvert, setTagsAdvert] = useState<string>("");
   const [imageAdvert, setImageAdvert] = useState<string>();
+
+  const dispatch = useDispatch();
+
+  const handleCreateAdvert = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const advert = {
+      name: nameAdvert,
+      description: descriptionAdvert,
+      price: priceAdvert,
+      tags: tagsAdvert,
+      image: imageAdvert,
+    };
+    // @ts-expect-error Lo vamos a tipar más adelante
+    dispatch(createAdvert(advert));
+  };
 
   const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNameAdvert(event.target.value);
@@ -90,7 +107,9 @@ const NewAdvertPage = () => {
             <option value="mobile">Mobile</option>
           </select>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" onSubmit={handleCreateAdvert}>
+          Create Advert
+        </button>
       </form>
     </>
   );
