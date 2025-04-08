@@ -3,63 +3,59 @@ import { useDispatch } from "react-redux";
 import { createAdvert } from "../store/actions/creators";
 
 const NewAdvertPage = () => {
-  const [nameAdvert, setNameAdvert] = useState<string>("");
-  const [descriptionAdvert, setDescriptionAdvert] = useState<string>("");
-  const [priceAdvert, setPriceAdvert] = useState<number>(0);
-  const [tagsAdvert, setTagsAdvert] = useState<string>("");
-  const [imageAdvert, setImageAdvert] = useState<string>();
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
+  const [image, setImage] = useState<string>();
+  const [tag, setTag] = useState<string>("");
+
+  const disabled = !name || !price;
 
   const dispatch = useDispatch();
 
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
-    const advert = {
-      name: nameAdvert,
-      description: descriptionAdvert,
-      price: priceAdvert,
-      tags: tagsAdvert,
-      image: imageAdvert,
-    };
+
+    const advert = { name, description, price, tag, image };
+
     // @ts-expect-error Lo vamos a tipar más adelante
     dispatch(createAdvert(advert));
   };
 
   const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNameAdvert(event.target.value);
+    setName(event.target.value);
   };
 
   const handleDescriptionAdvert = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setDescriptionAdvert(event.target.value);
+    setDescription(event.target.value);
   };
 
   const handlePriceAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPriceAdvert(Number(event.target.value));
+    setPrice(Number(event.target.value));
   };
 
   const handleImageAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImageAdvert(event.target.value);
+    setImage(event.target.value);
   };
 
   const handleTagsAdvertChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setTagsAdvert(event.target.value);
+    setTag(event.target.value);
   };
 
   return (
     <>
       <h2>New Advert</h2>
-      <form>
+      <form onSubmit={handleCreateAdvert}>
         <div>
-          <label htmlFor="name" className="form-label">
-            Name
-          </label>
+          <label htmlFor="name"> Name</label>
           <input
             type="text"
             id="name"
-            value={nameAdvert}
+            value={name}
             onChange={handleNameAdvert}
           />
         </div>
@@ -68,7 +64,7 @@ const NewAdvertPage = () => {
           <textarea
             id="description"
             rows={3}
-            value={descriptionAdvert}
+            value={description}
             onChange={handleDescriptionAdvert}
           ></textarea>
         </div>
@@ -77,7 +73,7 @@ const NewAdvertPage = () => {
           <input
             type="number"
             id="price"
-            value={priceAdvert}
+            value={price}
             onChange={handlePriceAdvert}
           />
         </div>
@@ -86,18 +82,16 @@ const NewAdvertPage = () => {
           <input
             type="text"
             id="image"
-            value={imageAdvert}
+            value={image}
             onChange={handleImageAdvert}
           />
         </div>
         <div>
-          <label className="form-label" htmlFor="tags">
-            <span>Category:</span>
-          </label>
+          <label htmlFor="tags">Category:</label>
           <select
             name="tags"
             id="tags"
-            value={tagsAdvert}
+            value={tag}
             onChange={handleTagsAdvertChange}
           >
             <option value="work">Select a category</option>
@@ -107,9 +101,15 @@ const NewAdvertPage = () => {
             <option value="mobile">Mobile</option>
           </select>
         </div>
-        <button type="submit" onSubmit={handleCreateAdvert}>
-          Create Advert
-        </button>
+        <div>
+          <button
+            type="submit"
+            disabled={disabled}
+            onSubmit={handleCreateAdvert}
+          >
+            Create
+          </button>
+        </div>
       </form>
     </>
   );
