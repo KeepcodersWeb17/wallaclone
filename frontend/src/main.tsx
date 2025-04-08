@@ -1,11 +1,10 @@
-// import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { StrictMode } from "react";
 import { Provider } from "react-redux";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 import configureStore from "./store/store";
 import "./index.css";
 import App from "./App.tsx";
-import { BrowserRouter } from "react-router-dom";
-import { StrictMode } from "react";
 
 const getPreloadedState = async () => {
   const response = await fetch(

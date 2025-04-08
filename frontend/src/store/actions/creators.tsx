@@ -1,6 +1,6 @@
+import type { Credentials } from "../services/auth";
 import { create } from "../services/adverts";
 import { login, logout } from "../services/auth";
-import type { Credentials } from "../services/auth";
 import { Advert } from "../state/types";
 
 export const authLoginPending = () => ({

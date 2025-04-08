@@ -1,4 +1,4 @@
-import { Advert } from "../state/types";
+import type { Advert } from "../state/types";
 
 export const create = async (advert: Advert) => {
   const response = await fetch(

@@ -1,4 +1,4 @@
-import Action from "../actions/types";
+import type Action from "../actions/types";
 import defaultState from "../state/defaultState";
 
 const adverts = (state = defaultState.adverts, action: Action) => {
