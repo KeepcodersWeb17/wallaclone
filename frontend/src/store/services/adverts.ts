@@ -10,7 +10,10 @@ export const create = async (advert: Advert) => {
       body: JSON.stringify(advert),
     }
   );
-  console.log("Response:", response);
+
+  const data = await response.json();
+
+  console.log("Advert created:", data);
 
   if (!response.ok) {
     throw new Error("Error al crear el anuncio");
