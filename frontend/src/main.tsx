@@ -14,9 +14,23 @@ const response = await fetch(
   }
 ).then((res) => res.json());
 
-const store = configureStore({
-  user: { id: response.user._id, username: response.user.username },
-});
+let store = null;
+
+if (response.error) {
+  store = configureStore({
+    user: {
+      id: "",
+      username: "",
+    },
+  });
+} else {
+  store = configureStore({
+    user: {
+      id: response.user._id,
+      username: response.user.username,
+    },
+  });
+}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

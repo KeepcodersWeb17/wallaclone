@@ -5,7 +5,6 @@ import { authLogin, authLogout } from "../store/actions/creators";
 
 const LoginPage = () => {
   const isAuth = useSelector((state: State) => !!state.user.id);
-
   const persistedUsername = useSelector((state: State) => state.user.username);
 
   const [username, setUsername] = useState("");
