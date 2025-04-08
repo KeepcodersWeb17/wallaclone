@@ -1,7 +1,6 @@
 import { create } from "../services/adverts";
 import { login, logout } from "../services/auth";
 import type { Credentials } from "../services/auth";
-import { Advert } from "../state/types";
 
 export const authLoginPending = () => ({
   type: "AUTH_LOGIN_PENDING",
@@ -94,12 +93,14 @@ export const createAdvertFulfilled = (advert) => ({
   payload: advert,
 });
 
-export const createAdvert = (advert: Advert) => {
+export const createAdvert = (
+  // @ts-expect-error Lo vamos a tipar más adelante
+  advert
+) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
       await create(advert);
-
       dispatch(createAdvertFulfilled(advert));
     } catch (error) {
       console.error(error);
