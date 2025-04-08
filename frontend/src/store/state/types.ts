@@ -6,15 +6,13 @@ type State = {
 };
 
 export type Advert = {
-  id: string;
+  id?: string;
   name: string;
+  description?: string;
   price: number;
-  tags: string[];
-  image: string;
-  owner: string;
-  description: string;
+  image?: string;
+  tags?: string[];
+  owner?: string;
 };
 
 export default State;
-
-//
