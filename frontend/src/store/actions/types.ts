@@ -1,3 +1,5 @@
+import { Advert } from "../state/types";
+
 type AuthLoginPending = {
   type: "AUTH_LOGIN_PENDING";
 };
@@ -26,15 +28,6 @@ type AuthLogoutFulfilled = {
 type AuthLogoutRejected = {
   type: "AUTH_LOGOUT_REJECTED";
   payload: string;
-};
-
-type Advert = {
-  name: string;
-  price: number;
-  tags: string[];
-  image: string;
-  owner: string;
-  description: string;
 };
 
 type CreateAdvert = {

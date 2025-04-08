@@ -1,3 +1,4 @@
+import { create } from "../services/adverts";
 import { login, logout } from "../services/auth";
 import type { Credentials } from "../services/auth";
 
@@ -80,6 +81,26 @@ export const signup = (userData) => {
       }
 
       dispatch(authLogin(userData));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+// @ts-expect-error Lo vamos a tipar más adelante
+export const createAdvertFulfilled = (advert) => ({
+  type: "ADVERT_CREATED_FULFILLED",
+  payload: advert,
+});
+
+// @ts-expect-error Lo vamos a tipar más adelante
+export const createAdvert = (advert) => {
+  // @ts-expect-error Lo vamos a tipar más adelante
+  return async function (dispatch) {
+    try {
+      await create(advert);
+
+      dispatch(createAdvertFulfilled(advert));
     } catch (error) {
       console.error(error);
     }

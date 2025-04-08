@@ -5,6 +5,16 @@ type State = {
   };
 };
 
+export type Advert = {
+  id: string;
+  name: string;
+  price: number;
+  tags: string[];
+  image: string;
+  owner: string;
+  description: string;
+};
+
 export default State;
 
 //
