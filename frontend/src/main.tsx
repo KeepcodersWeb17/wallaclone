@@ -14,10 +14,7 @@ const response = await fetch(
   }
 ).then((res) => res.json());
 
-const isAuth = response.error ? false : true;
-
 const store = configureStore({
-  auth: isAuth,
   user: { id: response.user._id, username: response.user.username },
 });
 

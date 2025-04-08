@@ -4,7 +4,7 @@ import type State from "../store/state/types";
 import { authLogin, authLogout } from "../store/actions/creators";
 
 const LoginPage = () => {
-  const isAuth = useSelector((state: State) => state.auth);
+  const isAuth = useSelector((state: State) => !!state.user.id);
 
   const persistedUsername = useSelector((state: State) => state.user.username);
 
