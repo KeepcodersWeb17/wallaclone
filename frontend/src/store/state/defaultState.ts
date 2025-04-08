@@ -1,9 +1,13 @@
-import State from "./types";
+import type State from "./types";
 
 const defaultState: State = {
   user: {
     id: "",
     username: "",
+  },
+  adverts: {
+    data: [],
+    loaded: false,
   },
 };
 

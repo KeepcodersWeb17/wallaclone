@@ -1,5 +1,7 @@
-import { login, logout } from "../services/auth";
 import type { Credentials } from "../services/auth";
+import { create } from "../services/adverts";
+import { login, logout } from "../services/auth";
+import { Advert } from "../state/types";
 
 export const authLoginPending = () => ({
   type: "AUTH_LOGIN_PENDING",
@@ -18,6 +20,21 @@ export const authLoginRejected = (error: string) => ({
   type: "AUTH_LOGIN_REJECTED",
   payload: error,
 });
+
+export const authLogin = (
+  credentials: Credentials
+  // @ts-expect-error Lo vamos a tipar más adelante
+): AppThunk<Promise<void>> => {
+  // @ts-expect-error Lo vamos a tipar más adelante
+  return async function (dispatch) {
+    try {
+      const { id, username } = await login(credentials);
+      dispatch(authLoginFulfilled({ id, username }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
 
 export const authLogoutPending = () => ({
   type: "AUTH_LOGOUT_PENDING",
@@ -45,21 +62,6 @@ export const authLogout = (): AppThunk<Promise<void>> => {
   };
 };
 
-export const authLogin = (
-  credentials: Credentials
-  // @ts-expect-error Lo vamos a tipar más adelante
-): AppThunk<Promise<void>> => {
-  // @ts-expect-error Lo vamos a tipar más adelante
-  return async function (dispatch) {
-    try {
-      const { id, username } = await login(credentials);
-      dispatch(authLoginFulfilled({ id, username }));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-};
-
 // @ts-expect-error Lo vamos a tipar más adelante
 export const signup = (userData) => {
   // @ts-expect-error Lo vamos a tipar más adelante
@@ -80,6 +82,33 @@ export const signup = (userData) => {
       }
 
       dispatch(authLogin(userData));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const createAdvertPending = () => ({
+  type: "ADVERT_CREATED_PENDING",
+});
+
+// @ts-expect-error Lo vamos a tipar más adelante
+export const createAdvertFulfilled = (createdAdvert) => ({
+  type: "ADVERT_CREATED_FULFILLED",
+  payload: createdAdvert,
+});
+
+export const createAdvertRejected = (error: string) => ({
+  type: "ADVERT_CREATED_REJECTED",
+  payload: error,
+});
+
+export const createAdvert = (advert: Advert) => {
+  // @ts-expect-error Lo vamos a tipar más adelante
+  return async function (dispatch) {
+    try {
+      const createdAdvert = await create(advert);
+      dispatch(createAdvertFulfilled(createdAdvert));
     } catch (error) {
       console.error(error);
     }

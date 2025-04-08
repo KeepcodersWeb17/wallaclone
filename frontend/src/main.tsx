@@ -1,36 +1,35 @@
-// import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { StrictMode } from "react";
 import { Provider } from "react-redux";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 import configureStore from "./store/store";
 import "./index.css";
 import App from "./App.tsx";
-import { BrowserRouter } from "react-router-dom";
-import { StrictMode } from "react";
 
-const response = await fetch(
-  "https://api.wallaclone.keepcoders.duckdns.org/users",
-  {
-    credentials: "include",
+const getPreloadedState = async () => {
+  const response = await fetch(
+    "https://api.wallaclone.keepcoders.duckdns.org/users",
+    {
+      credentials: "include",
+    }
+  ).then((res) => res.json());
+
+  const user = {
+    id: "",
+    username: "",
+  };
+
+  if (!response.error) {
+    user.id = response.user._id;
+    user.username = response.user.username;
   }
-).then((res) => res.json());
 
-let store = null;
+  return { user };
+};
 
-if (response.error) {
-  store = configureStore({
-    user: {
-      id: "",
-      username: "",
-    },
-  });
-} else {
-  store = configureStore({
-    user: {
-      id: response.user._id,
-      username: response.user.username,
-    },
-  });
-}
+const preloadedState = await getPreloadedState();
+
+const store = configureStore(preloadedState);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

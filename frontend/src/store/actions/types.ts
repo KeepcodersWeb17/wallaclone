@@ -1,3 +1,5 @@
+import { Advert } from "../state/types";
+
 type AuthLoginPending = {
   type: "AUTH_LOGIN_PENDING";
 };
@@ -28,12 +30,35 @@ type AuthLogoutRejected = {
   payload: string;
 };
 
+type CreateAdvert = {
+  type: "CREATE_ADVERT";
+  payload: Advert;
+};
+
+type CreateAdvertPending = {
+  type: "ADVERT_CREATED_PENDING";
+};
+
+type CreateAdvertFulfilled = {
+  type: "ADVERT_CREATED_FULFILLED";
+  payload: Advert;
+};
+
+type CreateAdvertRejected = {
+  type: "ADVERT_CREATED_REJECTED";
+  payload: string;
+};
+
 type Action =
   | AuthLoginPending
   | AuthLoginFulfilled
   | AuthLoginRejected
   | AuthLogoutPending
   | AuthLogoutFulfilled
-  | AuthLogoutRejected;
+  | AuthLogoutRejected
+  | CreateAdvert
+  | CreateAdvertPending
+  | CreateAdvertFulfilled
+  | CreateAdvertRejected;
 
 export default Action;
