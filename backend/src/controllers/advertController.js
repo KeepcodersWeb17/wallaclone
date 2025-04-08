@@ -26,7 +26,7 @@ export const createAdvert = async (req, res, next) => {
 
     const savedAdvert = await newAdvert.save();
 
-    res.status(201).json({ advert: savedAdvert });
+    res.status(201).json({ savedAdvert });
   } catch (error) {
     next(error);
   }
