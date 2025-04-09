@@ -3,11 +3,12 @@ type State = {
     id: string;
     username: string;
   };
-  adverts: { data: Advert[]; loaded: boolean };
+  adverts: Advert[];
 };
 
 export type Advert = {
   id?: string;
+  _id?: string;
   name: string;
   description?: string;
   price: number;
