@@ -2,6 +2,7 @@
 
 import { useSelector } from "react-redux";
 import State from "../store/state/types";
+import { Link } from "react-router-dom";
 
 const AdvertsPage = () => {
   // const [searchParams, setSearchParams] = useSearchParams
@@ -17,9 +18,16 @@ const AdvertsPage = () => {
         <ul>
           {adverts.map((advert) => (
             <li key={advert.id}>
-              <h3>{advert.name}</h3>
-              <p>{advert.description}</p>
-              <p>Price: {advert.price}</p>
+              <Link to={`/adverts/${advert.name}-${advert.id}`}>
+                <div>
+                  <img src={advert.image} alt={advert.name} />
+                </div>
+                <div>
+                  <h3>{advert.name}</h3>
+                  <p>{advert.description}</p>
+                  <p>Price: {advert.price}</p>
+                </div>
+              </Link>
             </li>
           ))}
         </ul>
