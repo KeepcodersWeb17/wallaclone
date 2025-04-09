@@ -13,6 +13,7 @@ export type Advert = {
   name: string;
   description?: string;
   price: number;
+  sale: "buy" | "sell";
   image?: string;
   tags?: string[];
   owner?: string;
