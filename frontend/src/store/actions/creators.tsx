@@ -1,6 +1,6 @@
 import type { User, Advert } from "../state/types";
 import { create, getById, getLatest } from "../services/adverts";
-import { login, logout } from "../services/auth";
+import { login, logout, createUserAPI } from "../services/users";
 
 export const authLoginPending = () => ({
   type: "AUTH_LOGIN_PENDING",
@@ -56,25 +56,26 @@ export const authLogout = () => {
   };
 };
 
-export const signup = (userData: User) => {
+export const createUserPending = () => ({
+  type: "CREATE_USER_PENDING",
+});
+
+export const createUserFulfilled = (createdUser: User) => ({
+  type: "CREATE_USER_FULFILLED",
+  payload: createdUser,
+});
+
+export const createUserRejected = (error: string) => ({
+  type: "CREATE_USER_REJECTED",
+  payload: error,
+});
+
+export const createUser = (userData: User) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      const response = await fetch(
-        "https://api.wallaclone.keepcoders.duckdns.org/users",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(userData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Error al crear el usuario");
-      }
-
-      dispatch(authLogin(userData));
+      const createdUser = await createUserAPI(userData);
+      dispatch(createUserFulfilled(createdUser));
     } catch (error) {
       console.error(error);
     }
