@@ -9,11 +9,13 @@ const getUser = async () => {
   const user = {
     id: "",
     username: "",
+    loaded: false,
   };
 
   if (!response.error) {
     user.id = response.user._id;
     user.username = response.user.username;
+    user.loaded = true;
   }
 
   return user;
@@ -27,14 +29,10 @@ const getAdverts = async () => {
     }
   ).then((res) => res.json());
 
-  const adverts = {
-    data: [],
-    loaded: false,
-  };
+  const adverts = [];
 
   if (!response.error) {
-    adverts.data = response.adverts;
-    adverts.loaded = true;
+    adverts.push(...response.adverts);
   }
 
   return adverts;
