@@ -1,11 +1,4 @@
-type State = {
-  user: {
-    id: string;
-    username: string;
-  };
-  adverts: Advert[];
-  advert: Advert | null;
-};
+export type Sale = "buy" | "sell" | undefined;
 
 export type Advert = {
   id?: string;
@@ -13,10 +6,19 @@ export type Advert = {
   name: string;
   description?: string;
   price: number;
-  sale: "buy" | "sell";
+  sale: Sale;
   image?: string;
   tags?: string[];
   owner?: string;
+};
+
+type State = {
+  user: {
+    id: string;
+    username: string;
+  };
+  adverts: Advert[];
+  advert: Advert | null;
 };
 
 export default State;

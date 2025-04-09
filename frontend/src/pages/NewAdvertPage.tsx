@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createAdvert } from "../store/actions/creators";
+import { Sale } from "../store/state/types";
 
 const NewAdvertPage = () => {
   const [name, setName] = useState<string>("");
@@ -8,6 +9,7 @@ const NewAdvertPage = () => {
   const [price, setPrice] = useState<number>(0);
   const [image, setImage] = useState<string>();
   const [tag, setTag] = useState<string>("");
+  const [sale, setSale] = useState<Sale>(undefined);
 
   const disabled = !name || !price;
 
@@ -16,7 +18,7 @@ const NewAdvertPage = () => {
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const advert = { name, description, price, tag, image };
+    const advert = { name, description, price, tag, image, sale };
 
     await dispatch(createAdvert(advert));
   };
@@ -43,6 +45,14 @@ const NewAdvertPage = () => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setTag(event.target.value);
+  };
+
+  const handleSaleAdvertChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    if (event.target.value === "buy" || event.target.value === "sell") {
+      setSale(event.target.value);
+    }
   };
 
   return (
@@ -98,6 +108,18 @@ const NewAdvertPage = () => {
             <option value="lifestyle">Lifestyle</option>
             <option value="motor">Motor</option>
             <option value="mobile">Mobile</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="sale">Sale:</label>
+          <select
+            name="sale"
+            id="sale"
+            value={sale}
+            onChange={handleSaleAdvertChange}
+          >
+            <option value="buy">Buy</option>
+            <option value="sell">Sell</option>
           </select>
         </div>
         <div>
