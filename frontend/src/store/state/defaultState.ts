@@ -5,10 +5,7 @@ const defaultState: State = {
     id: "",
     username: "",
   },
-  adverts: {
-    data: [],
-    loaded: false,
-  },
+  adverts: [],
 };
 
 export default defaultState;

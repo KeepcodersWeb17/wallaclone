@@ -6,7 +6,7 @@ const adverts = (state = defaultState.adverts, action: Action) => {
     case "ADVERT_CREATED_FULFILLED": {
       return {
         ...state,
-        data: [...state.data, action.payload],
+        data: [...state, action.payload],
       };
     }
 

@@ -9,13 +9,11 @@ const getUser = async () => {
   const user = {
     id: "",
     username: "",
-    loaded: false,
   };
 
   if (!response.error) {
     user.id = response.user._id;
     user.username = response.user.username;
-    user.loaded = true;
   }
 
   return user;
