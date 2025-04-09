@@ -30,9 +30,32 @@ type AuthLogoutRejected = {
   payload: string;
 };
 
-type CreateAdvert = {
-  type: "CREATE_ADVERT";
+type GetAdvertsPending = {
+  type: "GET_ADVERTS_PENDING";
+};
+
+type GetAdvertsFulfilled = {
+  type: "GET_ADVERTS_FULFILLED";
+  payload: Advert[];
+};
+
+type GetAdvertsRejected = {
+  type: "GET_ADVERTS_REJECTED";
+  payload: string;
+};
+
+type GetAdvertPending = {
+  type: "GET_ADVERT_PENDING";
+};
+
+type GetAdvertFulfilled = {
+  type: "GET_ADVERT_FULFILLED";
   payload: Advert;
+};
+
+type GetAdvertRejected = {
+  type: "GET_ADVERT_REJECTED";
+  payload: string;
 };
 
 type CreateAdvertPending = {
@@ -56,7 +79,12 @@ type Action =
   | AuthLogoutPending
   | AuthLogoutFulfilled
   | AuthLogoutRejected
-  | CreateAdvert
+  | GetAdvertsPending
+  | GetAdvertsFulfilled
+  | GetAdvertsRejected
+  | GetAdvertPending
+  | GetAdvertFulfilled
+  | GetAdvertRejected
   | CreateAdvertPending
   | CreateAdvertFulfilled
   | CreateAdvertRejected;

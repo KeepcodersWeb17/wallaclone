@@ -23,8 +23,7 @@ const SignupPage = () => {
 
     const userData = { username, email, password };
 
-    // @ts-expect-error Lo vamos a tipar más adelante
-    dispatch(signup(userData));
+    await dispatch(signup(userData));
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
