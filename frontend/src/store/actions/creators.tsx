@@ -19,11 +19,11 @@ export const authLoginRejected = (error: string) => ({
   payload: error,
 });
 
-export const authLogin = (credentials: User) => {
+export const authLogin = (userData: User) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      const { id, username } = await login(credentials);
+      const { id, username } = await login(userData);
       dispatch(authLoginFulfilled({ id, username }));
     } catch (error) {
       console.error(error);
@@ -74,8 +74,9 @@ export const createUser = (userData: User) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      const createdUser = await createUserAPI(userData);
-      dispatch(createUserFulfilled(createdUser));
+      const { username, password } = userData;
+      await createUserAPI(userData);
+      dispatch(authLogin({ username, password }));
     } catch (error) {
       console.error(error);
     }
