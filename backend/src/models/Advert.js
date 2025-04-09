@@ -29,6 +29,7 @@ const advertSchema = new mongoose.Schema(
             .skip(options.skip)
             .limit(options.limit)
             .select(options.fields)
+            .populate("owner", "username")
             .exec()
         );
       },
