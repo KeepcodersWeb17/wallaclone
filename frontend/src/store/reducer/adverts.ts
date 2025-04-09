@@ -3,11 +3,8 @@ import defaultState from "../state/defaultState";
 
 const adverts = (state = defaultState.adverts, action: Action) => {
   switch (action.type) {
-    case "ADVERT_CREATED_FULFILLED": {
-      return {
-        ...state,
-        data: [...state, action.payload],
-      };
+    case "GET_ADVERTS_FULFILLED": {
+      return action.payload;
     }
 
     default: {

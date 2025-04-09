@@ -1,5 +1,5 @@
 import type { Credentials } from "../services/auth";
-import { create } from "../services/adverts";
+import { create, getLatest } from "../services/adverts";
 import { login, logout } from "../services/auth";
 import { Advert } from "../state/types";
 
@@ -82,6 +82,32 @@ export const signup = (userData) => {
       }
 
       dispatch(authLogin(userData));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const getAdvertsPending = () => ({
+  type: "ADVERTS_GET_PENDING",
+});
+
+export const getAdvertsFulfilled = (adverts: Advert[]) => ({
+  type: "ADVERTS_GET_FULFILLED",
+  payload: adverts,
+});
+
+export const getAdvertsRejected = (error: string) => ({
+  type: "ADVERTS_GET_REJECTED",
+  payload: error,
+});
+
+export const getAdverts = () => {
+  // @ts-expect-error Lo vamos a tipar más adelante
+  return async function (dispatch) {
+    try {
+      const adverts = await getLatest();
+      dispatch(getAdvertsFulfilled(adverts));
     } catch (error) {
       console.error(error);
     }

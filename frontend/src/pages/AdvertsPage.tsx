@@ -1,11 +1,15 @@
 // import { useSearchParams } from "react-router-dom";
-
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import State from "../store/state/types";
 import { Link } from "react-router-dom";
+import { getAdverts } from "../store/actions/creators";
 
 const AdvertsPage = () => {
   // const [searchParams, setSearchParams] = useSearchParams
+  const dispatch = useDispatch();
+
+  // @ts-expect-error Lo vamos a tipar más adelante
+  dispatch(getAdverts());
 
   const adverts = useSelector((state: State) => state.adverts);
 
