@@ -1,20 +1,18 @@
 import type { User } from "../state/types";
 
 export const login = async (credentials: User) => {
-  const response = await fetch(
-    "https://api.wallaclone.keepcoders.duckdns.org/auth/login",
-    {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(credentials),
-    }
-  );
-  if (!response.ok) {
-    console.error(response);
-    throw new Error(response.statusText);
+  const response = await fetch("http://localhost:4000/auth/login", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(credentials),
+  }).then((res) => res.json());
+
+  if (response.error) {
+    throw new Error(response.error);
   }
-  const { id, username } = await response.json();
+
+  const { id, username } = response;
 
   return { id, username };
 };
