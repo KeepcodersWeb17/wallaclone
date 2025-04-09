@@ -18,8 +18,7 @@ const NewAdvertPage = () => {
 
     const advert = { name, description, price, tag, image };
 
-    // @ts-expect-error Lo vamos a tipar más adelante
-    dispatch(createAdvert(advert));
+    await dispatch(createAdvert(advert));
   };
 
   const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
