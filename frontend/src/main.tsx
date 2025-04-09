@@ -8,7 +8,6 @@ import App from "./App.tsx";
 import getPreloadedState from "./lib/preloadedState.ts";
 
 const preloadedState = await getPreloadedState();
-console.log("Preloaded state", preloadedState);
 
 const store = configureStore(preloadedState);
 

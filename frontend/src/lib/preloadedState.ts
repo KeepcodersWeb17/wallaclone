@@ -1,3 +1,5 @@
+import { Advert } from "../store/state/types";
+
 const getUser = async () => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/users",
@@ -30,7 +32,12 @@ const getAdverts = async () => {
   const adverts = [];
 
   if (!response.error) {
-    adverts.push(...response.adverts);
+    adverts.push(
+      ...response.adverts.map((advert: Advert) => ({
+        ...advert,
+        id: advert._id,
+      }))
+    );
   }
 
   return adverts;
