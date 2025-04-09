@@ -30,9 +30,9 @@ export const createUser = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    await newUser.save();
+    const createdUser = await newUser.save();
 
-    res.status(201).json({ username });
+    res.status(201).json(createdUser);
   } catch (error) {
     next(error);
   }
