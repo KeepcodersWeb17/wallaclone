@@ -6,7 +6,7 @@ const defaultState: State = {
     username: "",
   },
   adverts: [],
-  advert: undefined,
+  advert: null,
 };
 
 export default defaultState;

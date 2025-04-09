@@ -63,7 +63,7 @@ export const authLogout = (): AppThunk<Promise<void>> => {
 };
 
 // @ts-expect-error Lo vamos a tipar más adelante
-export const signup = (userData) => {
+export const signup = (userData): AppThunk<Promise<void>> => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
@@ -102,7 +102,8 @@ export const getAdvertsRejected = (error: string) => ({
   payload: error,
 });
 
-export const getAdverts = () => {
+// @ts-expect-error Lo vamos a tipar más adelante
+export const getAdverts = (): AppThunk<Promise<void>> => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
@@ -128,7 +129,8 @@ export const getAdvertRejected = (error: string) => ({
   payload: error,
 });
 
-export const getAdvert = (advertId: string) => {
+// @ts-expect-error Lo vamos a tipar más adelante
+export const getAdvert = (advertId: string): AppThunk<Promise<void>> => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
@@ -155,7 +157,8 @@ export const createAdvertRejected = (error: string) => ({
   payload: error,
 });
 
-export const createAdvert = (advert: Advert) => {
+// @ts-expect-error Lo vamos a tipar más adelante
+export const createAdvert = (advert: Advert): AppThunk<Promise<void>> => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {

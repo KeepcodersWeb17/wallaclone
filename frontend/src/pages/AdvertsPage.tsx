@@ -3,13 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import State from "../store/state/types";
 import { Link } from "react-router-dom";
 import { getAdverts } from "../store/actions/creators";
+import { useEffect } from "react";
 
 const AdvertsPage = () => {
   // const [searchParams, setSearchParams] = useSearchParams
   const dispatch = useDispatch();
 
-  // @ts-expect-error Lo vamos a tipar más adelante
-  dispatch(getAdverts());
+  useEffect(() => {
+    const fetchAdverts = async () => {
+      await dispatch(getAdverts());
+    };
+    fetchAdverts();
+  }, []);
 
   const adverts = useSelector((state: State) => state.adverts);
 

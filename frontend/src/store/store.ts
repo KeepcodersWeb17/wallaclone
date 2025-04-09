@@ -7,9 +7,10 @@ import {
 import type State from "./state/types";
 import user from "./reducer/user";
 import adverts from "./reducer/adverts";
+import advert from "./reducer/advert";
 
 const configureStore = (preloadedState: Partial<State>) => {
-  const rootReducer = combineReducers({ user, adverts });
+  const rootReducer = combineReducers({ user, adverts, advert });
   const store = createStore(
     rootReducer,
     //@ts-expect-error lo vamos a tipar más adelante
