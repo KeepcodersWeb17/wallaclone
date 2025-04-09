@@ -3,7 +3,7 @@ import { Advert } from "../models/Advert.js";
 export const getAllAdverts = async (req, res, next) => {
   try {
     // El método populate rellena el campo owner con la proiedad username del User
-    const adverts = await Advert.find().populate("owner", "username");
+    const adverts = await Advert.findAdverts().populate("owner", "username");
     res.json({ adverts });
   } catch (error) {
     next(error);
