@@ -5,29 +5,10 @@ import { BrowserRouter } from "react-router-dom";
 import configureStore from "./store/store";
 import "./index.css";
 import App from "./App.tsx";
-
-const getPreloadedState = async () => {
-  const response = await fetch(
-    "https://api.wallaclone.keepcoders.duckdns.org/users",
-    {
-      credentials: "include",
-    }
-  ).then((res) => res.json());
-
-  const user = {
-    id: "",
-    username: "",
-  };
-
-  if (!response.error) {
-    user.id = response.user._id;
-    user.username = response.user.username;
-  }
-
-  return { user };
-};
+import getPreloadedState from "./lib/preloadedState.ts";
 
 const preloadedState = await getPreloadedState();
+console.log("Preloaded state", preloadedState);
 
 const store = configureStore(preloadedState);
 
