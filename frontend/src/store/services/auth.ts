@@ -1,8 +1,6 @@
-export interface Credentials {
-  username: string;
-  password: string;
-}
-export const login = async (credentials: Credentials) => {
+import type { User } from "../state/types";
+
+export const login = async (credentials: User) => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/auth/login",
     {
@@ -30,4 +28,23 @@ export const logout = async () => {
     console.error(response);
     throw new Error(response.statusText);
   }
+};
+
+export const createUserAPI = async (userData: User) => {
+  const response = await fetch("http://localhost:4000/users", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(userData),
+  }).then((res) => res.json());
+
+  if (response.error) {
+    throw new Error(response.error);
+  }
+
+  const { username, email } = response;
+
+  const id = response._id;
+
+  return { id, username, email };
 };
