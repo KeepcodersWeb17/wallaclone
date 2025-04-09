@@ -4,6 +4,7 @@ type State = {
     username: string;
   };
   adverts: Advert[];
+  advert?: Advert;
 };
 
 export type Advert = {
