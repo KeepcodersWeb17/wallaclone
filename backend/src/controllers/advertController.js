@@ -12,18 +12,10 @@ export const getAllAdverts = async (req, res, next) => {
 
 export const createAdvert = async (req, res, next) => {
   try {
-    const { name, description, price, image, tags, sale } = req.body;
+    const advertData = req.body;
     const owner = req.user.id;
 
-    const newAdvert = new Advert({
-      name,
-      description,
-      price,
-      image,
-      tags,
-      owner,
-      sale,
-    });
+    const newAdvert = new Advert({ ...advertData, owner });
 
     const savedAdvert = await newAdvert.save();
 

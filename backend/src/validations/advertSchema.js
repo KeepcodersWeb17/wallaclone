@@ -6,7 +6,7 @@ export const createAdvertZodSchema = z.object({
   price: z.number().min(0, "Price must be greater than 0"),
   image: z.string().url("Must be a valid URL").optional(),
   tags: z.array(z.string()).optional(),
-  sale: z.enum(["sell", "buy"].min(1, "Sale type is requires")),
+  sale: z.enum(["sell", "buy"].min(1, "Sale type is required")),
 });
 
 export const updateAdvertZodSchema = createAdvertZodSchema.partial();
