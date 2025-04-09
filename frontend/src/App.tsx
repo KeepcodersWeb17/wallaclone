@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import NewAdvertPage from "./pages/NewAdvertPage";
+import AdvertsPage from "./pages/AdvertsPage";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/adverts" element={<AdvertsPage />} />
         <Route path="/adverts/new" element={<NewAdvertPage />} />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/404" element={<NotFoundPage />} />
