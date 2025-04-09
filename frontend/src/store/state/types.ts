@@ -12,6 +12,13 @@ export type Advert = {
   owner?: string;
 };
 
+export type User = {
+  id?: string;
+  username?: string;
+  email?: string;
+  password?: string;
+};
+
 type State = {
   user: {
     id: string;
