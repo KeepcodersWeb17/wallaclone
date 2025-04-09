@@ -12,7 +12,7 @@ export const getAllAdverts = async (req, res, next) => {
 
 export const createAdvert = async (req, res, next) => {
   try {
-    const { name, description, price, image, tags } = req.body;
+    const { name, description, price, image, tags, sale } = req.body;
     const owner = req.user.id;
 
     const newAdvert = new Advert({
@@ -22,6 +22,7 @@ export const createAdvert = async (req, res, next) => {
       image,
       tags,
       owner,
+      sale,
     });
 
     const savedAdvert = await newAdvert.save();

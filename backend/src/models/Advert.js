@@ -12,6 +12,7 @@ const advertSchema = new mongoose.Schema(
       required: true,
     },
     tags: { type: [String], index: true },
+    sale: { type: String, enum: ["sell", "buy"], required: true },
   },
   {
     timestamps: true,
