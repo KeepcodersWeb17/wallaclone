@@ -44,6 +44,20 @@ type GetAdvertsRejected = {
   payload: string;
 };
 
+type GetAdvertPending = {
+  type: "GET_ADVERT_PENDING";
+};
+
+type GetAdvertFulfilled = {
+  type: "GET_ADVERT_FULFILLED";
+  payload: Advert;
+};
+
+type GetAdvertRejected = {
+  type: "GET_ADVERT_REJECTED";
+  payload: string;
+};
+
 type CreateAdvertPending = {
   type: "ADVERT_CREATED_PENDING";
 };
@@ -68,6 +82,9 @@ type Action =
   | GetAdvertsPending
   | GetAdvertsFulfilled
   | GetAdvertsRejected
+  | GetAdvertPending
+  | GetAdvertFulfilled
+  | GetAdvertRejected
   | CreateAdvertPending
   | CreateAdvertFulfilled
   | CreateAdvertRejected;

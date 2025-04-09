@@ -1,5 +1,5 @@
 import type { Credentials } from "../services/auth";
-import { create, getLatest } from "../services/adverts";
+import { create, getById, getLatest } from "../services/adverts";
 import { login, logout } from "../services/auth";
 import { Advert } from "../state/types";
 
@@ -89,16 +89,16 @@ export const signup = (userData) => {
 };
 
 export const getAdvertsPending = () => ({
-  type: "ADVERTS_GET_PENDING",
+  type: "GET_ADVERTS_PENDING",
 });
 
 export const getAdvertsFulfilled = (adverts: Advert[]) => ({
-  type: "ADVERTS_GET_FULFILLED",
+  type: "GET_ADVERTS_FULFILLED",
   payload: adverts,
 });
 
 export const getAdvertsRejected = (error: string) => ({
-  type: "ADVERTS_GET_REJECTED",
+  type: "GET_ADVERTS_REJECTED",
   payload: error,
 });
 
@@ -108,6 +108,32 @@ export const getAdverts = () => {
     try {
       const adverts = await getLatest();
       dispatch(getAdvertsFulfilled(adverts));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const getAdvertPending = () => ({
+  type: "GET_ADVERT_PENDING",
+});
+
+export const getAdvertFulfilled = (advert: Advert) => ({
+  type: "GET_ADVERT_FULFILLED",
+  payload: advert,
+});
+
+export const getAdvertRejected = (error: string) => ({
+  type: "GET_ADVERT_REJECTED",
+  payload: error,
+});
+
+export const getAdvert = (advertId: string) => {
+  // @ts-expect-error Lo vamos a tipar más adelante
+  return async function (dispatch) {
+    try {
+      const advert = await getById(advertId);
+      dispatch(getAdvertFulfilled(advert));
     } catch (error) {
       console.error(error);
     }
