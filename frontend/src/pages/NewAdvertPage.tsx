@@ -15,12 +15,13 @@ const NewAdvertPage = () => {
 
   const dispatch = useDispatch();
 
-  const handleCreateAdvert = async (event: React.FormEvent) => {
+  const handleCreateAdvert = (event: React.FormEvent) => {
     event.preventDefault();
 
     const advert = { name, description, price, tag, image, sale };
 
-    await dispatch(createAdvert(advert));
+    // @ts-expect-error Lo vamos a tipar más adelante
+    dispatch(createAdvert(advert));
   };
 
   const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
