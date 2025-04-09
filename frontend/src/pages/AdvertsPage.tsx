@@ -35,6 +35,7 @@ const AdvertsPage = () => {
                   <h3>{advert.name}</h3>
                   <p>{advert.description}</p>
                   <p>Price: {advert.price}</p>
+                  <p>On: {advert.sale}</p>
                 </div>
               </Link>
             </li>

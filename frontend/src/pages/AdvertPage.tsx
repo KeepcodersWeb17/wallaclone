@@ -27,7 +27,15 @@ const AdvertPage = () => {
   }
 
   return (
-    <>{!advertId ? <p>Advert not found</p> : <h2>{advertDetails.name}</h2>}</>
+    <>
+      {!advertId ? (
+        <p>Advert not found</p>
+      ) : (
+        <h2>
+          {advertDetails.name} On: {advertDetails.sale}
+        </h2>
+      )}
+    </>
   );
 };
 

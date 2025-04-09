@@ -15,10 +15,10 @@ export const create = async (advert: Advert) => {
     throw new Error("Error al crear el anuncio");
   }
 
-  const { _id, name, description, price, image, tags, owner } =
+  const { _id, name, description, price, image, tags, owner, sale } =
     await response.json();
 
-  return { id: _id, name, description, price, image, tags, owner };
+  return { id: _id, name, description, price, image, tags, owner, sale };
 };
 
 export const getLatest = async () => {
@@ -53,9 +53,10 @@ export const getById = async (advertId: string) => {
     throw new Error(response.error);
   }
 
-  const { name, description, price, image, tags, owner } = response.advert;
+  const { name, description, price, image, tags, owner, sale } =
+    response.advert;
 
   const id = response.advert._id;
 
-  return { id, name, description, price, image, tags, owner };
+  return { id, name, description, price, image, tags, owner, sale };
 };
