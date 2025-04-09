@@ -1,4 +1,4 @@
-import { Advert } from "../state/types";
+import { Advert, User } from "../state/types";
 
 type AuthLoginPending = {
   type: "AUTH_LOGIN_PENDING";
@@ -27,6 +27,20 @@ type AuthLogoutFulfilled = {
 
 type AuthLogoutRejected = {
   type: "AUTH_LOGOUT_REJECTED";
+  payload: string;
+};
+
+type CreateUserPending = {
+  type: "CREATE_USER_PENDING";
+};
+
+type CreateUserFulfilled = {
+  type: "CREATE_USER_FULFILLED";
+  payload: User;
+};
+
+type CreateUserRejected = {
+  type: "CREATE_USER_REJECTED";
   payload: string;
 };
 
@@ -79,6 +93,9 @@ type Action =
   | AuthLogoutPending
   | AuthLogoutFulfilled
   | AuthLogoutRejected
+  | CreateUserPending
+  | CreateUserFulfilled
+  | CreateUserRejected
   | GetAdvertsPending
   | GetAdvertsFulfilled
   | GetAdvertsRejected
