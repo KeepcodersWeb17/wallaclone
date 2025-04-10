@@ -3,7 +3,7 @@ import {
   create as createAdvertAPI,
   getById,
   getLatest,
-  updateAdvertAPI,
+  update as updateAdvertAPI,
 } from "../services/adverts";
 import { login, logout, create as createUserAPI } from "../services/users";
 
