@@ -8,9 +8,9 @@ import { getAdvert } from "../store/actions/creators";
 const AdvertPage = () => {
   const dispatch = useDispatch();
 
-  const { advert } = useParams();
+  const { param } = useParams();
 
-  const advertId = advert ? advert.split("-")[1] : null;
+  const advertId = param ? param.split("-")[1] : null;
 
   useEffect(() => {
     if (advertId)
