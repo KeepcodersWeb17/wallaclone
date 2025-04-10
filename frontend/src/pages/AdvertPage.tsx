@@ -8,9 +8,9 @@ import { getAdvert } from "../store/actions/creators";
 const AdvertPage = () => {
   const dispatch = useDispatch();
 
-  const { param } = useParams();
+  const { advert } = useParams();
 
-  const advertId = param ? param.split("-")[1] : null;
+  const advertId = advert ? advert.split("-")[1] : null;
 
   useEffect(() => {
     if (advertId)
@@ -20,13 +20,9 @@ const AdvertPage = () => {
 
   const advertDetails = useSelector((state: State) => state.advert);
 
-  if (!advertDetails) {
-    return <p>Advert not found</p>;
-  }
-
   return (
     <>
-      {!advertId ? (
+      {!advertId || !advertDetails ? (
         <p>Advert not found</p>
       ) : (
         <h2>
