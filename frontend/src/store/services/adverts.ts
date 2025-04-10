@@ -60,3 +60,28 @@ export const getById = async (advertId: string) => {
 
   return { id, name, description, price, image, tags, owner, sale };
 };
+
+export const update = async (advert: Advert) => {
+  const response = await fetch(
+    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advert.id}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(advert),
+    }
+  ).then((res) => res.json());
+
+  if (response.error) {
+    if (typeof response.error === "string") {
+      throw new Error(response.error);
+    }
+    // @ts-expect-error lo vamos a tipar mas adelante
+    const error = response.error.map((err) => err.message).join(", ");
+    throw new Error(error);
+  }
+
+  const { _id, name, description, price, image, tags, owner, sale } = response;
+
+  return { id: _id, name, description, price, image, tags, owner, sale };
+};
