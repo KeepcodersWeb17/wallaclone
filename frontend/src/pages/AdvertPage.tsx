@@ -1,9 +1,9 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import State from "../store/state/types";
 import { useDispatch } from "react-redux";
+import type State from "../store/state/types";
 import { getAdvert } from "../store/actions/creators";
-import { useEffect } from "react";
 
 const AdvertPage = () => {
   const dispatch = useDispatch();
