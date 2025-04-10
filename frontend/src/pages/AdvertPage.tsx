@@ -13,12 +13,10 @@ const AdvertPage = () => {
   const advertId = advert ? advert.split("-")[1] : null;
 
   useEffect(() => {
-    const fetchAdvert = async () => {
-      if (!advertId) return null;
-      await dispatch(getAdvert(advertId));
-    };
-    fetchAdvert();
-  }, [advertId]);
+    if (advertId)
+      // @ts-expect-error lo vamos a tipar mas adelante
+      dispatch(getAdvert(advertId));
+  }, [advertId, dispatch]);
 
   const advertDetails = useSelector((state: State) => state.advert);
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { signup } from "../store/actions/creators";
+import { createUser } from "../store/actions/creators";
 
 const SignupPage = () => {
   const [username, setUsername] = useState("");
@@ -12,7 +12,7 @@ const SignupPage = () => {
 
   const dispatch = useDispatch();
 
-  const handleCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // check if password and confirm password are the same
@@ -23,7 +23,8 @@ const SignupPage = () => {
 
     const userData = { username, email, password };
 
-    await dispatch(signup(userData));
+    // @ts-expect-error Lo vamos a tipar más adelante
+    dispatch(createUser(userData));
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

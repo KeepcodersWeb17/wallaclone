@@ -10,11 +10,9 @@ const AdvertsPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchAdverts = async () => {
-      await dispatch(getAdverts());
-    };
-    fetchAdverts();
-  }, []);
+    // @ts-expect-error lo vamos a tipar mas adelante
+    dispatch(getAdverts());
+  }, [dispatch]);
 
   const adverts = useSelector((state: State) => state.adverts);
 

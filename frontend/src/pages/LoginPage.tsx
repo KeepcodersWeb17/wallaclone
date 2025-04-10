@@ -12,14 +12,16 @@ const LoginPage = () => {
 
   const dispatch = useDispatch();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const credentials = { username, password };
-    await dispatch(authLogin(credentials));
+    const userData = { username, password };
+    // @ts-expect-error Lo vamos a tipar más adelante
+    dispatch(authLogin(userData));
   };
 
-  const handleLogout = async () => {
-    await dispatch(authLogout());
+  const handleLogout = () => {
+    // @ts-expect-error Lo vamos a tipar más adelante
+    dispatch(authLogout());
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
