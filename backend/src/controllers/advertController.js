@@ -37,7 +37,7 @@ export const getAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    res.json({ advert });
+    res.json(advert);
   } catch (error) {
     next(error);
   }
