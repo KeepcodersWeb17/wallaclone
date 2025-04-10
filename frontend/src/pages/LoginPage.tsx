@@ -2,21 +2,26 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type State from "../store/state/types";
 import { authLogin, authLogout } from "../store/actions/creators";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const isAuth = useSelector((state: State) => !!state.user.id);
   const persistedUsername = useSelector((state: State) => state.user.username);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const userData = { username, password };
     // @ts-expect-error Lo vamos a tipar más adelante
-    dispatch(authLogin(userData));
+    await dispatch(authLogin(userData)); // este await es necesario para usar navigate luego!
+    navigate(location.state?.from ?? "/adverts", { replace: true });
   };
 
   const handleLogout = () => {
