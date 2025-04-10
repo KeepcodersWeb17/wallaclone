@@ -86,6 +86,20 @@ type CreateAdvertRejected = {
   payload: string;
 };
 
+type UpdateAdvertPending = {
+  type: "UPDATE_ADVERT_PENDING";
+};
+
+type UpdateAdvertFulfilled = {
+  type: "UPDATE_ADVERT_FULFILLED";
+  payload: Advert;
+};
+
+type UpdateAdvertRejected = {
+  type: "UPDATE_ADVERT_REJECTED";
+  payload: string;
+};
+
 type Action =
   | AuthLoginPending
   | AuthLoginFulfilled
@@ -104,6 +118,9 @@ type Action =
   | GetAdvertRejected
   | CreateAdvertPending
   | CreateAdvertFulfilled
-  | CreateAdvertRejected;
+  | CreateAdvertRejected
+  | UpdateAdvertPending
+  | UpdateAdvertFulfilled
+  | UpdateAdvertRejected;
 
 export default Action;

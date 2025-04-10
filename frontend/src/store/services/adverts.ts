@@ -60,3 +60,24 @@ export const getById = async (advertId: string) => {
 
   return { id, name, description, price, image, tags, owner, sale };
 };
+
+export const updateAdvertAPI = async (advert: Advert) => {
+  const response = await fetch(
+    `https://api.wallaclone.keepcoders.duckdns.org/adverts/update/${advert.id}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(advert),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Error al actualizar el anuncio");
+  }
+
+  const { _id, name, description, price, image, tags, owner, sale } =
+    await response.json();
+
+  return { id: _id, name, description, price, image, tags, owner, sale };
+};

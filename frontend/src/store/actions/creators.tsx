@@ -3,6 +3,7 @@ import {
   create as createAdvertAPI,
   getById,
   getLatest,
+  updateAdvertAPI,
 } from "../services/adverts";
 import { login, logout, create as createUserAPI } from "../services/users";
 
@@ -159,6 +160,32 @@ export const createAdvert = (advert: Advert) => {
     try {
       const createdAdvert = await createAdvertAPI(advert);
       dispatch(createAdvertFulfilled(createdAdvert));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const updateAdvertPending = () => ({
+  type: "UPDATE_ADVERT_PENDING",
+});
+
+export const updateAdvertFulfilled = (updatedAdvert: Advert) => ({
+  type: "UPDATE_ADVERT_FULFILLED",
+  payload: updatedAdvert,
+});
+
+export const updateAdvertRejected = (error: string) => ({
+  type: "UPDATE_ADVERT_REJECTED",
+  payload: error,
+});
+
+export const updateAdvert = (advert: Advert) => {
+  // @ts-expect-error lo tipamos luego
+  return async function (dispatch) {
+    try {
+      const updatedAdvert = await updateAdvertAPI(advert);
+      dispatch(updateAdvertFulfilled(updatedAdvert));
     } catch (error) {
       console.error(error);
     }
