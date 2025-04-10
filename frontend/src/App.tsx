@@ -7,6 +7,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import NewAdvertPage from "./pages/NewAdvertPage";
 import AdvertsPage from "./pages/AdvertsPage";
 import AdvertPage from "./pages/AdvertPage";
+import RequireAuth from "./components/auth/RequireAuth";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -29,7 +30,14 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/adverts" element={<AdvertsPage />} />
         <Route path="/adverts/:advert" element={<AdvertPage />} />
-        <Route path="/adverts/new" element={<NewAdvertPage />} />
+        <Route
+          path="/adverts/new"
+          element={
+            <RequireAuth>
+              <NewAdvertPage />
+            </RequireAuth>
+          }
+        />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/404" element={<NotFoundPage />} />
         <Route path="*" element={<Navigate to="/404" />} />
