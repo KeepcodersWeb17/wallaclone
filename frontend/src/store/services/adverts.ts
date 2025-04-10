@@ -76,13 +76,12 @@ export const update = async (advert: Advert) => {
     if (typeof response.error === "string") {
       throw new Error(response.error);
     }
-    // @ts-expect-error
+    // @ts-expect-error lo vamos a tipar mas adelante
     const error = response.error.map((err) => err.message).join(", ");
     throw new Error(error);
   }
 
-  const { _id, name, description, price, image, tags, owner, sale } =
-    response.advert;
+  const { _id, name, description, price, image, tags, owner, sale } = response;
 
   return { id: _id, name, description, price, image, tags, owner, sale };
 };
