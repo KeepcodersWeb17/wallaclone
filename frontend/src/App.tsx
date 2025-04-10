@@ -8,6 +8,7 @@ import NewAdvertPage from "./pages/NewAdvertPage";
 import AdvertsPage from "./pages/AdvertsPage";
 import AdvertPage from "./pages/AdvertPage";
 import RequireAuth from "./components/auth/RequireAuth";
+import UpdateAdvertPage from "./pages/UpdateAdvertPage";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -35,6 +36,14 @@ function App() {
           element={
             <RequireAuth>
               <NewAdvertPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/adverts/update/:advert"
+          element={
+            <RequireAuth>
+              <UpdateAdvertPage />
             </RequireAuth>
           }
         />
