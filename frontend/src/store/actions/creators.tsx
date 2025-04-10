@@ -1,6 +1,10 @@
 import type { User, Advert } from "../state/types";
-import { create, getById, getLatest } from "../services/adverts";
-import { login, logout, createUserAPI } from "../services/users";
+import {
+  create as createAdvertAPI,
+  getById,
+  getLatest,
+} from "../services/adverts";
+import { login, logout, create as createUserAPI } from "../services/users";
 
 export const authLoginPending = () => ({
   type: "AUTH_LOGIN_PENDING",
@@ -153,7 +157,7 @@ export const createAdvert = (advert: Advert) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      const createdAdvert = await create(advert);
+      const createdAdvert = await createAdvertAPI(advert);
       dispatch(createAdvertFulfilled(createdAdvert));
     } catch (error) {
       console.error(error);

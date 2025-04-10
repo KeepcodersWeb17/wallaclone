@@ -28,13 +28,16 @@ export const logout = async () => {
   }
 };
 
-export const createUserAPI = async (userData: User) => {
-  const response = await fetch("http://localhost:4000/users", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify(userData),
-  }).then((res) => res.json());
+export const create = async (userData: User) => {
+  const response = await fetch(
+    "https://api.wallaclone.keepcoders.duckdns.org/users",
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(userData),
+    }
+  ).then((res) => res.json());
 
   if (response.error) {
     throw new Error(response.error);
