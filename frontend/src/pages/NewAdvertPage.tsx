@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createAdvert } from "../store/actions/creators";
 import { Sale } from "../store/state/types";
+import { useNavigate } from "react-router-dom";
 
 const NewAdvertPage = () => {
   const [name, setName] = useState<string>("");
@@ -15,13 +16,16 @@ const NewAdvertPage = () => {
 
   const dispatch = useDispatch();
 
-  const handleCreateAdvert = (event: React.FormEvent) => {
+  const navigate = useNavigate();
+
+  const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const advert = { name, description, price, tag, image, sale };
 
     // @ts-expect-error Lo vamos a tipar más adelante
-    dispatch(createAdvert(advert));
+    await dispatch(createAdvert(advert));
+    navigate("/adverts");
   };
 
   const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
