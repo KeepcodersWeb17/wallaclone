@@ -7,13 +7,12 @@ import { getAdverts } from "../store/actions/creators";
 const AdvertsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  console.log(searchParams.getAll("username"));
-
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const username = searchParams.get("username");
     // @ts-expect-error lo vamos a tipar mas adelante
-    dispatch(getAdverts());
+    dispatch(getAdverts(username));
   }, [dispatch]);
 
   const adverts = useSelector((state: State) => state.adverts);

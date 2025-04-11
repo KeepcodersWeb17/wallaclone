@@ -21,9 +21,9 @@ export const create = async (advert: Advert) => {
   return { id: _id, name, description, price, image, tags, owner, sale };
 };
 
-export const getLatest = async () => {
+export const getLatest = async (username: string) => {
   const response = await fetch(
-    "https://api.wallaclone.keepcoders.duckdns.org/adverts",
+    `https://api.wallaclone.keepcoders.duckdns.org/adverts?username=${username}`,
     {
       credentials: "include",
     }

@@ -102,11 +102,11 @@ export const getAdvertsRejected = (error: string) => ({
   payload: error,
 });
 
-export const getAdverts = () => {
+export const getAdverts = (username: string) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      const adverts = await getLatest();
+      const adverts = await getLatest(username);
       dispatch(getAdvertsFulfilled(adverts));
     } catch (error) {
       console.error(error);
