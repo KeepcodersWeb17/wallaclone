@@ -46,19 +46,16 @@ export const getLatest = async () => {
 export const getById = async (advertId: string) => {
   const response = await fetch(
     `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}`,
-    { credentials: "include" }
+    {
+      credentials: "include",
+    }
   ).then((res) => res.json());
 
   if (response.error) {
     throw new Error(response.error);
   }
 
-  const { name, description, price, image, tags, owner, sale } =
-    response.advert;
-
-  const id = response.advert._id;
-
-  return { id, name, description, price, image, tags, owner, sale };
+  return response;
 };
 
 export const update = async (advert: Advert) => {

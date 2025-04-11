@@ -10,6 +10,8 @@ export type Advert = {
   image?: string;
   tags?: string[];
   owner?: string;
+  updatedAt?: string;
+  createdAt?: string;
 };
 
 export type User = {

@@ -29,14 +29,14 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/recoverypassword" element={<RecoveryPage />} />
+        <Route path="/recoverypassword" element={<h2>RecoveryPage</h2>} />
         <Route path="/adverts" element={<AdvertsPage />} />
         <Route path="/adverts/:advert" element={<AdvertPage />} />
         <Route
           path="/users/:userId"
           element={
             <RequireAuth>
-              <UserPage />
+              <h2>UserPage</h2>
             </RequireAuth>
           }
         />
