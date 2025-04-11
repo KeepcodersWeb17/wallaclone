@@ -57,13 +57,18 @@ export const deleteAdvert = async (req, res, next) => {
       owner: req.user.id,
     });
 
+    const { _id: advertId, owner, __v, ...advert } = deletedAdvert._doc;
+
+    advert.id = advertId;
+    advert.owner = owner.username;
+
     if (!deletedAdvert) {
       const error = new Error("Advert not found or not owned by user");
       error.status = 404;
       return next(error);
     }
 
-    res.json({ message: "Advert deleted" });
+    res.json(advert);
   } catch (error) {
     next(error);
   }
