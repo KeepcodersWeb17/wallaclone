@@ -3,10 +3,16 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import type State from "../store/state/types";
-import { getAdvert } from "../store/actions/creators";
+import { deleteAdvert, getAdvert } from "../store/actions/creators";
 
 const AdvertPage = () => {
   const [openModal, setOpenModal] = useState(false);
+
+  const user = useSelector((state: State) => state.user);
+
+  const advertDetails = useSelector((state: State) => state.advert);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -14,16 +20,11 @@ const AdvertPage = () => {
 
   const advertId = advert ? advert.split("-")[1] : null;
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     if (advertId)
       // @ts-expect-error lo vamos a tipar mas adelante
       dispatch(getAdvert(advertId));
   }, [advertId, dispatch]);
-
-  const advertDetails = useSelector((state: State) => state.advert);
-  const user = useSelector((state: State) => state.user);
 
   const handleDelete = () => {
     setOpenModal(true);
@@ -34,8 +35,9 @@ const AdvertPage = () => {
   };
 
   const handleConfirmDelete = async () => {
+    // @ts-expect-error lo vamos a tipar mas adelante
+    await dispatch(deleteAdvert(advertId));
     alert("Advert deleted");
-    // await dispatch(deleteAdvert(advertId));
     handleCloseModal();
     navigate("/adverts");
   };
@@ -44,8 +46,7 @@ const AdvertPage = () => {
     <>
       <dialog open={openModal}>
         <h3>
-          Are you sure you want to delete this advert? This action cannot be
-          undone.
+          Are you sure you want to delete this advert?
           <button onClick={handleCloseModal}>Cancel</button>
           <button onClick={handleConfirmDelete}>Delete</button>
         </h3>
