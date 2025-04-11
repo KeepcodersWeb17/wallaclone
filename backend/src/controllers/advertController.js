@@ -7,9 +7,14 @@ export const getAllAdverts = async (req, res, next) => {
     // validate query params
     // normalize query params => filters
     const filters = {};
-    const user = await User.find({ username });
-    filters.owner = user._id;
+
+    if (username) {
+      const user = await User.findOne({ username });
+      filters.owner = user._id;
+    }
+
     const adverts = await Advert.findAdverts(filters);
+
     res.json({ adverts });
   } catch (error) {
     next(error);
