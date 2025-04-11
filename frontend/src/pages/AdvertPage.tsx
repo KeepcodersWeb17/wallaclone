@@ -98,7 +98,11 @@ const AdvertPage = () => {
               {user.username === advertDetails.owner ? (
                 <>
                   <button onClick={handleDelete}>Delete</button>
-                  <Link to={`/adverts/update/${advertDetails.id}`}>Update</Link>
+                  <Link
+                    to={`/adverts/update/${advertDetails.name}-${advertDetails.id}`}
+                  >
+                    Update
+                  </Link>
                 </>
               ) : (
                 <button>Send a message</button>
