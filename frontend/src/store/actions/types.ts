@@ -100,6 +100,20 @@ type UpdateAdvertRejected = {
   payload: string;
 };
 
+type DeleteAdvertPending = {
+  type: "DELETE_ADVERT_PENDING";
+};
+
+type DeleteAdvertFulfilled = {
+  type: "DELETE_ADVERT_FULFILLED";
+  payload: Advert;
+};
+
+type DeleteAdvertRejected = {
+  type: "DELETE_ADVERT_REJECTED";
+  payload: string;
+};
+
 type Action =
   | AuthLoginPending
   | AuthLoginFulfilled
@@ -121,6 +135,9 @@ type Action =
   | CreateAdvertRejected
   | UpdateAdvertPending
   | UpdateAdvertFulfilled
-  | UpdateAdvertRejected;
+  | UpdateAdvertRejected
+  | DeleteAdvertPending
+  | DeleteAdvertFulfilled
+  | DeleteAdvertRejected;
 
 export default Action;
