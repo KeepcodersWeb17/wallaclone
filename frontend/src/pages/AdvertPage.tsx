@@ -83,7 +83,12 @@ const AdvertPage = () => {
             </div>
 
             <div>
-              <p>Published by: {advertDetails.owner}</p>
+              <p>
+                Published by:{" "}
+                <Link to={`/adverts/username=${advertDetails.owner}`}>
+                  {advertDetails.owner}
+                </Link>
+              </p>
               <p>
                 Status:{" "}
                 {advertDetails.sale === "sell" ? (
