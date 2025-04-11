@@ -1,18 +1,21 @@
-// import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import State from "../store/state/types";
-import { Link } from "react-router-dom";
-import { getAdverts } from "../store/actions/creators";
+import { Link, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
+import type State from "../store/state/types";
+import { getAdverts } from "../store/actions/creators";
 
 const AdvertsPage = () => {
-  // const [searchParams, setSearchParams] = useSearchParams
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // si no existe el param lo creamos con un valor por defecto.
+    const username = searchParams.get("username") ?? "";
+
     // @ts-expect-error lo vamos a tipar mas adelante
-    dispatch(getAdverts());
-  }, [dispatch]);
+    dispatch(getAdverts(username));
+  }, [dispatch, searchParams]);
 
   const adverts = useSelector((state: State) => state.adverts);
 

@@ -1,9 +1,20 @@
 import { Advert } from "../models/Advert.js";
+import User from "../models/User.js";
 
 export const getAllAdverts = async (req, res, next) => {
   try {
-    // El método populate rellena el campo owner con la proiedad username del User
-    const adverts = await Advert.findAdverts();
+    const { username } = req.query;
+    // validate query params
+    // normalize query params => filters
+    const filters = {};
+
+    if (username) {
+      const user = await User.findOne({ username });
+      filters.owner = user._id;
+    }
+
+    const adverts = await Advert.findAdverts(filters);
+
     res.json({ adverts });
   } catch (error) {
     next(error);
