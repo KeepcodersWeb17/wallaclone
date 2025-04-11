@@ -1,15 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import type State from "../store/state/types";
 import { getAdvert } from "../store/actions/creators";
 
 const AdvertPage = () => {
-  const dispatch = useDispatch();
+  const [openModal, setOpenModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const { advert } = useParams();
+
   const advertId = advert ? advert.split("-")[1] : null;
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (advertId)
@@ -20,9 +25,32 @@ const AdvertPage = () => {
   const advertDetails = useSelector((state: State) => state.advert);
   const user = useSelector((state: State) => state.user);
 
+  const handleDelete = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    alert("Advert deleted");
+    // await dispatch(deleteAdvert(advertId));
+    handleCloseModal();
+    navigate("/adverts");
+  };
+
   return (
     <>
-      {!advertId || !advertDetails ? (
+      <dialog open={openModal}>
+        <h3>
+          Are you sure you want to delete this advert? This action cannot be
+          undone.
+          <button onClick={handleCloseModal}>Cancel</button>
+          <button onClick={handleConfirmDelete}>Delete</button>
+        </h3>
+      </dialog>
+      {!advertDetails ? (
         <p>Advert not found</p>
       ) : (
         <article>
@@ -33,7 +61,8 @@ const AdvertPage = () => {
               <button>Share</button>
             </nav>
           </header>
-          <main>
+
+          <section>
             <div>
               {!advertDetails.image ? (
                 <img
@@ -66,10 +95,10 @@ const AdvertPage = () => {
             </div>
 
             <div>
-              {user.id === advertDetails.owner ? (
+              {user.username === advertDetails.owner ? (
                 <>
-                  <button>Delete</button>
-                  <Link to={"/adverts/update"}>Update</Link>
+                  <button onClick={handleDelete}>Delete</button>
+                  <Link to={`/adverts/update/${advertDetails.id}`}>Update</Link>
                 </>
               ) : (
                 <button>Send a message</button>
@@ -84,9 +113,9 @@ const AdvertPage = () => {
                 <p>{advertDetails.description}</p>
               )}
             </div>
-          </main>
+          </section>
           <footer>
-            <p>Published on {advertDetails.createdAt}</p>
+            <p>Published on {advertDetails.createdAt?.split("T")[0]}</p>
 
             {advertDetails.updatedAt !== advertDetails.createdAt && (
               <p>Updated on {advertDetails.updatedAt}</p>
