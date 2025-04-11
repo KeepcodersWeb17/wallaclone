@@ -54,11 +54,8 @@ export const getById = async (advertId: string) => {
   if (response.error) {
     throw new Error(response.error);
   }
-  const { name, description, price, image, tags, owner, sale } = response;
 
-  const id = response._id;
-
-  return { id, name, description, price, image, tags, owner, sale };
+  return response;
 };
 
 export const update = async (advert: Advert) => {
