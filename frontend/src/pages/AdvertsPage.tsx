@@ -10,10 +10,12 @@ const AdvertsPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const username = searchParams.get("username");
+    // si no existe el param lo creamos con un valor por defecto.
+    const username = searchParams.get("username") ?? "";
+
     // @ts-expect-error lo vamos a tipar mas adelante
     dispatch(getAdverts(username));
-  }, [dispatch]);
+  }, [dispatch, searchParams]);
 
   const adverts = useSelector((state: State) => state.adverts);
 
