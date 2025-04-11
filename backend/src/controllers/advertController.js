@@ -29,7 +29,11 @@ export const getAdvert = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const advert = await Advert.findById(id);
+    const foundAdvert = await Advert.findById(id);
+
+    const { _id: advertId, __v, ...advert } = foundAdvert._doc;
+
+    advert.id = advertId;
 
     if (!advert) {
       const error = new Error("Advert not found");
