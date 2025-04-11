@@ -29,11 +29,12 @@ export const getAdvert = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const foundAdvert = await Advert.findById(id);
+    const foundAdvert = await Advert.findById(id).populate("owner", "username");
 
-    const { _id: advertId, __v, ...advert } = foundAdvert._doc;
+    const { _id: advertId, owner, __v, ...advert } = foundAdvert._doc;
 
     advert.id = advertId;
+    advert.owner = owner.username;
 
     if (!advert) {
       const error = new Error("Advert not found");
