@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createAdvert } from "../store/actions/creators";
 import { Sale } from "../store/state/types";
-import { useNavigate } from "react-router-dom";
 
 const NewAdvertPage = () => {
   const [name, setName] = useState<string>("");
