@@ -3,19 +3,53 @@ import User from "../models/User.js";
 
 export const getAllAdverts = async (req, res, next) => {
   try {
-    const { username } = req.query;
-    // validate query params
+    //validamos los query params usando zod
+    const validateQuery = queryZodSchema.parse(req.query);
+
+    const { username, name, price, tags, sale, skip, limit, sort } =
+      validateQuery;
+
     // normalize query params => filters
+
     const filters = {};
 
     if (username) {
-      const user = await User.findOne({ username });
+      const nomalizedUsername = new RegExp(`^${username}`, "i");
+      const user = await User.findOne({ username: nomalizedUsername });
       filters.owner = user._id;
     }
 
-    const adverts = await Advert.findAdverts(filters);
+    if (name) {
+      filters.name = new RegExp(`^${name}`, "i");
+    }
 
-    res.json({ adverts });
+    if (price) {
+      filters.price = normalizePriceMongo(price);
+    }
+
+    if (tags) {
+      filters.tags = tags;
+    }
+
+    if (userId) {
+      filters.owner = userId;
+    }
+    const options = {
+      limit,
+      skip,
+      sort: normalizeSortMongo(sort),
+      fields,
+    };
+
+    // const adverts = await Advert.findAdverts(filters);
+    // const quantity = await Advert.countDocuments(filters);
+
+    const [adverts, quantity] = await Promise.all([
+      Advert.findAdverts(filters),
+      Advert.countDocuments(filters),
+    ]);
+
+    res.json({ adverts, quantity });
   } catch (error) {
     next(error);
   }
