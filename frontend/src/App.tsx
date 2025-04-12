@@ -9,6 +9,8 @@ import AdvertsPage from "./pages/AdvertsPage";
 import AdvertPage from "./pages/AdvertPage";
 import RequireAuth from "./components/auth/RequireAuth";
 import UpdateAdvertPage from "./pages/UpdateAdvertPage";
+import UserPage from "./pages/UserPage";
+import ForbbidenPage from "./pages/Forbbiden";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -33,10 +35,10 @@ function App() {
         <Route path="/adverts" element={<AdvertsPage />} />
         <Route path="/adverts/:advert" element={<AdvertPage />} />
         <Route
-          path="/users/:userId"
+          path="/users/:username"
           element={
             <RequireAuth>
-              <h2>UserPage</h2>
+              <UserPage />
             </RequireAuth>
           }
         />
@@ -58,6 +60,7 @@ function App() {
         />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/404" element={<NotFoundPage />} />
+        <Route path="/403" element={<ForbbidenPage />} />
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </>

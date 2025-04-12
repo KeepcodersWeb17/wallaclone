@@ -8,6 +8,8 @@ const AdvertsPage = () => {
   // elimine setSearchParams porque teniamos un error al intentar hacer deploy
   const [searchParams] = useSearchParams();
 
+  const user = useSelector((state: State) => state.user);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,6 +24,9 @@ const AdvertsPage = () => {
 
   return (
     <>
+      <nav>
+        <Link to={`/users/${user.username}`}>My profile</Link>
+      </nav>
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
         <p>No adverts available.</p>
