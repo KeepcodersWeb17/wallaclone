@@ -34,7 +34,7 @@ const UserPage = () => {
       </dialog>
 
       {username !== user.username ? (
-        <Navigate to={"/404"} />
+        <Navigate to={"/403"} />
       ) : (
         <>
           <nav>
