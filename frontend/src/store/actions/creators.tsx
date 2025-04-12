@@ -4,7 +4,7 @@ import {
   getById,
   getLatest,
   update as updateAdvertAPI,
-  remove as deletedAdvertAPI,
+  remove as deleteAdvertAPI,
 } from "../services/adverts";
 import { login, logout, create as createUserAPI } from "../services/users";
 
@@ -211,7 +211,7 @@ export const deleteAdvert = (advertId: string) => {
   // @ts-expect-error lo vamos a tipar mas adelante
   return async function (dispatch) {
     try {
-      const deletedAdvert = await deletedAdvertAPI(advertId);
+      const deletedAdvert = await deleteAdvertAPI(advertId);
       dispatch(deleteAdvertFulfilled(deletedAdvert));
     } catch (error) {
       console.error(error);
