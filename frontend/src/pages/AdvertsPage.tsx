@@ -8,19 +8,29 @@ const AdvertsPage = () => {
   // elimine setSearchParams porque teniamos un error al intentar hacer deploy
   const [searchParams] = useSearchParams();
 
-  // URL
-  // http://localhost:3000/adverts?username=pepe&page=1&limit=10&sort=asc&order=price
-
   const user = useSelector((state: State) => state.user);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // si no existe el param lo creamos con un valor por defecto.
-    const username = searchParams.get("username") ?? "";
+    // searchParams.entries() devuelve un array de arrays con los pares clave-valor de los parametros de busqueda
+    // [
+    // ["username", "admin"],
+    // ["name", "iphone"]
+    // ]
+
+    // Object.fromEntries convierte ese array de arrays en un objeto
+    // {
+    // username: "admin",
+    // name: "iphone"
+    // }
+
+    const queryString = new URLSearchParams(
+      Object.fromEntries(searchParams.entries())
+    ).toString();
 
     // @ts-expect-error lo vamos a tipar mas adelante
-    dispatch(getAdverts(username));
+    dispatch(getAdverts(queryString));
   }, [dispatch, searchParams]);
 
   const adverts = useSelector((state: State) => state.adverts);
