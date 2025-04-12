@@ -10,6 +10,7 @@ import AdvertPage from "./pages/AdvertPage";
 import RequireAuth from "./components/auth/RequireAuth";
 import UpdateAdvertPage from "./pages/UpdateAdvertPage";
 import UserPage from "./pages/UserPage";
+import ForbbidenPage from "./pages/Forbbiden";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -59,6 +60,7 @@ function App() {
         />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/404" element={<NotFoundPage />} />
+        <Route path="/403" element={<ForbbidenPage />} />
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </>
