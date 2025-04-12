@@ -4,6 +4,7 @@ import {
   getById,
   getLatest,
   update as updateAdvertAPI,
+  remove as deleteAdvertAPI,
 } from "../services/adverts";
 import { login, logout, create as createUserAPI } from "../services/users";
 
@@ -186,6 +187,32 @@ export const updateAdvert = (advert: Advert) => {
     try {
       const updatedAdvert = await updateAdvertAPI(advert);
       dispatch(updateAdvertFulfilled(updatedAdvert));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const deleteAdvertPending = () => ({
+  type: "DELETE_ADVERT_PENDING",
+});
+
+export const deleteAdvertFulfilled = (deletedAdvert: Advert) => ({
+  type: "DELETE_ADVERT_FULFILLED",
+  payload: deletedAdvert,
+});
+
+export const deleteAdvertRejected = (error: string) => ({
+  type: "DELETE_ADVERT_REJECTED",
+  payload: error,
+});
+
+export const deleteAdvert = (advertId: string) => {
+  // @ts-expect-error lo vamos a tipar mas adelante
+  return async function (dispatch) {
+    try {
+      const deletedAdvert = await deleteAdvertAPI(advertId);
+      dispatch(deleteAdvertFulfilled(deletedAdvert));
     } catch (error) {
       console.error(error);
     }

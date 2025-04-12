@@ -82,3 +82,21 @@ export const update = async (advert: Advert) => {
 
   return { id: _id, name, description, price, image, tags, owner, sale };
 };
+
+export const remove = async (advertId: string) => {
+  const response = await fetch(
+    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}`,
+    {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ advertId }),
+    }
+  ).then((res) => res.json());
+
+  if (response.error) {
+    throw new Error(response.error);
+  }
+
+  return response;
+};
