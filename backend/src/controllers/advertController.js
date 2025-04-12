@@ -1,21 +1,28 @@
 import { Advert } from "../models/Advert.js";
 import User from "../models/User.js";
+import { queryZodSchema } from "../validations/querySchema.js";
+import { normalizeSortMongo, normalizePriceMongo } from "../lib/normalize.js";
 
 export const getAllAdverts = async (req, res, next) => {
   try {
-    //validamos los query params usando zod
+    // ejemplo query string
+    // ?username=agustin&name=iphone&price=500-1000&tags=tag1,tag2&sale=sell&skip=0&limit=5&sort=name-asc
+
+    //validamos los query params utilizando zod
     const validateQuery = queryZodSchema.parse(req.query);
 
-    const { username, name, price, tags, sale, skip, limit, sort } =
+    // obtenemos todos los query params
+    const { username, name, price, tags, sale, skip, limit, sort, fields } =
       validateQuery;
-
-    // normalize query params => filters
 
     const filters = {};
 
+    // si el query param existe lo agregamos al objeto filters luego de normalizarlo
+
     if (username) {
-      const nomalizedUsername = new RegExp(`^${username}`, "i");
-      const user = await User.findOne({ username: nomalizedUsername });
+      // con esta RegExp queremos que el username sea case insensitive
+      const usernameRegExp = new RegExp(`^${username}`, "i");
+      const user = await User.findOne({ username: usernameRegExp });
       filters.owner = user._id;
     }
 
@@ -28,12 +35,14 @@ export const getAllAdverts = async (req, res, next) => {
     }
 
     if (tags) {
-      filters.tags = tags;
+      filters.tags = { $all: tags };
     }
 
-    if (userId) {
-      filters.owner = userId;
+    if (sale) {
+      filters.sale = sale;
     }
+
+    // creamos un objeto options para los filtros de mongoose
     const options = {
       limit,
       skip,
@@ -45,7 +54,7 @@ export const getAllAdverts = async (req, res, next) => {
     // const quantity = await Advert.countDocuments(filters);
 
     const [adverts, quantity] = await Promise.all([
-      Advert.findAdverts(filters),
+      Advert.findAdverts(filters, options),
       Advert.countDocuments(filters),
     ]);
 
