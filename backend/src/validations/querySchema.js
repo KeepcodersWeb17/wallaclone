@@ -9,4 +9,5 @@ export const queryZodSchema = z.object({
   skip: z.string().optional(),
   limit: z.string().optional(),
   sort: z.string().optional(), // sort=name-asc, price-desc, etc.
+  fields: z.string().optional(), // fields=name, price, tags, etc.
 });
