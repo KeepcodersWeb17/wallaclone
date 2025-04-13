@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -27,7 +26,9 @@ function App() {
 
   return (
     <>
-      <h1>{test}</h1>
+      <h1 className="text-xxl mt-10 text-center font-bold text-red-500">
+        {test}
+      </h1>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
