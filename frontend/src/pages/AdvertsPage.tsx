@@ -5,7 +5,6 @@ import type State from "../store/state/types";
 import { getAdverts } from "../store/actions/creators";
 
 const AdvertsPage = () => {
-  // elimine setSearchParams porque teniamos un error al intentar hacer deploy
   const [searchParams] = useSearchParams();
 
   const user = useSelector((state: State) => state.user);
