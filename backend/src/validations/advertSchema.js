@@ -9,6 +9,7 @@ export const createAdvertZodSchema = z.object({
   sale: z.enum(["sell", "buy"], {
     required_error: "Sale type is required",
   }),
+  favorites: z.array(z.string()).optional(),
 });
 
 export const updateAdvertZodSchema = createAdvertZodSchema.partial();
