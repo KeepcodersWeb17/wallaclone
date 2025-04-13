@@ -34,7 +34,6 @@ app.get("/test", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
-
 app.use("/adverts", advertsRouter);
 
 // 404 error handler
