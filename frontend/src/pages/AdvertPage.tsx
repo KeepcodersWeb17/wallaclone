@@ -3,10 +3,15 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import type State from "../store/state/types";
-import { deleteAdvert, getAdvert } from "../store/actions/creators";
+import {
+  addFavorite,
+  deleteAdvert,
+  getAdvert,
+} from "../store/actions/creators";
 
 const AdvertPage = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [isFavorite, setFavorite] = useState(false);
 
   const user = useSelector((state: State) => state.user);
 
@@ -42,6 +47,18 @@ const AdvertPage = () => {
     navigate("/adverts");
   };
 
+  const handleFavorite = async () => {
+    setFavorite((isFavorite) => !isFavorite);
+    // @ts-expect-error lo vamos a tipar mas adelante
+    await dispatch(addFavorite(advertId));
+
+    if (isFavorite) {
+      alert("Advert marked as favorite");
+    } else {
+      alert("Advert unmarked as favorite");
+    }
+  };
+
   return (
     <>
       <dialog open={openModal}>
@@ -58,7 +75,9 @@ const AdvertPage = () => {
           <header>
             <nav>
               <Link to="/adverts">Go back</Link>
-              <button>Favorite</button>
+              <button onClick={handleFavorite}>
+                {isFavorite ? "SetUnfavorite" : "SetFavorite"}
+              </button>
               <button>Share</button>
             </nav>
           </header>
