@@ -21,24 +21,24 @@ export const create = async (advert: Advert) => {
   return { id: _id, name, description, price, image, tags, owner, sale };
 };
 
-export const getLatest = async (username: string) => {
+export const getLatest = async (queryString: string) => {
   const response = await fetch(
-    `https://api.wallaclone.keepcoders.duckdns.org/adverts?username=${username}`,
-    {
-      credentials: "include",
-    }
+    `https://api.wallaclone.keepcoders.duckdns.org/adverts?${queryString}`,
+    { credentials: "include" }
   ).then((res) => res.json());
+
+  if (response.error) {
+    throw new Error(response.error);
+  }
 
   const adverts = [];
 
-  if (!response.error) {
-    adverts.push(
-      ...response.adverts.map((advert: Advert) => ({
-        ...advert,
-        id: advert._id,
-      }))
-    );
-  }
+  adverts.push(
+    ...response.adverts.map((advert: Advert) => ({
+      ...advert,
+      id: advert._id,
+    }))
+  );
 
   return adverts;
 };
