@@ -4,6 +4,7 @@ import {
   deleteAdvert,
   getAdvert,
   getAllAdverts,
+  setFavoriteAdvert,
   updateAdvert,
 } from "../controllers/advertController.js";
 import {
@@ -19,5 +20,7 @@ router.get("/", getAllAdverts);
 router.get("/:id", getAdvert);
 router.put("/:id", isAuthenticated, validateUpdateAdvert, updateAdvert);
 router.delete("/:id", isAuthenticated, deleteAdvert);
+router.put("/setFavorite/:id", isAuthenticated, setFavoriteAdvert);
+// router.put("/unSetFavorite/:id", isAuthenticated, unSetFavoriteAdvert);
 
 export default router;
