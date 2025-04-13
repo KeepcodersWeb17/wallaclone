@@ -1,3 +1,7 @@
+export const normalizeNameMongo = (nameString) => {
+  return new RegExp(`^${nameString}`, "i");
+};
+
 export const normalizePriceMongo = (priceString) => {
   // return the normalized price filter
   if (priceString.includes("-")) {
@@ -10,6 +14,12 @@ export const normalizePriceMongo = (priceString) => {
     return { $gte: +priceList[0], $lte: +priceList[1] };
   }
   return +priceString;
+};
+
+export const normalizeTagsMongo = (tagsString) => {
+  // return normalized tags
+  const tagsList = tagsString.split("-");
+  return tagsList;
 };
 
 export const normalizeSortMongo = (sortString) => {
