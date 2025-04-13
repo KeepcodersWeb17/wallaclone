@@ -1,7 +1,12 @@
 import { Advert } from "../models/Advert.js";
 import User from "../models/User.js";
 import { queryZodSchema } from "../validations/querySchema.js";
-import { normalizeSortMongo, normalizePriceMongo } from "../lib/normalize.js";
+import {
+  normalizeNameMongo,
+  normalizePriceMongo,
+  normalizeTagsMongo,
+  normalizeSortMongo,
+} from "../lib/normalize.js";
 
 export const getAllAdverts = async (req, res, next) => {
   try {
@@ -27,7 +32,7 @@ export const getAllAdverts = async (req, res, next) => {
     }
 
     if (name) {
-      filters.name = new RegExp(`^${name}`, "i");
+      filters.name = normalizeNameMongo(name);
     }
 
     if (price) {
@@ -35,7 +40,7 @@ export const getAllAdverts = async (req, res, next) => {
     }
 
     if (tags) {
-      filters.tags = { $all: tags };
+      filters.tags = { $all: normalizeTagsMongo(tags) };
     }
 
     if (sale) {
