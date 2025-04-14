@@ -14,7 +14,7 @@ const AdvertPage = () => {
 
   const advertDetails = useSelector((state: State) => state.advert);
 
-  const IsFavoriteInitialState = advertDetails?.favorites.includes(user.id)
+  const IsFavoriteInitialState = advertDetails?.favorites?.includes(user.id)
 
   const [openModal, setOpenModal] = useState(false);
 
