@@ -168,14 +168,19 @@ export const updateAdvert = async (req, res, next) => {
   }
 };
 
-export const setFavoriteAdvert = async (req, res, next) => {
+export const toogleFavoriteAdvert = async (req, res, next) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
+    const { isFavorite } = req.body;
+
+    const update = isFavorite
+      ? { $addToSet: { favorites: userId } }
+      : { $pull: { favorites: userId } };
 
     const updatedAdvert = await Advert.findOneAndUpdate(
       { _id: id },
-      { $addToSet: { favorites: userId } },
+      update, // actualiza el campo favorites
       { new: true } // devuelve el documento actualizado, no el original
     );
 
@@ -191,23 +196,23 @@ export const setFavoriteAdvert = async (req, res, next) => {
   }
 };
 
-export const unSetFavoriteAdvert = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const userId = req.user.id;
-    const updatedAdvert = await Advert.findOneAndUpdate(
-      { _id: id },
-      { $pull: { favorites: userId } },
-      { new: true }
-    );
-    if (!updatedAdvert) {
-      const error = new Error("Advert not found");
-      error.status = 404;
-      return next(error);
-    }
+// export const unSetFavoriteAdvert = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     const userId = req.user.id;
+//     const updatedAdvert = await Advert.findOneAndUpdate(
+//       { _id: id },
+//       { $pull: { favorites: userId } },
+//       { new: true }
+//     );
+//     if (!updatedAdvert) {
+//       const error = new Error("Advert not found");
+//       error.status = 404;
+//       return next(error);
+//     }
 
-    res.json(updatedAdvert);
-  } catch (error) {
-    next(error);
-  }
-};
+//     res.json(updatedAdvert);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
