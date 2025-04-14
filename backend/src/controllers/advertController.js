@@ -17,18 +17,8 @@ export const getAllAdverts = async (req, res, next) => {
     const validateQuery = queryZodSchema.parse(req.query);
 
     // obtenemos todos los query params
-    const {
-      username,
-      favorite,
-      name,
-      price,
-      tags,
-      sale,
-      skip,
-      limit,
-      sort,
-      fields,
-    } = validateQuery;
+    const { username, name, price, tags, sale, skip, limit, sort, fields } =
+      validateQuery;
 
     const filters = {};
 
@@ -39,12 +29,6 @@ export const getAllAdverts = async (req, res, next) => {
       const usernameRegExp = new RegExp(`^${username}`, "i");
       const user = await User.findOne({ username: usernameRegExp });
       filters.owner = user._id;
-    }
-
-    if (favorite) {
-      const favoriteRegExp = new RegExp(`^${favorite}$`, "i"); // match exacto ignorando mayúsculas
-      const user = await User.findOne({ username: favoriteRegExp });
-      filters.favorites = { $in: [user._id] };
     }
 
     if (name) {
@@ -212,23 +196,14 @@ export const toogleFavoriteAdvert = async (req, res, next) => {
   }
 };
 
-// export const unSetFavoriteAdvert = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const userId = req.user.id;
-//     const updatedAdvert = await Advert.findOneAndUpdate(
-//       { _id: id },
-//       { $pull: { favorites: userId } },
-//       { new: true }
-//     );
-//     if (!updatedAdvert) {
-//       const error = new Error("Advert not found");
-//       error.status = 404;
-//       return next(error);
-//     }
+export const getFavoriteAdverts = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
 
-//     res.json(updatedAdvert);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+    const adverts = await Advert.findAdverts({ favorites: userId });
+
+    res.json(adverts);
+  } catch (error) {
+    next(error);
+  }
+};
