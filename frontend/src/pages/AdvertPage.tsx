@@ -6,7 +6,7 @@ import type State from "../store/state/types";
 import {
   getAdvert,
   deleteAdvert,
-  setAsFavorite,
+  toogleFavorite,
 } from "../store/actions/creators";
 
 const AdvertPage = () => {
@@ -52,7 +52,7 @@ const AdvertPage = () => {
     setIsFavorite((favorite) => !favorite);
 
     // @ts-expect-error lo vamos a tipar mas adelante
-    await dispatch(setAsFavorite(advertId));
+    await dispatch(toogleFavorite(isFavorite,advertId));
 
     const status = isFavorite ? "unmarked" : "marked";
     const message = `Advert ${status} as favorite`;
