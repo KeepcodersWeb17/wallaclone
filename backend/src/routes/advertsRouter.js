@@ -2,10 +2,11 @@ import express from "express";
 import {
   createAdvert,
   deleteAdvert,
+  updateAdvert,
   getAdvert,
   getAllAdverts,
+  getFavoriteAdverts,
   toogleFavoriteAdvert,
-  updateAdvert,
 } from "../controllers/advertController.js";
 import {
   validateCreateAdvert,
@@ -17,6 +18,8 @@ const router = express.Router();
 
 router.post("/", isAuthenticated, validateCreateAdvert, createAdvert);
 router.get("/", getAllAdverts);
+
+router.get("/favorites", isAuthenticated, getFavoriteAdverts);
 
 router.get("/:id", getAdvert);
 router.put("/:id", isAuthenticated, validateUpdateAdvert, updateAdvert);

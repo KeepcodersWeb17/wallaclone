@@ -196,23 +196,14 @@ export const toogleFavoriteAdvert = async (req, res, next) => {
   }
 };
 
-// export const unSetFavoriteAdvert = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const userId = req.user.id;
-//     const updatedAdvert = await Advert.findOneAndUpdate(
-//       { _id: id },
-//       { $pull: { favorites: userId } },
-//       { new: true }
-//     );
-//     if (!updatedAdvert) {
-//       const error = new Error("Advert not found");
-//       error.status = 404;
-//       return next(error);
-//     }
+export const getFavoriteAdverts = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
 
-//     res.json(updatedAdvert);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+    const adverts = await Advert.findAdverts({ favorites: userId });
+
+    res.json(adverts);
+  } catch (error) {
+    next(error);
+  }
+};

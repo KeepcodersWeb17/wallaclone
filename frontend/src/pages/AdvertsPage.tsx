@@ -37,8 +37,9 @@ const AdvertsPage = () => {
   return (
     <>
       <h2>Adverts</h2>
+
       {adverts.length === 0 ? (
-        <p>No adverts available.</p>
+        <p> No adverts </p>
       ) : (
         <ul>
           {adverts.map((advert) => (
