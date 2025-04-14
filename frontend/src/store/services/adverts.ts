@@ -101,7 +101,7 @@ export const remove = async (advertId: string) => {
   return response;
 };
 
-export const toogleFavorite = async (isFavorite:boolean,advertId: string) => {
+export const toogleFavorite = async (isFavorite:boolean, advertId: string) => {
   const response = await fetch(
     `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}/favorite`,
     {
