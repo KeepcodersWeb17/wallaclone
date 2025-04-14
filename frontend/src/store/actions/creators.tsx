@@ -5,7 +5,7 @@ import {
   getLatest,
   update as updateAdvertAPI,
   remove as deleteAdvertAPI,
-  setFavorite as setFavoriteAPI,
+  setAsFavorite as setAsFavoriteAPI,
 } from "../services/adverts";
 import { login, logout, create as createUserAPI } from "../services/users";
 
@@ -220,26 +220,26 @@ export const deleteAdvert = (advertId: string) => {
   };
 };
 
-export const addFavoritePending = () => ({
-  type: "ADD_FAVORITE_PENDING",
+export const setAsFavoritePending = () => ({
+  type: "SET_AS_FAVORITE_PENDING",
 });
 
-export const addFavoriteFulfilled = (advert: Advert) => ({
-  type: "ADD_FAVORITE_FULFILLED",
-  payload: advert,
+export const setAsFavoriteFullfilled = (updatedAdvert: Advert) => ({
+  type: "SET_AS_FAVORITE_FULFILLED",
+  payload: updatedAdvert,
 });
 
-export const addFavoriteRejected = (error: string) => ({
-  type: "ADD_FAVORITE_REJECTED",
+export const setAsFavoriteRejected = (error: string) => ({
+  type: "SET_AS_FAVORITE_REJECTED",
   payload: error,
 });
 
-export const addFavorite = (advertId: string) => {
+export const setAsFavorite = (advertId: string) => {
   // @ts-expect-error lo vamos a tipar mas adelante
   return async function (dispatch) {
     try {
-      const updatedAdvert = await setFavoriteAPI(advertId);
-      dispatch(addFavoriteFulfilled(updatedAdvert));
+      const updatedAdvert = await setAsFavoriteAPI(advertId);
+      dispatch(setAsFavoriteFullfilled(updatedAdvert));
     } catch (error) {
       console.error(error);
     }
