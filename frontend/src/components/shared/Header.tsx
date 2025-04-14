@@ -25,7 +25,9 @@ const Header = () => {
         {user?.username ? (
           <>
             <button onClick={handleLogout}>Logout</button>
-            <Link to={`/users/${user?.username}`}>{user?.username}</Link>{" "}
+            <Link to={`/users/${user.username}`}>My profile</Link>
+            <Link to={`/adverts/user/${user.username}`}>My Adverts</Link>
+            <Link to={`/adverts/favorites`}>Favorites</Link>
           </>
         ) : (
           <>
