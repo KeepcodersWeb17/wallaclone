@@ -34,6 +34,16 @@ const AdvertsPage = () => {
 
   const adverts = useSelector((state: State) => state.adverts);
 
+  const isViewingFavorites = searchParams.get("favorite") === "true";
+
+  let filteredAdverts = adverts;
+
+  if (isViewingFavorites) {
+    filteredAdverts = adverts.filter((advert) =>
+      advert.favorites?.includes(user.id),
+    );
+  }
+
   return (
     <>
       <nav>
@@ -51,7 +61,7 @@ const AdvertsPage = () => {
         <p>No adverts available.</p>
       ) : (
         <ul>
-          {adverts.map((advert) => (
+          {filteredAdverts.map((advert) => (
             <li key={advert.id}>
               <Link to={`/adverts/${advert.name}-${advert.id}`}>
                 <div>
