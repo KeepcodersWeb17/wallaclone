@@ -104,18 +104,21 @@ export const deleteUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    const user = await User.findByIdAndDelete(userId);
+    const deletedUser = await User.findByIdAndDelete(userId);
 
-    if (!user) {
+    if (!deletedUser) {
       const error = new Error("User not found");
       error.status = 404;
       next(error);
       return;
     }
 
+    const { _id: id, __v, password, ...user } = deletedUser._doc;
+    user.id = userId;
+
     deleteAllAdverts(req, res, next);
 
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
