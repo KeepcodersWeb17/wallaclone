@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -10,6 +10,7 @@ import RequireAuth from "./components/auth/RequireAuth";
 import UpdateAdvertPage from "./pages/UpdateAdvertPage";
 import UserPage from "./pages/UserPage";
 import ForbbidenPage from "./pages/Forbbiden";
+import Layout from "./layouts/layout";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -30,39 +31,50 @@ function App() {
         {test}
       </h1>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/recoverypassword" element={<h2>RecoveryPage</h2>} />
-        <Route path="/adverts" element={<AdvertsPage />} />
-        <Route path="/adverts/:advert" element={<AdvertPage />} />
         <Route
-          path="/users/:username"
+          path="/"
           element={
-            <RequireAuth>
-              <UserPage />
-            </RequireAuth>
+            <Layout>
+              <Outlet />
+            </Layout>
           }
-        />
-        <Route
-          path="/adverts/new"
-          element={
-            <RequireAuth>
-              <NewAdvertPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/adverts/update/:advert"
-          element={
-            <RequireAuth>
-              <UpdateAdvertPage />
-            </RequireAuth>
-          }
-        />
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/404" element={<NotFoundPage />} />
-        <Route path="/403" element={<ForbbidenPage />} />
-        <Route path="*" element={<Navigate to="/404" />} />
+        >
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/recoverypassword" element={<h2>RecoveryPage</h2>} />
+          <Route path="/adverts" element={<AdvertsPage />} />
+          <Route path="/adverts/favorites" element={<AdvertPage />} />
+          <Route path={"/adverts/user/:username}"} element={<AdvertPage />} />
+          <Route path="/adverts/:advert" element={<AdvertPage />} />
+          <Route
+            path="/users/:username"
+            element={
+              <RequireAuth>
+                <UserPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/adverts/new"
+            element={
+              <RequireAuth>
+                <NewAdvertPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/adverts/update/:advert"
+            element={
+              <RequireAuth>
+                <UpdateAdvertPage />
+              </RequireAuth>
+            }
+          />
+          <Route path="/" element={<Navigate to="/adverts" />} />
+          <Route path="/404" element={<NotFoundPage />} />
+          <Route path="/403" element={<ForbbidenPage />} />
+          <Route path="*" element={<Navigate to="/404" />} />
+        </Route>
       </Routes>
     </>
   );

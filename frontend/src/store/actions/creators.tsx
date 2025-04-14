@@ -7,7 +7,12 @@ import {
   remove as deleteAdvertAPI,
   toogleFavorite as toogleFavoriteAPI,
 } from "../services/adverts";
-import { login, logout, create as createUserAPI } from "../services/users";
+import {
+  login,
+  logout,
+  create as createUserAPI,
+  remove as deleteUserAPI,
+} from "../services/users";
 
 export const authLoginPending = () => ({
   type: "AUTH_LOGIN_PENDING",
@@ -84,6 +89,33 @@ export const createUser = (userData: User) => {
       const { username, password } = userData;
       await createUserAPI(userData);
       dispatch(authLogin({ username, password }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const deleteUserPending = () => ({
+  type: "DELETE_USER_PENDING",
+});
+
+export const deleteUserFulfilled = (deletedUser: User) => ({
+  type: "DELETE_USER_FULFILLED",
+  payload: deletedUser,
+});
+
+export const deleteUserRejected = (error: string) => ({
+  type: "DELETE_USER_REJECTED",
+  payload: error,
+});
+
+export const deleteUser = () => {
+  // @ts-expect-error Lo vamos a tipar más adelante
+  return async function (dispatch) {
+    try {
+      const deletedUser = await deleteUserAPI();
+      dispatch(authLogout());
+      dispatch(deleteUserFulfilled(deletedUser));
     } catch (error) {
       console.error(error);
     }
@@ -234,11 +266,11 @@ export const toogleFavoriteRejected = (error: string) => ({
   payload: error,
 });
 
-export const toogleFavorite = (isFavorite:boolean, advertId: string) => {
+export const toogleFavorite = (isFavorite: boolean, advertId: string) => {
   // @ts-expect-error lo vamos a tipar mas adelante
   return async function (dispatch) {
     try {
-      const updatedAdvert = await toogleFavoriteAPI(isFavorite,advertId);
+      const updatedAdvert = await toogleFavoriteAPI(isFavorite, advertId);
       dispatch(toogleFavoriteFullfilled(updatedAdvert));
     } catch (error) {
       console.error(error);

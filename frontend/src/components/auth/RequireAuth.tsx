@@ -3,7 +3,8 @@ import State from "../../store/state/types";
 import { Navigate, useLocation } from "react-router-dom";
 
 const RequireAuth = ({ children }: { children: React.ReactNode }) => {
-  const { id: isAuth } = useSelector((state: State) => state.user);
+  const isAuth = useSelector((state: State) => state.user?.id);
+
   const location = useLocation();
 
   return isAuth ? (

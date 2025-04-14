@@ -7,7 +7,9 @@ import { getAdverts } from "../store/actions/creators";
 const AdvertsPage = () => {
   const [searchParams] = useSearchParams();
 
-  const user = useSelector((state: State) => state.user);
+  // const user = useSelector((state: State) => state.user);
+
+  const adverts = useSelector((state: State) => state.adverts);
 
   const dispatch = useDispatch();
 
@@ -32,21 +34,8 @@ const AdvertsPage = () => {
     dispatch(getAdverts(queryString));
   }, [dispatch, searchParams]);
 
-  const adverts = useSelector((state: State) => state.adverts);
-
   return (
     <>
-      <nav>
-        <Link to={`/adverts`}>Adverts Page</Link>|{" "}
-        {user.username && (
-          <>
-            <Link to={`/users/${user.username}`}>My profile</Link>|{" "}
-            <Link to={`/adverts?username=${user.username}`}>My Adverts</Link>|{" "}
-            <Link to={`/adverts?favorite=${user.username}`}>Favorites</Link>
-          </>
-        )}
-      </nav>
-
       <h2>Adverts</h2>
 
       {adverts.length === 0 ? (

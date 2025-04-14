@@ -8,7 +8,7 @@ export const create = async (advert: Advert) => {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(advert),
-    }
+    },
   );
 
   if (!response.ok) {
@@ -24,7 +24,7 @@ export const create = async (advert: Advert) => {
 export const getLatest = async (queryString: string) => {
   const response = await fetch(
     `https://api.wallaclone.keepcoders.duckdns.org/adverts?${queryString}`,
-    { credentials: "include" }
+    { credentials: "include" },
   ).then((res) => res.json());
 
   if (response.error) {
@@ -37,7 +37,7 @@ export const getLatest = async (queryString: string) => {
     ...response.adverts.map((advert: Advert) => ({
       ...advert,
       id: advert._id,
-    }))
+    })),
   );
 
   return adverts;
@@ -48,7 +48,7 @@ export const getById = async (advertId: string) => {
     `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}`,
     {
       credentials: "include",
-    }
+    },
   ).then((res) => res.json());
 
   if (response.error) {
@@ -66,7 +66,7 @@ export const update = async (advert: Advert) => {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(advert),
-    }
+    },
   ).then((res) => res.json());
 
   if (response.error) {
@@ -91,7 +91,7 @@ export const remove = async (advertId: string) => {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ advertId }),
-    }
+    },
   ).then((res) => res.json());
 
   if (response.error) {
@@ -101,7 +101,7 @@ export const remove = async (advertId: string) => {
   return response;
 };
 
-export const toogleFavorite = async (isFavorite:boolean, advertId: string) => {
+export const toogleFavorite = async (isFavorite: boolean, advertId: string) => {
   const response = await fetch(
     `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}/favorite`,
     {
@@ -109,7 +109,7 @@ export const toogleFavorite = async (isFavorite:boolean, advertId: string) => {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ isFavorite }),
-    }
+    },
   ).then((res) => res.json());
 
   if (response.error) {
