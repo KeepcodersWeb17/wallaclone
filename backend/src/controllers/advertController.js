@@ -17,8 +17,18 @@ export const getAllAdverts = async (req, res, next) => {
     const validateQuery = queryZodSchema.parse(req.query);
 
     // obtenemos todos los query params
-    const { username, name, price, tags, sale, skip, limit, sort, fields } =
-      validateQuery;
+    const {
+      username,
+      name,
+      price,
+      tags,
+      favorites,
+      sale,
+      skip,
+      limit,
+      sort,
+      fields,
+    } = validateQuery;
 
     const filters = {};
 
@@ -29,6 +39,10 @@ export const getAllAdverts = async (req, res, next) => {
       const usernameRegExp = new RegExp(`^${username}`, "i");
       const user = await User.findOne({ username: usernameRegExp });
       filters.owner = user._id;
+    }
+
+    if (favorites) {
+      filters.favorites = favorites;
     }
 
     if (name) {
@@ -191,18 +205,6 @@ export const toogleFavoriteAdvert = async (req, res, next) => {
     }
 
     res.json(updatedAdvert);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getFavoriteAdverts = async (req, res, next) => {
-  try {
-    const userId = req.user.id;
-
-    const adverts = await Advert.findAdverts({ favorites: userId });
-
-    res.json(adverts);
   } catch (error) {
     next(error);
   }
