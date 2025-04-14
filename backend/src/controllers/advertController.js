@@ -175,8 +175,8 @@ export const toogleFavoriteAdvert = async (req, res, next) => {
     const { isFavorite } = req.body;
 
     const update = isFavorite
-      ? { $addToSet: { favorites: userId } }
-      : { $pull: { favorites: userId } };
+      ? { $pull: { favorites: userId } }
+      : { $addToSet: { favorites: userId } };
 
     const updatedAdvert = await Advert.findOneAndUpdate(
       { _id: id },
