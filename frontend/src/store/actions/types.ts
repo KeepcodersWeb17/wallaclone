@@ -114,17 +114,17 @@ type DeleteAdvertRejected = {
   payload: string;
 };
 
-type AddFavoritePending = {
-  type: "ADD_FAVORITE_PENDING";
+type SetAsFavoritePending = {
+  type: "SET_AS_FAVORITE_PENDING";
 };
 
-type AddFavoriteFulfilled = {
-  type: "ADD_FAVORITE_FULFILLED";
+type SetAsFavoriteFulfilled = {
+  type: "SET_AS_FAVORITE_FULFILLED";
   payload: Advert;
 };
 
-type AddFavoriteRejected = {
-  type: "ADD_FAVORITE_REJECTED";
+type SetAsFavoriteRejected = {
+  type: "SET_AS_FAVORITE_REJECTED";
   payload: string;
 };
 
@@ -153,8 +153,8 @@ type Action =
   | DeleteAdvertPending
   | DeleteAdvertFulfilled
   | DeleteAdvertRejected
-  | AddFavoritePending
-  | AddFavoriteFulfilled
-  | AddFavoriteRejected;
+  | SetAsFavoritePending
+  | SetAsFavoriteFulfilled
+  | SetAsFavoriteRejected;
 
 export default Action;
