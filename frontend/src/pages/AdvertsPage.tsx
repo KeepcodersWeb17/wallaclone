@@ -35,6 +35,7 @@ const AdvertsPage = () => {
   const adverts = useSelector((state: State) => state.adverts);
 
   const isViewingFavorites = searchParams.get("favorite") === "true";
+  const isViewingOwnAdverts = searchParams.get("username") === user.username;
 
   let filteredAdverts = adverts;
 
@@ -47,18 +48,32 @@ const AdvertsPage = () => {
   return (
     <>
       <nav>
+        <Link to={`/adverts`}>Adverts Page</Link>|{" "}
         {user.username && (
           <>
-            <Link to={`/users/${user.username}`}>My profile</Link>
-            <Link to={`/adverts?username=${user.username}`}>My Adverts</Link>
+            <Link to={`/users/${user.username}`}>My profile</Link>|{" "}
+            <Link to={`/adverts?username=${user.username}`}>My Adverts</Link>|{" "}
             <Link to={`/adverts?favorite=true`}>Favorites</Link>
           </>
         )}
       </nav>
 
-      <h2>Adverts</h2>
-      {adverts.length === 0 ? (
-        <p>No adverts available.</p>
+      <h2>
+        {isViewingFavorites
+          ? "Favorite Adverts"
+          : isViewingOwnAdverts
+            ? "My Adverts"
+            : "All Adverts"}
+      </h2>
+
+      {filteredAdverts.length === 0 ? (
+        <p>
+          {isViewingFavorites
+            ? "You haven't marked any adverts as favorites."
+            : isViewingOwnAdverts
+              ? "You haven't published any adverts yet."
+              : "No adverts available."}
+        </p>
       ) : (
         <ul>
           {filteredAdverts.map((advert) => (
