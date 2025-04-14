@@ -1,22 +1,12 @@
 const getUser = async () => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/users",
-    {
-      credentials: "include",
-    }
+    { credentials: "include" }
   ).then((res) => res.json());
 
-  const user = {
-    id: "",
-    username: "",
-  };
+  if(response.error) return null;
 
-  if (!response.error) {
-    user.id = response.user._id;
-    user.username = response.user.username;
-  }
-
-  return user;
+  return response
 };
 
 const getPreloadedState = async () => {
