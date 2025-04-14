@@ -45,6 +45,18 @@ const AdvertsPage = () => {
     );
   }
 
+  const pageTitle = isViewingFavorites
+    ? "Favorite Adverts"
+    : isViewingOwnAdverts
+      ? "My Adverts"
+      : "All Adverts";
+
+  const emptyMessage = isViewingFavorites
+    ? "You haven't marked any adverts as favorites."
+    : isViewingOwnAdverts
+      ? "You haven't published any adverts yet."
+      : "No adverts available.";
+
   return (
     <>
       <nav>
@@ -58,22 +70,10 @@ const AdvertsPage = () => {
         )}
       </nav>
 
-      <h2>
-        {isViewingFavorites
-          ? "Favorite Adverts"
-          : isViewingOwnAdverts
-            ? "My Adverts"
-            : "All Adverts"}
-      </h2>
+      <h2>{pageTitle}</h2>
 
       {filteredAdverts.length === 0 ? (
-        <p>
-          {isViewingFavorites
-            ? "You haven't marked any adverts as favorites."
-            : isViewingOwnAdverts
-              ? "You haven't published any adverts yet."
-              : "No adverts available."}
-        </p>
+        <p>{emptyMessage}</p>
       ) : (
         <ul>
           {filteredAdverts.map((advert) => (
