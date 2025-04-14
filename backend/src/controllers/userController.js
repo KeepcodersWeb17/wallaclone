@@ -42,16 +42,19 @@ export const getUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    const user = await User.findById(userId);
+    const foundUser = await User.findById(userId);
 
-    if (!user) {
+    if (!foundUser) {
       const error = new Error("User not found");
       error.status = 404;
       next(error);
       return;
     }
 
-    res.status(200).json({ user });
+    const { _id: id, __v, password, ...user } = foundUser._doc;
+    user.id = userId;
+
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
