@@ -25,7 +25,7 @@ const AdvertsPage = () => {
     // }
 
     const queryString = new URLSearchParams(
-      Object.fromEntries(searchParams.entries())
+      Object.fromEntries(searchParams.entries()),
     ).toString();
 
     // @ts-expect-error lo vamos a tipar mas adelante
@@ -39,6 +39,8 @@ const AdvertsPage = () => {
       <nav>
         <Link to={`/users/${user.username}`}>My profile</Link>
       </nav>
+
+      <Link to={`/adverts?username=${user.username}`}>My Adverts</Link>
 
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
