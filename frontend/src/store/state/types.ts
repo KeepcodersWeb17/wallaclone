@@ -20,13 +20,12 @@ export type User = {
   username?: string;
   email?: string;
   password?: string;
+  updatedAt?: string;
+  createdAt?: string;
 };
 
 type State = {
-  user: {
-    id: string;
-    username: string;
-  };
+  user: User | null;
   adverts: Advert[];
   advert: Advert | null;
 };
