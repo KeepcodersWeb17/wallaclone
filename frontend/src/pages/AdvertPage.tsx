@@ -4,18 +4,19 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import type State from "../store/state/types";
 import {
-  addFavorite,
-  deleteAdvert,
   getAdvert,
+  deleteAdvert,
+  setAsFavorite,
 } from "../store/actions/creators";
 
 const AdvertPage = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [isFavorite, setFavorite] = useState(false);
-
   const user = useSelector((state: State) => state.user);
 
   const advertDetails = useSelector((state: State) => state.advert);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -48,15 +49,14 @@ const AdvertPage = () => {
   };
 
   const handleFavorite = async () => {
-    setFavorite((isFavorite) => !isFavorite);
-    // @ts-expect-error lo vamos a tipar mas adelante
-    await dispatch(addFavorite(advertId));
+    setIsFavorite((favorite) => !favorite);
 
-    if (isFavorite) {
-      alert("Advert marked as favorite");
-    } else {
-      alert("Advert unmarked as favorite");
-    }
+    // @ts-expect-error lo vamos a tipar mas adelante
+    await dispatch(setAsFavorite(advertId));
+
+    const status = isFavorite ? "unmarked" : "marked";
+    const message = `Advert ${status} as favorite`;
+    alert(message);
   };
 
   return (
@@ -76,7 +76,7 @@ const AdvertPage = () => {
             <nav>
               <Link to="/adverts">Go back</Link>
               <button onClick={handleFavorite}>
-                {isFavorite ? "SetUnfavorite" : "SetFavorite"}
+                {isFavorite ? "unset as favorite" : "set as favorite"}
               </button>
               <button>Share</button>
             </nav>
