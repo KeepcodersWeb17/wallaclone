@@ -7,7 +7,9 @@ import { getAdverts } from "../store/actions/creators";
 const AdvertsPage = () => {
   const [searchParams] = useSearchParams();
 
-  const user = useSelector((state: State) => state.user);
+  // const user = useSelector((state: State) => state.user);
+
+  const adverts = useSelector((state: State) => state.adverts);
 
   const dispatch = useDispatch();
 
@@ -25,21 +27,15 @@ const AdvertsPage = () => {
     // }
 
     const queryString = new URLSearchParams(
-      Object.fromEntries(searchParams.entries())
+      Object.fromEntries(searchParams.entries()),
     ).toString();
 
     // @ts-expect-error lo vamos a tipar mas adelante
     dispatch(getAdverts(queryString));
   }, [dispatch, searchParams]);
 
-  const adverts = useSelector((state: State) => state.adverts);
-
   return (
     <>
-      <nav>
-        <Link to={`/users/${user?.username}`}>My profile</Link>
-      </nav>
-
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
         <p>No adverts available.</p>
