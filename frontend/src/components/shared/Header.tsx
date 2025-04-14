@@ -27,7 +27,7 @@ const Header = () => {
             <button onClick={handleLogout}>Logout</button>
             <Link to={`/users/${user.username}`}>My profile</Link>
             <Link to={`/adverts/user/${user.username}`}>My Adverts</Link>
-            <Link to={`/adverts/favorites`}>Favorites</Link>
+            <Link to={`/adverts/favorites/${user.username}`}>Favorites</Link>
           </>
         ) : (
           <>
