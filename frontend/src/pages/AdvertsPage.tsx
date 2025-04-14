@@ -39,8 +39,9 @@ const AdvertsPage = () => {
       <nav>
         <Link to={`/users/${user.username}`}>My profile</Link>
       </nav>
-
-      <Link to={`/adverts?username=${user.username}`}>My Adverts</Link>
+      {user.username && (
+        <Link to={`/adverts?username=${user.username}`}>My Adverts</Link>
+      )}
 
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
