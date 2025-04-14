@@ -5,8 +5,8 @@ import { authLogin, authLogout } from "../store/actions/creators";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const isAuth = useSelector((state: State) => !!state.user.id);
-  const persistedUsername = useSelector((state: State) => state.user.username);
+  const isAuth = useSelector((state: State) => !!state.user?.id);
+  const persistedUsername = useSelector((state: State) => state.user?.username);
 
   const navigate = useNavigate();
   const location = useLocation();
