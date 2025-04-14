@@ -43,8 +43,11 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/recoverypassword" element={<h2>RecoveryPage</h2>} />
           <Route path="/adverts" element={<AdvertsPage />} />
-          <Route path="/adverts/favorites" element={<AdvertPage />} />
-          <Route path={"/adverts/user/:username}"} element={<AdvertPage />} />
+          <Route
+            path="/adverts/favorites/:username"
+            element={<AdvertsPage />}
+          />
+          <Route path="/adverts/user/:username" element={<AdvertsPage />} />
           <Route path="/adverts/:advert" element={<AdvertPage />} />
           <Route
             path="/users/:username"
