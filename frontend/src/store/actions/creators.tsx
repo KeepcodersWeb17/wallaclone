@@ -234,7 +234,7 @@ export const toogleFavoriteRejected = (error: string) => ({
   payload: error,
 });
 
-export const toogleFavorite = (isFavorite:boolean,advertId: string) => {
+export const toogleFavorite = (isFavorite:boolean, advertId: string) => {
   // @ts-expect-error lo vamos a tipar mas adelante
   return async function (dispatch) {
     try {
