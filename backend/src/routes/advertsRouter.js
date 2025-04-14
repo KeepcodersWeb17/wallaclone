@@ -5,7 +5,6 @@ import {
   updateAdvert,
   getAdvert,
   getAllAdverts,
-  getFavoriteAdverts,
   toogleFavoriteAdvert,
 } from "../controllers/advertController.js";
 import {
