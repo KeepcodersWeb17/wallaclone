@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const queryZodSchema = z.object({
   username: z.string().optional(), // username=admin // username=admin, user1, user2
+  favorite: z.string().optional(),
   name: z.string().optional(),
   price: z.string().optional(), // price=500-1000 // price=-1000 // price=1000- // price=1000
   tags: z.string().optional(),

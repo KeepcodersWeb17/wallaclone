@@ -42,9 +42,9 @@ export const getAllAdverts = async (req, res, next) => {
     }
 
     if (favorite) {
-      const favoriteRegExp = new RegExp(`^${favorite}`, "i");
+      const favoriteRegExp = new RegExp(`^${favorite}$`, "i"); // match exacto ignorando mayúsculas
       const user = await User.findOne({ username: favoriteRegExp });
-      filters.favorite = { $in: user._id };
+      filters.favorites = { $in: [user._id] };
     }
 
     if (name) {
