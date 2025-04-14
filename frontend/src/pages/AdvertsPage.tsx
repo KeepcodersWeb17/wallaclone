@@ -37,11 +37,14 @@ const AdvertsPage = () => {
   return (
     <>
       <nav>
-        <Link to={`/users/${user.username}`}>My profile</Link>
+        {user.username && (
+          <>
+            <Link to={`/users/${user.username}`}>My profile</Link>
+            <Link to={`/adverts?username=${user.username}`}>My Adverts</Link>
+            <Link to={`/adverts?favorite=true`}>Favorites</Link>
+          </>
+        )}
       </nav>
-      {user.username && (
-        <Link to={`/adverts?username=${user.username}`}>My Adverts</Link>
-      )}
 
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
