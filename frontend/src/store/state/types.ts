@@ -12,6 +12,7 @@ export type Advert = {
   owner?: string;
   updatedAt?: string;
   createdAt?: string;
+  favorites: string[];
 };
 
 export type User = {
