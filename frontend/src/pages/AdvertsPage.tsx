@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import type State from "../store/state/types";
 import { getAdverts } from "../store/actions/creators";
@@ -7,11 +7,16 @@ import { getAdverts } from "../store/actions/creators";
 const AdvertsPage = () => {
   const [searchParams] = useSearchParams();
 
+  const { username } = useParams();
+
   // const user = useSelector((state: State) => state.user);
 
   const adverts = useSelector((state: State) => state.adverts);
+  const user = useSelector((state: State) => state.user);
 
   const dispatch = useDispatch();
+
+  const pathname = window.location.pathname;
 
   useEffect(() => {
     // searchParams.entries() devuelve un array de arrays con los pares clave-valor de los parametros de busqueda
@@ -26,13 +31,25 @@ const AdvertsPage = () => {
     // name: "iphone"
     // }
 
-    const queryString = new URLSearchParams(
-      Object.fromEntries(searchParams.entries()),
-    ).toString();
+    let queryString = "";
+
+    if (pathname.includes("/favorites") && username) {
+      queryString += `favorites=${user?.id}`;
+    }
+
+    if (pathname.includes("/user") && username) {
+      queryString += `username=${username}`;
+    }
+
+    queryString +=
+      "&" +
+      new URLSearchParams(
+        Object.fromEntries(searchParams.entries()),
+      ).toString();
 
     // @ts-expect-error lo vamos a tipar mas adelante
     dispatch(getAdverts(queryString));
-  }, [dispatch, searchParams]);
+  }, [dispatch, searchParams, username, user?.id, pathname]);
 
   return (
     <>
