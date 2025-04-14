@@ -17,8 +17,18 @@ export const getAllAdverts = async (req, res, next) => {
     const validateQuery = queryZodSchema.parse(req.query);
 
     // obtenemos todos los query params
-    const { username, name, price, tags, sale, skip, limit, sort, fields } =
-      validateQuery;
+    const {
+      username,
+      favorite,
+      name,
+      price,
+      tags,
+      sale,
+      skip,
+      limit,
+      sort,
+      fields,
+    } = validateQuery;
 
     const filters = {};
 
@@ -29,6 +39,12 @@ export const getAllAdverts = async (req, res, next) => {
       const usernameRegExp = new RegExp(`^${username}`, "i");
       const user = await User.findOne({ username: usernameRegExp });
       filters.owner = user._id;
+    }
+
+    if (favorite) {
+      const favoriteRegExp = new RegExp(`^${favorite}`, "i");
+      const user = await User.findOne({ username: favoriteRegExp });
+      filters.favorite = { $in: user._id };
     }
 
     if (name) {

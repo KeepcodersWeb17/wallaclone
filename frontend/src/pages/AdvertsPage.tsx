@@ -34,29 +34,6 @@ const AdvertsPage = () => {
 
   const adverts = useSelector((state: State) => state.adverts);
 
-  const isViewingFavorites = searchParams.get("favorite") === "true";
-  const isViewingOwnAdverts = searchParams.get("username") === user.username;
-
-  let filteredAdverts = adverts;
-
-  if (isViewingFavorites) {
-    filteredAdverts = adverts.filter((advert) =>
-      advert.favorites?.includes(user.id),
-    );
-  }
-
-  const pageTitle = isViewingFavorites
-    ? "Favorite Adverts"
-    : isViewingOwnAdverts
-      ? "My Adverts"
-      : "All Adverts";
-
-  const emptyMessage = isViewingFavorites
-    ? "You haven't marked any adverts as favorites."
-    : isViewingOwnAdverts
-      ? "You haven't published any adverts yet."
-      : "No adverts available.";
-
   return (
     <>
       <nav>
@@ -65,18 +42,18 @@ const AdvertsPage = () => {
           <>
             <Link to={`/users/${user.username}`}>My profile</Link>|{" "}
             <Link to={`/adverts?username=${user.username}`}>My Adverts</Link>|{" "}
-            <Link to={`/adverts?favorite=true`}>Favorites</Link>
+            <Link to={`/adverts?favorite=${user.username}`}>Favorites</Link>
           </>
         )}
       </nav>
 
-      <h2>{pageTitle}</h2>
+      <h2>Adverts</h2>
 
-      {filteredAdverts.length === 0 ? (
-        <p>{emptyMessage}</p>
+      {adverts.length === 0 ? (
+        <p> No adverts </p>
       ) : (
         <ul>
-          {filteredAdverts.map((advert) => (
+          {adverts.map((advert) => (
             <li key={advert.id}>
               <Link to={`/adverts/${advert.name}-${advert.id}`}>
                 <div>
