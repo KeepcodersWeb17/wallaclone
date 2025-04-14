@@ -37,7 +37,7 @@ const AdvertsPage = () => {
   return (
     <>
       <nav>
-        <Link to={`/users/${user.username}`}>My profile</Link>
+        <Link to={`/users/${user?.username}`}>My profile</Link>
       </nav>
 
       <h2>Adverts</h2>
