@@ -23,6 +23,5 @@ router.put("/:id", isAuthenticated, validateUpdateAdvert, updateAdvert);
 router.delete("/:id", isAuthenticated, deleteAdvert);
 
 router.patch("/:id/favorite", isAuthenticated, setFavoriteAdvert);
-// router.delete("/:id/favorite", isAuthenticated, unSetFavoriteAdvert);
 
 export default router;
