@@ -14,7 +14,7 @@ const AdvertPage = () => {
 
   const advertDetails = useSelector((state: State) => state.advert);
 
-  const IsFavoriteInitialState = advertDetails?.favorites?.includes(user.id)
+  const IsFavoriteInitialState = !!user?.id && Array.isArray(advertDetails?.favorites) && advertDetails?.favorites?.includes(user.id) 
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -122,7 +122,7 @@ const AdvertPage = () => {
             </div>
 
             <div>
-              {user.username === advertDetails.owner ? (
+              {user?.username === advertDetails.owner ? (
                 <>
                   <button onClick={handleDelete}>Delete</button>
                   <Link
