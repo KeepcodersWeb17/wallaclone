@@ -168,14 +168,19 @@ export const updateAdvert = async (req, res, next) => {
   }
 };
 
-export const setFavoriteAdvert = async (req, res, next) => {
+export const toogleFavoriteAdvert = async (req, res, next) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
+    const { isFavorite } = req.body;
+
+    const update = isFavorite
+      ? { $pull: { favorites: userId } }
+      : { $addToSet: { favorites: userId } };
 
     const updatedAdvert = await Advert.findOneAndUpdate(
       { _id: id },
-      { $addToSet: { favorites: userId } },
+      update, // actualiza el campo favorites
       { new: true } // devuelve el documento actualizado, no el original
     );
 

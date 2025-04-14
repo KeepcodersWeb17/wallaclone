@@ -5,7 +5,7 @@ import {
   getLatest,
   update as updateAdvertAPI,
   remove as deleteAdvertAPI,
-  setAsFavorite as setAsFavoriteAPI,
+  toogleFavorite as toogleFavoriteAPI,
 } from "../services/adverts";
 import { login, logout, create as createUserAPI } from "../services/users";
 
@@ -220,26 +220,26 @@ export const deleteAdvert = (advertId: string) => {
   };
 };
 
-export const setAsFavoritePending = () => ({
-  type: "SET_AS_FAVORITE_PENDING",
+export const toogleFavoritePending = () => ({
+  type: "TOOGLE_FAVORITE_PENDING",
 });
 
-export const setAsFavoriteFullfilled = (updatedAdvert: Advert) => ({
-  type: "SET_AS_FAVORITE_FULFILLED",
+export const toogleFavoriteFullfilled = (updatedAdvert: Advert) => ({
+  type: "TOOGLE_FAVORITE_FULFILLED",
   payload: updatedAdvert,
 });
 
-export const setAsFavoriteRejected = (error: string) => ({
-  type: "SET_AS_FAVORITE_REJECTED",
+export const toogleFavoriteRejected = (error: string) => ({
+  type: "TOOGLE_FAVORITE_REJECTED",
   payload: error,
 });
 
-export const setAsFavorite = (advertId: string) => {
+export const toogleFavorite = (isFavorite:boolean, advertId: string) => {
   // @ts-expect-error lo vamos a tipar mas adelante
   return async function (dispatch) {
     try {
-      const updatedAdvert = await setAsFavoriteAPI(advertId);
-      dispatch(setAsFavoriteFullfilled(updatedAdvert));
+      const updatedAdvert = await toogleFavoriteAPI(isFavorite,advertId);
+      dispatch(toogleFavoriteFullfilled(updatedAdvert));
     } catch (error) {
       console.error(error);
     }

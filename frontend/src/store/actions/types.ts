@@ -114,17 +114,17 @@ type DeleteAdvertRejected = {
   payload: string;
 };
 
-type SetAsFavoritePending = {
-  type: "SET_AS_FAVORITE_PENDING";
+type ToogleFavoritePending = {
+  type: "TOOGLE_FAVORITE_PENDING";
 };
 
-type SetAsFavoriteFulfilled = {
-  type: "SET_AS_FAVORITE_FULFILLED";
+type ToogleFavoriteFulfilled = {
+  type: "TOOGLE_FAVORITE_FULFILLED";
   payload: Advert;
 };
 
-type SetAsFavoriteRejected = {
-  type: "SET_AS_FAVORITE_REJECTED";
+type ToogleFavoriteRejected = {
+  type: "TOOGLE_FAVORITE_REJECTED";
   payload: string;
 };
 
@@ -153,8 +153,8 @@ type Action =
   | DeleteAdvertPending
   | DeleteAdvertFulfilled
   | DeleteAdvertRejected
-  | SetAsFavoritePending
-  | SetAsFavoriteFulfilled
-  | SetAsFavoriteRejected;
+  | ToogleFavoritePending
+  | ToogleFavoriteFulfilled
+  | ToogleFavoriteRejected;
 
 export default Action;
