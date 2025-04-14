@@ -3,14 +3,20 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import type State from "../store/state/types";
-import { deleteAdvert, getAdvert } from "../store/actions/creators";
+import {
+  getAdvert,
+  deleteAdvert,
+  setAsFavorite,
+} from "../store/actions/creators";
 
 const AdvertPage = () => {
-  const [openModal, setOpenModal] = useState(false);
-
   const user = useSelector((state: State) => state.user);
 
   const advertDetails = useSelector((state: State) => state.advert);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -42,6 +48,17 @@ const AdvertPage = () => {
     navigate("/adverts");
   };
 
+  const handleFavorite = async () => {
+    setIsFavorite((favorite) => !favorite);
+
+    // @ts-expect-error lo vamos a tipar mas adelante
+    await dispatch(setAsFavorite(advertId));
+
+    const status = isFavorite ? "unmarked" : "marked";
+    const message = `Advert ${status} as favorite`;
+    alert(message);
+  };
+
   return (
     <>
       <dialog open={openModal}>
@@ -58,7 +75,9 @@ const AdvertPage = () => {
           <header>
             <nav>
               <Link to="/adverts">Go back</Link>
-              <button>Favorite</button>
+              <button onClick={handleFavorite}>
+                {isFavorite ? "unset as favorite" : "set as favorite"}
+              </button>
               <button>Share</button>
             </nav>
           </header>

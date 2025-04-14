@@ -4,6 +4,7 @@ import {
   deleteAdvert,
   getAdvert,
   getAllAdverts,
+  setFavoriteAdvert,
   updateAdvert,
 } from "../controllers/advertController.js";
 import {
@@ -16,8 +17,11 @@ const router = express.Router();
 
 router.post("/", isAuthenticated, validateCreateAdvert, createAdvert);
 router.get("/", getAllAdverts);
+
 router.get("/:id", getAdvert);
 router.put("/:id", isAuthenticated, validateUpdateAdvert, updateAdvert);
 router.delete("/:id", isAuthenticated, deleteAdvert);
+
+router.patch("/:id/favorite", isAuthenticated, setFavoriteAdvert);
 
 export default router;
