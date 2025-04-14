@@ -1,9 +1,9 @@
+import "./index.css";
 import { StrictMode } from "react";
 import { Provider } from "react-redux";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import configureStore from "./store/store";
-import "./index.css";
 import App from "./App.tsx";
 import getPreloadedState from "./lib/preloadedState.ts";
 
@@ -20,5 +20,5 @@ createRoot(document.getElementById("root")!).render(
       </Provider>
     </BrowserRouter>
     {/* </ErrorBoundary> */}
-  </StrictMode>
+  </StrictMode>,
 );

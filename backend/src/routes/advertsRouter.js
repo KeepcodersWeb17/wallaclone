@@ -18,10 +18,11 @@ const router = express.Router();
 
 router.post("/", isAuthenticated, validateCreateAdvert, createAdvert);
 router.get("/", getAllAdverts);
+
 router.get("/:id", getAdvert);
 router.put("/:id", isAuthenticated, validateUpdateAdvert, updateAdvert);
 router.delete("/:id", isAuthenticated, deleteAdvert);
-router.put("/setFavorite/:id", isAuthenticated, setFavoriteAdvert);
-router.put("/unSetFavorite/:id", isAuthenticated, unSetFavoriteAdvert);
+
+router.patch("/:id/favorite", isAuthenticated, setFavoriteAdvert);
 
 export default router;

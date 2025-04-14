@@ -176,8 +176,9 @@ export const setFavoriteAdvert = async (req, res, next) => {
     const updatedAdvert = await Advert.findOneAndUpdate(
       { _id: id },
       { $addToSet: { favorites: userId } },
-      { new: true }
+      { new: true } // devuelve el documento actualizado, no el original
     );
+
     if (!updatedAdvert) {
       const error = new Error("Advert not found");
       error.status = 404;

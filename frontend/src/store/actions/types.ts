@@ -114,6 +114,20 @@ type DeleteAdvertRejected = {
   payload: string;
 };
 
+type SetAsFavoritePending = {
+  type: "SET_AS_FAVORITE_PENDING";
+};
+
+type SetAsFavoriteFulfilled = {
+  type: "SET_AS_FAVORITE_FULFILLED";
+  payload: Advert;
+};
+
+type SetAsFavoriteRejected = {
+  type: "SET_AS_FAVORITE_REJECTED";
+  payload: string;
+};
+
 type Action =
   | AuthLoginPending
   | AuthLoginFulfilled
@@ -138,6 +152,9 @@ type Action =
   | UpdateAdvertRejected
   | DeleteAdvertPending
   | DeleteAdvertFulfilled
-  | DeleteAdvertRejected;
+  | DeleteAdvertRejected
+  | SetAsFavoritePending
+  | SetAsFavoriteFulfilled
+  | SetAsFavoriteRejected;
 
 export default Action;
