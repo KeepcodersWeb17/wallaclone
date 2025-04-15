@@ -11,7 +11,7 @@ const advertSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    tags: { type: [String], index: true },
+    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag", index: true }],
     sale: { type: String, enum: ["sell", "buy"], required: true, index: true },
     favorites: [
       { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
