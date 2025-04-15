@@ -10,7 +10,7 @@ import RequireAuth from "./components/auth/RequireAuth";
 import UpdateAdvertPage from "./pages/UpdateAdvertPage";
 import UserPage from "./pages/UserPage";
 import ForbbidenPage from "./pages/Forbbiden";
-import Layout from "./layouts/layout";
+import Layout from "./layouts/Layout";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
