@@ -8,11 +8,11 @@ export type Advert = {
   price: number;
   sale: Sale;
   image?: string;
-  tags?: string[];
+  tags?: { _id: string; name: string }[];
   owner?: { _id: string; username: string };
   updatedAt?: string;
   createdAt?: string;
-  favorites?: string[];
+  favorites?: { _id: string; username: string }[];
 };
 
 export type User = {
