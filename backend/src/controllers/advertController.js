@@ -100,7 +100,11 @@ export const createAdvert = async (req, res, next) => {
     const advertData = req.body;
     const owner = req.user.id;
 
-    const newAdvert = new Advert({ ...advertData, owner });
+    const tagsIds = await Tag.find({ name: { $in: advertData.tags } }).select(
+      "_id"
+    );
+
+    const newAdvert = new Advert({ ...advertData, owner, tags: tagsIds });
 
     const savedAdvert = await newAdvert.save();
 
