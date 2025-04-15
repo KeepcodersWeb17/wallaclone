@@ -32,9 +32,6 @@ const Header = () => {
               </button>
             </div>
           )}
-          {/* 
-          ring-opacity-5 absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black
-          */}
           <div className="absolute right-0 mt-2 flex flex-col rounded bg-white py-1 shadow-lg ring-1 ring-black">
             <nav className="flex flex-col space-x-8">
               <Link
