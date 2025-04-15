@@ -7,6 +7,7 @@ import {
   normalizeTagsMongo,
   normalizeSortMongo,
 } from "../lib/normalize.js";
+import Tag from "../models/Tag.js";
 
 export const getAllAdverts = async (req, res, next) => {
   try {
@@ -61,7 +62,11 @@ export const getAllAdverts = async (req, res, next) => {
     }
 
     if (tags) {
-      filters.tags = { $all: normalizeTagsMongo(tags) };
+      const tagsNames = normalizeTagsMongo(tags);
+      const tagsIds = await Tag.find({ name: { $in: tagsNames } }).select(
+        "_id"
+      );
+      filters.tags = { $all: tagsIds };
     }
 
     if (sale) {
