@@ -13,6 +13,7 @@ import {
   create as createUserAPI,
   remove as deleteUserAPI,
 } from "../services/users";
+import { getAll as getAllTagsAPI } from "../services/tags";
 
 export const authLoginPending = () => ({
   type: "AUTH_LOGIN_PENDING",
@@ -272,6 +273,32 @@ export const toogleFavorite = (isFavorite: boolean, advertId: string) => {
     try {
       const updatedAdvert = await toogleFavoriteAPI(isFavorite, advertId);
       dispatch(toogleFavoriteFullfilled(updatedAdvert));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const getAllTagsPending = () => ({
+  type: "GET_ALL_TAGS_PENDING",
+});
+
+export const getAllTagsFulfilled = (tags: string[]) => ({
+  type: "GET_ALL_TAGS_FULFILLED",
+  payload: tags,
+});
+
+export const getAllTagsRejected = (error: string) => ({
+  type: "GET_ALL_TAGS_REJECTED",
+  payload: error,
+});
+
+export const getAllTags = () => {
+  // @ts-expect-error lo vamos a tipar mas adelante
+  return async function (dispatch) {
+    try {
+      const tags = await getAllTagsAPI();
+      dispatch(getAllTagsFulfilled(tags));
     } catch (error) {
       console.error(error);
     }
