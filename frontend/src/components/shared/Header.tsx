@@ -1,7 +1,6 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import type State from "../../store/state/types";
-import { useDispatch } from "react-redux";
 import { authLogout } from "../../store/actions/creators";
 import UserIcon from "../icons/User";
 const Header = () => {
