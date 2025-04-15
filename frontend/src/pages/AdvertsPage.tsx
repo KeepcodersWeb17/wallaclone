@@ -103,6 +103,7 @@ const AdvertsPage = () => {
   };
 
   const handleOpenModal = () => {
+    // DISPATCH PARA TRAERNOS NOS LOS TAGS
     dialogRef.current?.showModal();
   };
 
