@@ -14,7 +14,10 @@ const AdvertPage = () => {
 
   const advertDetails = useSelector((state: State) => state.advert);
 
-  const IsFavoriteInitialState = !!user?.id && Array.isArray(advertDetails?.favorites) && advertDetails?.favorites?.includes(user.id) 
+  const IsFavoriteInitialState =
+    !!user?.id &&
+    Array.isArray(advertDetails?.favorites) &&
+    advertDetails?.favorites?.includes(user.id);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -51,10 +54,15 @@ const AdvertPage = () => {
   };
 
   const handleFavorite = async () => {
+    if (!user?.id) {
+      navigate("/login");
+      return;
+    }
+
     setIsFavorite((favorite) => !favorite);
 
     // @ts-expect-error lo vamos a tipar mas adelante
-    await dispatch(toogleFavorite(isFavorite,advertId));
+    await dispatch(toogleFavorite(isFavorite, advertId));
 
     const status = isFavorite ? "unmarked" : "marked";
     const message = `Advert ${status} as favorite`;
