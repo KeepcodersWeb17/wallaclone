@@ -9,7 +9,7 @@ export type Advert = {
   sale: Sale;
   image?: string;
   tags?: string[];
-  owner?: string;
+  owner?: { _id: string; username: string };
   updatedAt?: string;
   createdAt?: string;
   favorites?: string[];
