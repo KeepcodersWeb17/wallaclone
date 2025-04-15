@@ -37,6 +37,21 @@ export const getLatest = async (queryString: string) => {
     ...response.adverts.map((advert: Advert) => ({
       ...advert,
       id: advert._id,
+      owner: {
+        id: advert.owner?._id,
+        username: advert.owner?.username,
+      },
+      tags: advert.tags?.map((tag) => ({
+        id: tag._id,
+        name: tag.name,
+      })),
+      image:
+        advert.image ||
+        "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg",
+      favorites: advert.favorites?.map((favorite) => ({
+        id: favorite._id,
+        username: favorite.username,
+      })),
     })),
   );
 
@@ -55,7 +70,32 @@ export const getById = async (advertId: string) => {
     throw new Error(response.error);
   }
 
-  return response;
+  const { id, tags, owner, favorites, image, ...advert } = response;
+
+  advert.id = id;
+
+  advert.tags = tags.map((tag: { _id: string; name: string }) => ({
+    id: tag._id,
+    name: tag.name,
+  }));
+
+  advert.owner = {
+    id: owner._id,
+    username: owner.username,
+  };
+
+  advert.favorites = favorites.map(
+    (favorite: { _id: string; username: string }) => ({
+      id: favorite._id,
+      username: favorite.username,
+    }),
+  );
+
+  advert.image =
+    image ||
+    "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg";
+
+  return advert;
 };
 
 export const update = async (advert: Advert) => {
