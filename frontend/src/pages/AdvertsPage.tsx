@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
@@ -11,10 +11,12 @@ import CloseIcon from "../components/icons/Close";
 import { getAdverts } from "../store/actions/creators";
 
 const AdvertsPage = () => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  // const [isOpenModal, setIsOpenModal] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { username } = useParams();
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   // const user = useSelector((state: State) => state.user);
 
@@ -61,17 +63,17 @@ const AdvertsPage = () => {
   const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log(
-      Array.from(event.currentTarget.querySelectorAll("input")).map(
-        (element) => element.value,
-      ),
-    );
-
     const filters = Array.from(
       event.currentTarget.querySelectorAll("input"),
     ).map((element) => element.value);
 
-    const params: { name?: string; price?: string } = {};
+    const tagsFilters = Array.from(
+      dialogRef.current!.querySelectorAll("li[selected]"),
+    )
+      .map((element) => element.textContent)
+      .join(",");
+
+    const params: { name?: string; price?: string; tags?: string } = {};
 
     if (filters[0]) {
       params.name = filters[0];
@@ -87,41 +89,65 @@ const AdvertsPage = () => {
         : `-${filters[2]}`;
     }
 
+    if (tagsFilters) {
+      params.tags = tagsFilters;
+    }
+
     setSearchParams(params);
   };
 
-  const handleOpenModal = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setIsOpenModal(true);
+  const handleOpenModal = () => {
+    dialogRef.current?.showModal();
   };
 
-  const handleCloseModal = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setIsOpenModal(false);
+  const handleClose = () => {
+    dialogRef.current?.close();
+  };
+
+  const handleSelected = (event: React.MouseEvent) => {
+    event.currentTarget.toggleAttribute("selected");
+    event.currentTarget.classList.toggle("bg-yellow-200");
   };
 
   return (
     <>
       {/* Modal Cateogries */}
-      {isOpenModal && (
-        <dialog className="fixed inset-0 flex h-full w-full flex-col place-content-center items-center gap-10">
-          <button
-            className="absolute top-5 right-5 cursor-pointer"
-            onClick={handleCloseModal}
+      <dialog ref={dialogRef} className="h-full w-full">
+        <button
+          className="absolute top-5 right-5 cursor-pointer"
+          onClick={handleClose}
+        >
+          <CloseIcon />
+        </button>
+        <h2 className="">Categories</h2>
+        <ul className="sh flex w-full flex-col gap-5 text-center">
+          <li
+            className="cursor-pointer rounded hover:bg-gray-100"
+            onClick={handleSelected}
           >
-            <CloseIcon />
-          </button>
-          <h2 className="">Categories</h2>
-          <ul className="sh flex w-full flex-col gap-5 text-center">
-            <li className="cursor-pointer rounded hover:bg-gray-100">Work</li>
-            <li className="cursor-pointer rounded hover:bg-gray-100">
-              Lifestyle
-            </li>
-            <li className="cursor-pointer rounded hover:bg-gray-100">Motor</li>
-            <li className="cursor-pointer rounded hover:bg-gray-100">Mobile</li>
-          </ul>
-        </dialog>
-      )}
+            Work
+          </li>
+          <li
+            className="cursor-pointer rounded hover:bg-gray-100"
+            onClick={handleSelected}
+          >
+            Lifestyle
+          </li>
+          <li
+            className="cursor-pointer rounded hover:bg-gray-100"
+            onClick={handleSelected}
+          >
+            Motor
+          </li>
+          <li
+            className="cursor-pointer rounded hover:bg-gray-100"
+            onClick={handleSelected}
+          >
+            Mobile
+          </li>
+        </ul>
+        <button onClick={handleClose}>Confirm</button>
+      </dialog>
 
       {/* Filtros */}
       <form onSubmit={handleFilterSubmit}>
@@ -140,9 +166,12 @@ const AdvertsPage = () => {
           min={0}
           placeholder="Max"
         />
-        <button onClick={handleOpenModal}>Category</button>
+        <button type="button" onClick={handleOpenModal}>
+          Category
+        </button>
         <button type="submit">Filter</button>
       </form>
+
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
         <p> No adverts </p>
