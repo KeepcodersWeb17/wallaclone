@@ -36,8 +36,15 @@ export const getAllAdverts = async (req, res, next) => {
 
     if (username) {
       // con esta RegExp queremos que el username sea case insensitive
-      const usernameRegExp = new RegExp(`^${username}`, "i");
-      const user = await User.findOne({ username: usernameRegExp });
+      // const usernameRegExp = new RegExp(`^${username}`, "i"); // la busqueda debe ser exacta
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        const error = new Error("User not found");
+        error.status = 404;
+        return next(error);
+      }
+
       filters.owner = user._id;
     }
 
