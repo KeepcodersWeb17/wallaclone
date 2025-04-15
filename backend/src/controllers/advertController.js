@@ -179,12 +179,16 @@ export const updateAdvert = async (req, res, next) => {
     const { id } = req.params;
     const updatedData = req.body;
 
+    const tagsIds = await Tag.find({ name: { $in: updatedData.tags } }).select(
+      "_id"
+    );
+
     const updatedAdvert = await Advert.findOneAndUpdate(
       {
         _id: id,
         owner: req.user.id,
       },
-      updatedData,
+      { ...updatedData, tags: tagsIds }, // actualiza el campo tags
       { new: true }
     );
 
