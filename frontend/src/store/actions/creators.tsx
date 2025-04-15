@@ -280,16 +280,16 @@ export const toogleFavorite = (isFavorite: boolean, advertId: string) => {
 };
 
 export const getAllTagsPending = () => ({
-  type: "GET_ALL_TAGS_PENDING",
+  type: "GET_TAGS_PENDING",
 });
 
 export const getAllTagsFulfilled = (tags: string[]) => ({
-  type: "GET_ALL_TAGS_FULFILLED",
+  type: "GET_TAGS_FULFILLED",
   payload: tags,
 });
 
 export const getAllTagsRejected = (error: string) => ({
-  type: "GET_ALL_TAGS_REJECTED",
+  type: "GET_TAGS_REJECTED",
   payload: error,
 });
 
