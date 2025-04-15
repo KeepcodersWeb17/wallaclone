@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
@@ -7,9 +7,11 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import type State from "../store/state/types";
+import CloseIcon from "../components/icons/Close";
 import { getAdverts } from "../store/actions/creators";
 
 const AdvertsPage = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { username } = useParams();
@@ -88,8 +90,39 @@ const AdvertsPage = () => {
     setSearchParams(params);
   };
 
+  const handleOpenModal = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setIsOpenModal(true);
+  };
+
+  const handleCloseModal = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setIsOpenModal(false);
+  };
+
   return (
     <>
+      {/* Modal Cateogries */}
+      {isOpenModal && (
+        <dialog className="fixed inset-0 flex h-full w-full flex-col place-content-center items-center gap-10">
+          <button
+            className="absolute top-5 right-5 cursor-pointer"
+            onClick={handleCloseModal}
+          >
+            <CloseIcon />
+          </button>
+          <h2 className="">Categories</h2>
+          <ul className="sh flex w-full flex-col gap-5 text-center">
+            <li className="cursor-pointer rounded hover:bg-gray-100">Work</li>
+            <li className="cursor-pointer rounded hover:bg-gray-100">
+              Lifestyle
+            </li>
+            <li className="cursor-pointer rounded hover:bg-gray-100">Motor</li>
+            <li className="cursor-pointer rounded hover:bg-gray-100">Mobile</li>
+          </ul>
+        </dialog>
+      )}
+
       {/* Filtros */}
       <form onSubmit={handleFilterSubmit}>
         <input type="text" name="advertName" placeholder="Advert name..." />
@@ -107,18 +140,10 @@ const AdvertsPage = () => {
           min={0}
           placeholder="Max"
         />
-        <select name="tags" id="tags">
-          <option value="work">Select a category</option>
-          <option value="work">Work</option>
-          <option value="lifestyle">Lifestyle</option>
-          <option value="motor">Motor</option>
-          <option value="mobile">Mobile</option>
-        </select>
+        <button onClick={handleOpenModal}>Category</button>
         <button type="submit">Filter</button>
       </form>
-
       <h2>Adverts</h2>
-
       {adverts.length === 0 ? (
         <p> No adverts </p>
       ) : (
