@@ -118,7 +118,10 @@ export const getAdvert = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const foundAdvert = await Advert.findById(id).populate("owner", "username");
+    const foundAdvert = await Advert.findById(id)
+      .populate("owner", "username")
+      .populate("tags", "name")
+      .populate("favorites", "username");
 
     const { _id: advertId, __v, ...advert } = foundAdvert._doc;
 
