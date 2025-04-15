@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import type State from "../store/state/types";
 import CloseIcon from "../components/icons/Close";
-import { getAdverts } from "../store/actions/creators";
+import { getAdverts, getAllTags } from "../store/actions/creators";
 
 const AdvertsPage = () => {
   // const [isOpenModal, setIsOpenModal] = useState(false);
@@ -22,6 +22,7 @@ const AdvertsPage = () => {
 
   const adverts = useSelector((state: State) => state.adverts);
   const user = useSelector((state: State) => state.user);
+  const tags = useSelector((state: State) => state.tags);
 
   const dispatch = useDispatch();
 
@@ -43,18 +44,16 @@ const AdvertsPage = () => {
     let queryString = "";
 
     if (pathname.includes("/favorites") && username) {
-      queryString += `favorites=${user?.id}`;
+      queryString += `favorites=${user?.id}&`;
     }
 
     if (pathname.includes("/user") && username) {
-      queryString += `username=${username}`;
+      queryString += `username=${username}&`;
     }
 
-    queryString +=
-      "&" +
-      new URLSearchParams(
-        Object.fromEntries(searchParams.entries()),
-      ).toString();
+    queryString += new URLSearchParams(
+      Object.fromEntries(searchParams.entries()),
+    ).toString();
 
     // @ts-expect-error lo vamos a tipar mas adelante
     dispatch(getAdverts(queryString));
@@ -102,8 +101,9 @@ const AdvertsPage = () => {
     setSearchParams(params);
   };
 
-  const handleOpenModal = () => {
-    // DISPATCH PARA TRAERNOS NOS LOS TAGS
+  const handleOpenModal = async () => {
+    // @ts-expect-error lo vamos a tipar mas adelante
+    await dispatch(getAllTags());
     dialogRef.current?.showModal();
   };
 
@@ -128,30 +128,15 @@ const AdvertsPage = () => {
         </button>
         <h2 className="">Categories</h2>
         <ul className="sh flex w-full flex-col gap-5 text-center">
-          <li
-            className="cursor-pointer rounded hover:bg-gray-100"
-            onClick={handleSelected}
-          >
-            Work
-          </li>
-          <li
-            className="cursor-pointer rounded hover:bg-gray-100"
-            onClick={handleSelected}
-          >
-            Lifestyle
-          </li>
-          <li
-            className="cursor-pointer rounded hover:bg-gray-100"
-            onClick={handleSelected}
-          >
-            Motor
-          </li>
-          <li
-            className="cursor-pointer rounded hover:bg-gray-100"
-            onClick={handleSelected}
-          >
-            Mobile
-          </li>
+          {tags.map((tag) => (
+            <li
+              key={tag}
+              className="cursor-pointer rounded hover:bg-gray-100"
+              onClick={handleSelected}
+            >
+              {tag}
+            </li>
+          ))}
         </ul>
         <button onClick={handleClose}>Confirm</button>
       </dialog>
