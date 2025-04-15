@@ -15,7 +15,6 @@ const Header = () => {
     await dispatch(authLogout());
     navigate("/login");
   };
-  //max-w-7xl items-center justify-between p-4
   return (
     <header className="fixed top-0 w-full bg-white text-gray-800 shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-2">
