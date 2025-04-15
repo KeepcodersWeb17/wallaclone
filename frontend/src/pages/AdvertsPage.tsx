@@ -71,7 +71,8 @@ const AdvertsPage = () => {
       dialogRef.current!.querySelectorAll("li[selected]"),
     )
       .map((element) => element.textContent)
-      .join(",");
+      .join(",")
+      .toLowerCase();
 
     const params: {
       username?: string;
