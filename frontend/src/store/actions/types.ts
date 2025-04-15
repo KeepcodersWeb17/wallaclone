@@ -142,6 +142,20 @@ type ToogleFavoriteRejected = {
   payload: string;
 };
 
+type GetTagsPending = {
+  type: "GET_TAGS_PENDING";
+};
+
+type GetTagsFulfilled = {
+  type: "GET_TAGS_FULFILLED";
+  payload: string[];
+};
+
+type GetTagsRejected = {
+  type: "GET_TAGS_REJECTED";
+  payload: string;
+};
+
 type Action =
   | AuthLoginPending
   | AuthLoginFulfilled
@@ -172,6 +186,9 @@ type Action =
   | ToogleFavoriteRejected
   | DeleteUserPending
   | DeleteUserFulfilled
-  | DeleteUserRejected;
+  | DeleteUserRejected
+  | GetTagsPending
+  | GetTagsFulfilled
+  | GetTagsRejected;
 
 export default Action;

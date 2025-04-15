@@ -8,14 +8,15 @@ import type State from "./state/types";
 import user from "./reducer/user";
 import adverts from "./reducer/adverts";
 import advert from "./reducer/advert";
+import tags from "./reducer/tags";
 
 const configureStore = (preloadedState: Partial<State>) => {
-  const rootReducer = combineReducers({ user, adverts, advert });
+  const rootReducer = combineReducers({ user, adverts, advert, tags });
   const store = createStore(
     rootReducer,
     //@ts-expect-error lo vamos a tipar más adelante
     preloadedState,
-    applyMiddleware(thunk.thunk)
+    applyMiddleware(thunk.thunk),
   );
 
   return store;

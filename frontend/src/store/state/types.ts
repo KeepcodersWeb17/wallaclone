@@ -28,6 +28,7 @@ type State = {
   user: User | null;
   adverts: Advert[];
   advert: Advert | null;
+  tags: string[];
 };
 
 export default State;
