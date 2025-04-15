@@ -73,7 +73,12 @@ const AdvertsPage = () => {
       .map((element) => element.textContent)
       .join(",");
 
-    const params: { name?: string; price?: string; tags?: string } = {};
+    const params: {
+      username?: string;
+      name?: string;
+      price?: string;
+      tags?: string;
+    } = {};
 
     if (filters[0]) {
       params.name = filters[0];
@@ -189,6 +194,9 @@ const AdvertsPage = () => {
                   <p>Price: {advert.price}</p>
                   <p>On: {advert.sale}</p>
                 </div>
+              </Link>
+              <Link to={`/adverts/user/${advert.owner?.username}`}>
+                Owner: {advert.owner?.username}
               </Link>
             </li>
           ))}
