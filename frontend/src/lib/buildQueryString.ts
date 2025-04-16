@@ -13,26 +13,26 @@ export const buildQueryString = ({
   pathname: string;
   tags: Tag[];
 }) => {
-  let queryString = "";
+  const queryParams = [];
 
   if (pathname.includes("/favorites") && username) {
-    queryString += `favorites=${user?.id}&`;
+    queryParams.push(`favorites=${user?.id}`);
   }
 
   if (pathname.includes("/user") && username) {
-    queryString += `username=${username}&`;
+    queryParams.push(`username=${username}`);
   }
 
   const name = searchParams.get("name") || "";
 
   if (name) {
-    queryString += `name=${name}&`;
+    queryParams.push(`name=${name}`);
   }
 
   const price = searchParams.get("price") || "";
 
   if (price) {
-    queryString += `price=${price}&`;
+    queryParams.push(`price=${price}`);
   }
 
   const tagsParam = searchParams.get("tags") || "";
@@ -45,11 +45,28 @@ export const buildQueryString = ({
         tagsIds.push(tag.id);
       }
     });
-
-    queryString += `tags=${tagsIds.join("-")}&`;
+    queryParams.push(`tags=${tagsIds.join("-")}`);
   }
 
-  queryString.slice(0, -1);
+  const sort = searchParams.get("sort") || "";
+
+  if (sort) {
+    queryParams.push(`sort=${sort}`);
+  }
+
+  const skip = searchParams.get("skip") || "";
+
+  if (skip) {
+    queryParams.push(`skip=${skip}`);
+  }
+
+  const limit = searchParams.get("limit") || "";
+
+  if (limit) {
+    queryParams.push(`limit=${limit}`);
+  }
+
+  const queryString = queryParams.join("&");
 
   return queryString;
 };
