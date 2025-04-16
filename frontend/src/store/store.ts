@@ -2,21 +2,20 @@ import * as thunk from "redux-thunk";
 import {
   legacy_createStore as createStore,
   applyMiddleware,
-  combineReducers,
+  combineReducers
 } from "redux";
 import type State from "./state/types";
 import user from "./reducer/user";
 import adverts from "./reducer/adverts";
-import advert from "./reducer/advert";
 import tags from "./reducer/tags";
 
 const configureStore = (preloadedState: Partial<State>) => {
-  const rootReducer = combineReducers({ user, adverts, advert, tags });
+  const rootReducer = combineReducers({ user, adverts, tags });
   const store = createStore(
     rootReducer,
     //@ts-expect-error lo vamos a tipar más adelante
     preloadedState,
-    applyMiddleware(thunk.thunk),
+    applyMiddleware(thunk.thunk)
   );
 
   return store;
