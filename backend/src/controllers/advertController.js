@@ -81,9 +81,6 @@ export const getAllAdverts = async (req, res, next) => {
       fields,
     };
 
-    // const adverts = await Advert.findAdverts(filters);
-    // const quantity = await Advert.countDocuments(filters);
-
     const [foundAdverts, quantity] = await Promise.all([
       Advert.findAdverts(filters, options),
       Advert.countDocuments(filters),
