@@ -35,7 +35,6 @@ export const getLatest = async (queryString: string) => {
     }
     return advert;
   });
-
   return adverts;
 };
 
