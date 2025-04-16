@@ -10,7 +10,7 @@ const UpdateAdvertPage = () => {
   const { advert } = useParams();
 
   const advertId = advert ? advert.split("-")[1] : null;
-  const advertDetails = useSelector((state: State) => state.advert);
+  const advertDetails = useSelector((state: State) => state.adverts[0]);
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");

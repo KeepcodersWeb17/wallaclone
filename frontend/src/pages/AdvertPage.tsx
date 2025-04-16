@@ -12,7 +12,7 @@ import {
 const AdvertPage = () => {
   const user = useSelector((state: State) => state.user);
 
-  const advertDetails = useSelector((state: State) => state.advert);
+  const advertDetails = useSelector((state: State) => state.adverts[0]);
 
   const IsFavoriteInitialState =
     !!user?.id &&
@@ -150,10 +150,10 @@ const AdvertPage = () => {
             <p>Published on {advertDetails.createdAt?.split("T")[0]}</p>
 
             {advertDetails.updatedAt !== advertDetails.createdAt && (
-              <p>Updated on {advertDetails.updatedAt}</p>
+              <p>Updated on {advertDetails.updatedAt?.split("T")[0]}</p>
             )}
 
-            <p>Marked as favorite {"0"} times</p>
+            <p>Marked as favorite {advertDetails.favorites?.length} times</p>
           </footer>
         </article>
       )}
