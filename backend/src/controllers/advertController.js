@@ -75,9 +75,9 @@ export const getAllAdverts = async (req, res, next) => {
 
     // creamos un objeto options para los filtros de mongoose
     const options = {
-      limit,
-      skip,
-      sort: normalizeSortMongo(sort),
+      limit: limit ? parseInt(limit) : 5,
+      skip: skip ? parseInt(skip) : 0,
+      sort: sort ? normalizeSortMongo(sort) : { updatedAt: -1 },
       fields,
     };
 
@@ -162,7 +162,7 @@ export const getAdvert = async (req, res, next) => {
       updatedAt: foundAdvert.updatedAt,
     };
 
-    res.status(200).json(advert);
+    res.status(200).json({ advert });
   } catch (error) {
     next(error);
   }

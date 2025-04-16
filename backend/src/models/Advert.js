@@ -21,10 +21,7 @@ const advertSchema = new mongoose.Schema(
     timestamps: true,
     statics: {
       // /adverts?limit=5&skip=0&sort=updatedAt-1
-      findAdverts: async function (
-        filters = {},
-        options = { limit: 5, skip: 0, sort: { updatedAt: -1 } }
-      ) {
+      findAdverts: async function (filters, options) {
         return (
           Advert.find(filters)
             // collation to make insensitive the sorting by name
