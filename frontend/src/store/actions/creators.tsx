@@ -15,14 +15,14 @@ import {
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
 
-export const actionPending = () => ({
-  type: "ACTION_PENDING"
-});
+// export const actionPending = () => ({
+//   type: "ACTION_PENDING"
+// });
 
-export const actionRejected = (error: string) => ({
-  type: "ACTION_REJECTED",
-  payload: error
-});
+// export const actionRejected = (error: string) => ({
+//   type: "ACTION_REJECTED",
+//   payload: error
+// });
 
 const authLoginFulfilled = (userData: User) => ({
   type: "AUTH_LOGIN_FULFILLED",
@@ -30,6 +30,20 @@ const authLoginFulfilled = (userData: User) => ({
     id: userData.id,
     username: userData.username
   }
+});
+
+const authLogoutFulfilled = () => ({
+  type: "AUTH_LOGOUT_FULFILLED"
+});
+
+const getAdvertsFulfilled = (adverts: Advert[]) => ({
+  type: "GET_ADVERTS_FULFILLED",
+  payload: adverts
+});
+
+const getAllTagsFulfilled = (tags: string[]) => ({
+  type: "GET_TAGS_FULFILLED",
+  payload: tags
 });
 
 export const authLogin = (userData: User) => {
@@ -61,10 +75,6 @@ export const createUser = (userData: User) => {
   };
 };
 
-const authLogoutFulfilled = () => ({
-  type: "AUTH_LOGOUT_FULFILLED"
-});
-
 export const authLogout = () => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
@@ -92,11 +102,6 @@ export const deleteUser = () => {
     }
   };
 };
-
-export const getAdvertsFulfilled = (adverts: Advert[]) => ({
-  type: "GET_ADVERTS_FULFILLED",
-  payload: adverts
-});
 
 export const getAdverts = (queryString: string) => {
   // @ts-expect-error Lo vamos a tipar más adelante
@@ -150,17 +155,11 @@ export const updateAdvert = (advert: Advert) => {
   };
 };
 
-export const deleteAdvertFulfilled = () => ({
-  type: "DELETE_ADVERT_FULFILLED"
-});
-
 export const deleteAdvert = (advertId: string) => {
-  // @ts-expect-error lo vamos a tipar mas adelante
-  return async function (dispatch) {
+  return async function () {
     try {
       // dispatch(actionPending());
       await deleteAdvertAPI(advertId);
-      dispatch(deleteAdvertFulfilled());
     } catch (error) {
       // dispatch(actionRejected(error.message));
       console.error(error);
@@ -179,11 +178,6 @@ export const toogleFavorite = (isFavorite: boolean, advertId: string) => {
     }
   };
 };
-
-export const getAllTagsFulfilled = (tags: string[]) => ({
-  type: "GET_TAGS_FULFILLED",
-  payload: tags
-});
 
 export const getAllTags = () => {
   // @ts-expect-error lo vamos a tipar mas adelante
