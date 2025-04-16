@@ -5,31 +5,31 @@ import {
   getLatest,
   update as updateAdvertAPI,
   remove as deleteAdvertAPI,
-  toogleFavorite as toogleFavoriteAPI,
+  toogleFavorite as toogleFavoriteAPI
 } from "../services/adverts";
 import {
   login,
   logout,
   create as createUserAPI,
-  remove as deleteUserAPI,
+  remove as deleteUserAPI
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
 
 export const authLoginPending = () => ({
-  type: "AUTH_LOGIN_PENDING",
+  type: "AUTH_LOGIN_PENDING"
 });
 
 export const authLoginFulfilled = (userData: User) => ({
   type: "AUTH_LOGIN_FULFILLED",
   payload: {
     id: userData.id,
-    username: userData.username,
-  },
+    username: userData.username
+  }
 });
 
 export const authLoginRejected = (error: string) => ({
   type: "AUTH_LOGIN_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const authLogin = (userData: User) => {
@@ -45,16 +45,16 @@ export const authLogin = (userData: User) => {
 };
 
 export const authLogoutPending = () => ({
-  type: "AUTH_LOGOUT_PENDING",
+  type: "AUTH_LOGOUT_PENDING"
 });
 
 export const authLogoutFulfilled = () => ({
-  type: "AUTH_LOGOUT_FULFILLED",
+  type: "AUTH_LOGOUT_FULFILLED"
 });
 
 export const authLogoutRejected = (error: string) => ({
   type: "AUTH_LOGOUT_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const authLogout = () => {
@@ -70,53 +70,40 @@ export const authLogout = () => {
 };
 
 export const createUserPending = () => ({
-  type: "CREATE_USER_PENDING",
+  type: "CREATE_USER_PENDING"
 });
 
 export const createUserFulfilled = (createdUser: User) => ({
   type: "CREATE_USER_FULFILLED",
-  payload: createdUser,
+  payload: createdUser
 });
 
 export const createUserRejected = (error: string) => ({
   type: "CREATE_USER_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const createUser = (userData: User) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
+      //dispatch(createUserPending());
       const { username, password } = userData;
       await createUserAPI(userData);
       dispatch(authLogin({ username, password }));
     } catch (error) {
+      // dispatch(createUserRejected(error.message));
       console.error(error);
     }
   };
 };
 
-export const deleteUserPending = () => ({
-  type: "DELETE_USER_PENDING",
-});
-
-export const deleteUserFulfilled = (deletedUser: User) => ({
-  type: "DELETE_USER_FULFILLED",
-  payload: deletedUser,
-});
-
-export const deleteUserRejected = (error: string) => ({
-  type: "DELETE_USER_REJECTED",
-  payload: error,
-});
-
 export const deleteUser = () => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      const deletedUser = await deleteUserAPI();
+      await deleteUserAPI();
       dispatch(authLogout());
-      dispatch(deleteUserFulfilled(deletedUser));
     } catch (error) {
       console.error(error);
     }
@@ -124,17 +111,17 @@ export const deleteUser = () => {
 };
 
 export const getAdvertsPending = () => ({
-  type: "GET_ADVERTS_PENDING",
+  type: "GET_ADVERTS_PENDING"
 });
 
 export const getAdvertsFulfilled = (adverts: Advert[]) => ({
   type: "GET_ADVERTS_FULFILLED",
-  payload: adverts,
+  payload: adverts
 });
 
 export const getAdvertsRejected = (error: string) => ({
   type: "GET_ADVERTS_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const getAdverts = (queryString: string) => {
@@ -150,17 +137,17 @@ export const getAdverts = (queryString: string) => {
 };
 
 export const getAdvertPending = () => ({
-  type: "GET_ADVERT_PENDING",
+  type: "GET_ADVERT_PENDING"
 });
 
 export const getAdvertFulfilled = (advert: Advert) => ({
   type: "GET_ADVERT_FULFILLED",
-  payload: advert,
+  payload: advert
 });
 
 export const getAdvertRejected = (error: string) => ({
   type: "GET_ADVERT_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const getAdvert = (advertId: string) => {
@@ -176,25 +163,24 @@ export const getAdvert = (advertId: string) => {
 };
 
 export const createAdvertPending = () => ({
-  type: "ADVERT_CREATED_PENDING",
+  type: "ADVERT_CREATED_PENDING"
 });
 
-export const createAdvertFulfilled = (createdAdvert: Advert) => ({
-  type: "ADVERT_CREATED_FULFILLED",
-  payload: createdAdvert,
+export const createAdvertFulfilled = () => ({
+  type: "ADVERT_CREATED_FULFILLED"
 });
 
 export const createAdvertRejected = (error: string) => ({
   type: "ADVERT_CREATED_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const createAdvert = (advert: Advert) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      const createdAdvert = await createAdvertAPI(advert);
-      dispatch(createAdvertFulfilled(createdAdvert));
+      await createAdvertAPI(advert);
+      dispatch(createAdvertFulfilled()); // TODO:mejor dispatch successNotification
     } catch (error) {
       console.error(error);
     }
@@ -202,25 +188,24 @@ export const createAdvert = (advert: Advert) => {
 };
 
 export const updateAdvertPending = () => ({
-  type: "UPDATE_ADVERT_PENDING",
+  type: "UPDATE_ADVERT_PENDING"
 });
 
-export const updateAdvertFulfilled = (updatedAdvert: Advert) => ({
-  type: "UPDATE_ADVERT_FULFILLED",
-  payload: updatedAdvert,
+export const updateAdvertFulfilled = () => ({
+  type: "UPDATE_ADVERT_FULFILLED"
 });
 
 export const updateAdvertRejected = (error: string) => ({
   type: "UPDATE_ADVERT_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const updateAdvert = (advert: Advert) => {
   // @ts-expect-error lo tipamos luego
   return async function (dispatch) {
     try {
-      const updatedAdvert = await updateAdvertAPI(advert);
-      dispatch(updateAdvertFulfilled(updatedAdvert));
+      await updateAdvertAPI(advert);
+      dispatch(updateAdvertFulfilled());
     } catch (error) {
       console.error(error);
     }
@@ -228,25 +213,24 @@ export const updateAdvert = (advert: Advert) => {
 };
 
 export const deleteAdvertPending = () => ({
-  type: "DELETE_ADVERT_PENDING",
+  type: "DELETE_ADVERT_PENDING"
 });
 
-export const deleteAdvertFulfilled = (deletedAdvert: Advert) => ({
-  type: "DELETE_ADVERT_FULFILLED",
-  payload: deletedAdvert,
+export const deleteAdvertFulfilled = () => ({
+  type: "DELETE_ADVERT_FULFILLED"
 });
 
 export const deleteAdvertRejected = (error: string) => ({
   type: "DELETE_ADVERT_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const deleteAdvert = (advertId: string) => {
   // @ts-expect-error lo vamos a tipar mas adelante
   return async function (dispatch) {
     try {
-      const deletedAdvert = await deleteAdvertAPI(advertId);
-      dispatch(deleteAdvertFulfilled(deletedAdvert));
+      await deleteAdvertAPI(advertId);
+      dispatch(deleteAdvertFulfilled());
     } catch (error) {
       console.error(error);
     }
@@ -254,25 +238,24 @@ export const deleteAdvert = (advertId: string) => {
 };
 
 export const toogleFavoritePending = () => ({
-  type: "TOOGLE_FAVORITE_PENDING",
+  type: "TOOGLE_FAVORITE_PENDING"
 });
 
-export const toogleFavoriteFullfilled = (updatedAdvert: Advert) => ({
-  type: "TOOGLE_FAVORITE_FULFILLED",
-  payload: updatedAdvert,
+export const toogleFavoriteFullfilled = () => ({
+  type: "TOOGLE_FAVORITE_FULFILLED"
 });
 
 export const toogleFavoriteRejected = (error: string) => ({
   type: "TOOGLE_FAVORITE_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const toogleFavorite = (isFavorite: boolean, advertId: string) => {
   // @ts-expect-error lo vamos a tipar mas adelante
   return async function (dispatch) {
     try {
-      const updatedAdvert = await toogleFavoriteAPI(isFavorite, advertId);
-      dispatch(toogleFavoriteFullfilled(updatedAdvert));
+      await toogleFavoriteAPI(isFavorite, advertId);
+      dispatch(toogleFavoriteFullfilled());
     } catch (error) {
       console.error(error);
     }
@@ -280,17 +263,17 @@ export const toogleFavorite = (isFavorite: boolean, advertId: string) => {
 };
 
 export const getAllTagsPending = () => ({
-  type: "GET_TAGS_PENDING",
+  type: "GET_TAGS_PENDING"
 });
 
 export const getAllTagsFulfilled = (tags: string[]) => ({
   type: "GET_TAGS_FULFILLED",
-  payload: tags,
+  payload: tags
 });
 
 export const getAllTagsRejected = (error: string) => ({
   type: "GET_TAGS_REJECTED",
-  payload: error,
+  payload: error
 });
 
 export const getAllTags = () => {

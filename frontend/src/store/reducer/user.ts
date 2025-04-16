@@ -4,18 +4,10 @@ import defaultState from "../state/defaultState";
 const user = (state = defaultState.user, action: Action) => {
   switch (action.type) {
     case "AUTH_LOGIN_FULFILLED": {
-      return {
-        ...state,
-        id: action.payload.id,
-        username: action.payload.username,
-      };
+      return action.payload;
     }
     case "AUTH_LOGOUT_FULFILLED": {
-      return {
-        ...state,
-        id: "",
-        username: "",
-      };
+      return null;
     }
     default: {
       return state;

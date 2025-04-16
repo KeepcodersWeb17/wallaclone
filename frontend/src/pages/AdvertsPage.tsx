@@ -4,7 +4,7 @@ import {
   Link,
   useLocation,
   useParams,
-  useSearchParams,
+  useSearchParams
 } from "react-router-dom";
 import type State from "../store/state/types";
 import CloseIcon from "../components/icons/Close";
@@ -51,9 +51,10 @@ const AdvertsPage = () => {
       queryString += `username=${username}&`;
     }
 
-    queryString += new URLSearchParams(
-      Object.fromEntries(searchParams.entries()),
-    ).toString();
+    queryString += new URLSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      tags: "funcionando"
+    }).toString();
 
     // @ts-expect-error lo vamos a tipar mas adelante
     dispatch(getAdverts(queryString));
@@ -63,14 +64,14 @@ const AdvertsPage = () => {
     event.preventDefault();
 
     const filters = Array.from(
-      event.currentTarget.querySelectorAll("input"),
+      event.currentTarget.querySelectorAll("input")
     ).map((element) => element.value);
 
     const tagsFilters = Array.from(
-      dialogRef.current!.querySelectorAll("li[selected]"),
+      dialogRef.current!.querySelectorAll("li[selected]")
     )
       .map((element) => element.textContent)
-      .join(",")
+      .join("-")
       .toLowerCase();
 
     const params: {
@@ -130,11 +131,11 @@ const AdvertsPage = () => {
         <ul className="sh flex w-full flex-col gap-5 text-center">
           {tags.map((tag) => (
             <li
-              key={tag}
+              key={tag.id}
               className="cursor-pointer rounded hover:bg-gray-100"
               onClick={handleSelected}
             >
-              {tag}
+              {tag.name}
             </li>
           ))}
         </ul>

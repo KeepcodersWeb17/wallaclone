@@ -44,20 +44,6 @@ type CreateUserRejected = {
   payload: string;
 };
 
-type DeleteUserPending = {
-  type: "DELETE_USER_PENDING";
-};
-
-type DeleteUserFulfilled = {
-  type: "DELETE_USER_FULFILLED";
-  payload: User;
-};
-
-type DeleteUserRejected = {
-  type: "DELETE_USER_REJECTED";
-  payload: string;
-};
-
 type GetAdvertsPending = {
   type: "GET_ADVERTS_PENDING";
 };
@@ -184,9 +170,6 @@ type Action =
   | ToogleFavoritePending
   | ToogleFavoriteFulfilled
   | ToogleFavoriteRejected
-  | DeleteUserPending
-  | DeleteUserFulfilled
-  | DeleteUserRejected
   | GetTagsPending
   | GetTagsFulfilled
   | GetTagsRejected;

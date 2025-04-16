@@ -6,7 +6,7 @@ import type State from "../store/state/types";
 import {
   getAdvert,
   deleteAdvert,
-  toogleFavorite,
+  toogleFavorite
 } from "../store/actions/creators";
 
 const AdvertPage = () => {
@@ -17,7 +17,7 @@ const AdvertPage = () => {
   const IsFavoriteInitialState =
     !!user?.id &&
     Array.isArray(advertDetails?.favorites) &&
-    advertDetails?.favorites?.includes(user.id);
+    advertDetails?.favorites?.some((favorite) => favorite.id === user.id);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -94,14 +94,7 @@ const AdvertPage = () => {
 
           <section>
             <div>
-              {!advertDetails.image ? (
-                <img
-                  src="https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg"
-                  alt="no-image"
-                />
-              ) : (
-                <img src={advertDetails.image} alt={advertDetails.name} />
-              )}
+              <img src={advertDetails.image} alt={advertDetails.name} />
             </div>
 
             <div>
@@ -130,7 +123,7 @@ const AdvertPage = () => {
             </div>
 
             <div>
-              {user?.username === advertDetails.owner ? (
+              {user?.username === advertDetails.owner?.username ? (
                 <>
                   <button onClick={handleDelete}>Delete</button>
                   <Link

@@ -34,6 +34,8 @@ const advertSchema = new mongoose.Schema(
             .limit(options.limit)
             .select(options.fields)
             .populate("owner", "username")
+            .populate("tags", "name")
+            .populate("favorites", "username")
             .exec()
         );
       },
