@@ -18,29 +18,18 @@ const AdvertsPage = () => {
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  // const user = useSelector((state: State) => state.user);
-
-  const adverts = useSelector((state: State) => state.adverts);
-  const user = useSelector((state: State) => state.user);
-  const tags = useSelector((state: State) => state.tags);
+  const { user, tags, adverts } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
 
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // searchParams.entries() devuelve un array de arrays con los pares clave-valor de los parametros de busqueda
-    // [
-    // ["username", "admin"],
-    // ["name", "iphone"]
-    // ]
+    // @ts-expect-error lo vamos a tipar mas adelante
+    dispatch(getAllTags());
+  }, [dispatch]);
 
-    // Object.fromEntries convierte ese array de arrays en un objeto
-    // {
-    // username: "admin",
-    // name: "iphone"
-    // }
-
+  useEffect(() => {
     let queryString = "";
 
     if (pathname.includes("/favorites") && username) {
@@ -51,14 +40,39 @@ const AdvertsPage = () => {
       queryString += `username=${username}&`;
     }
 
-    queryString += new URLSearchParams({
-      ...Object.fromEntries(searchParams.entries()),
-      tags: "funcionando"
-    }).toString();
+    const name = searchParams.get("name") || "";
+
+    if (name) {
+      queryString += `name=${name}&`;
+    }
+
+    const price = searchParams.get("price") || "";
+
+    if (price) {
+      queryString += `price=${price}&`;
+    }
+
+    const tagsParam = searchParams.get("tags") || "";
+
+    if (tagsParam) {
+      const tagsIds: string[] = [];
+
+      tags.forEach((tag) => {
+        if (tagsParam.includes(tag.name)) {
+          tagsIds.push(tag.id);
+        }
+      });
+
+      queryString += `tags=${tagsIds.join("-")}&`;
+    }
+
+    queryString.slice(0, -1); // Eliminar el último '&'
+
+    // TODO agregar skip sort y limit
 
     // @ts-expect-error lo vamos a tipar mas adelante
     dispatch(getAdverts(queryString));
-  }, [dispatch, searchParams, username, user?.id, pathname]);
+  }, [dispatch, searchParams, username, user?.id, pathname, tags]);
 
   const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -103,8 +117,6 @@ const AdvertsPage = () => {
   };
 
   const handleOpenModal = async () => {
-    // @ts-expect-error lo vamos a tipar mas adelante
-    await dispatch(getAllTags());
     dialogRef.current?.showModal();
   };
 
