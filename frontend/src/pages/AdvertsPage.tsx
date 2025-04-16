@@ -61,6 +61,9 @@ const AdvertsPage = () => {
       name?: string;
       price?: string;
       tags?: string;
+      skip?: string;
+      limit?: string;
+      sort?: string;
     } = {};
 
     if (filters[0]) {
@@ -79,6 +82,24 @@ const AdvertsPage = () => {
 
     if (tagsFilters) {
       params.tags = tagsFilters;
+    }
+
+    const skip = searchParams.get("skip") || "";
+
+    if (skip) {
+      params.skip = skip;
+    }
+
+    const limit = searchParams.get("limit") || "";
+
+    if (limit) {
+      params.limit = limit;
+    }
+
+    const sort = searchParams.get("sort") || "";
+
+    if (sort) {
+      params.sort = sort;
     }
 
     setSearchParams(params);
