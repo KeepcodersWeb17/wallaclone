@@ -10,6 +10,7 @@ import type State from "../store/state/types";
 import CloseIcon from "../components/icons/Close";
 import { getAdverts, getAllTags } from "../store/actions/creators";
 import { buildQueryString } from "../lib/buildQueryString";
+import SortingButton from "../components/SortingButton";
 
 const AdvertsPage = () => {
   // const [isOpenModal, setIsOpenModal] = useState(false);
@@ -106,7 +107,14 @@ const AdvertsPage = () => {
     setSearchParams(params);
   };
   // Reutilizable para los 6 tipos de SORTING
-  // const handleSortClick = (event: React.MouseEvent) => {};
+  const handleSortParamsClick = (queryParam: string) => {
+    const params = new URLSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      sort: queryParam
+    }).toString();
+
+    setSearchParams(params);
+  };
 
   // Paginacion, necesitamos quantity para el handleNextPage
   // const handleNextPageClick = (event: React.MouseEvent) => {}:
@@ -172,6 +180,21 @@ const AdvertsPage = () => {
         </button>
         <button type="submit">Filter</button>
       </form>
+
+      <div className="flex justify-center gap-5">
+        <SortingButton
+          queryParam="date-asc"
+          setSearchParams={handleSortParamsClick}
+        />
+        <SortingButton
+          queryParam="name-asc"
+          setSearchParams={handleSortParamsClick}
+        />
+        <SortingButton
+          queryParam="price-desc"
+          setSearchParams={handleSortParamsClick}
+        />
+      </div>
 
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
