@@ -37,7 +37,7 @@ const UpdateAdvertPage = () => {
     setDescription(advertDetails.description || "");
     setPrice(advertDetails.price);
     setImage(advertDetails.image || "");
-    setTag(advertDetails.tags?.name || "");
+    setTag(advertDetails.tags?.map((tag) => tag.name) || []);
     setSale(advertDetails.sale);
   }, [advertDetails, advertId]);
 
