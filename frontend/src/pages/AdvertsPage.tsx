@@ -105,6 +105,12 @@ const AdvertsPage = () => {
 
     setSearchParams(params);
   };
+  // Reutilizable para los 6 tipos de SORTING
+  // const handleSortClick = (event: React.MouseEvent) => {};
+
+  // Paginacion, necesitamos quantity para el handleNextPage
+  // const handleNextPageClick = (event: React.MouseEvent) => {}:
+  // const handlePrevPageClick = (event: React.MouseEvent) => {};
 
   const handleOpenModal = async () => {
     dialogRef.current?.showModal();
