@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import configureStore from "./store/store";
 import App from "./App.tsx";
 import getPreloadedState from "./lib/preloadedState.ts";
+import { ErrorBoundary } from "./error/ErrorBoundary.tsx";
 
 const preloadedState = await getPreloadedState();
 
@@ -13,12 +14,12 @@ const store = configureStore(preloadedState);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {/* <ErrorBoundary> */}
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-    {/* </ErrorBoundary> */}
-  </StrictMode>,
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
+    </ErrorBoundary>
+  </StrictMode>
 );
