@@ -36,8 +36,6 @@ export const getAllAdverts = async (req, res, next) => {
     // si el query param existe lo agregamos al objeto filters luego de normalizarlo
 
     if (username) {
-      // con esta RegExp queremos que el username sea case insensitive
-      // const usernameRegExp = new RegExp(`^${username}`, "i"); // la busqueda debe ser exacta
       const user = await User.findOne({ username });
 
       if (!user) {
