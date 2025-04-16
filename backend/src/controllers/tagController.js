@@ -2,12 +2,14 @@ import Tag from "../models/Tag.js";
 
 export const getAllTags = async (req, res, next) => {
   try {
-    const [tags, quantity] = await Promise.all([
-      Tag.find(),
-      Tag.countDocuments(),
-    ]);
+    const foundTags = await Tag.find();
 
-    res.json({ tags, quantity });
+    const tags = foundTags.map((tag) => ({
+      id: tag._id,
+      name: tag.name,
+    }));
+
+    res.json(tags);
   } catch (error) {
     next(error);
   }

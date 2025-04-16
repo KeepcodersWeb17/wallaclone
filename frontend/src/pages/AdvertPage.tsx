@@ -6,7 +6,7 @@ import type State from "../store/state/types";
 import {
   getAdvert,
   deleteAdvert,
-  toogleFavorite,
+  toogleFavorite
 } from "../store/actions/creators";
 
 const AdvertPage = () => {
@@ -123,7 +123,7 @@ const AdvertPage = () => {
             </div>
 
             <div>
-              {user?.username === advertDetails.owner ? (
+              {user?.username === advertDetails.owner?.username ? (
                 <>
                   <button onClick={handleDelete}>Delete</button>
                   <Link

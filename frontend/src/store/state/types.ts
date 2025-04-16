@@ -1,18 +1,27 @@
 export type Sale = "buy" | "sell" | undefined;
 
+export type Tag = {
+  id: string;
+  name: string;
+};
+
+export type Owner = {
+  id: string;
+  username: string;
+};
+
 export type Advert = {
   id?: string;
-  _id?: string;
   name: string;
   description?: string;
   price: number;
   sale: Sale;
   image?: string;
-  tags?: { _id: string; name: string }[];
-  owner?: { _id: string; username: string };
-  updatedAt?: string;
+  tags?: Tag[];
+  owner?: Owner;
+  favorites?: Owner[];
   createdAt?: string;
-  favorites?: { _id: string; username: string }[];
+  updatedAt?: string;
 };
 
 export type User = {
@@ -28,7 +37,7 @@ type State = {
   user: User | null;
   adverts: Advert[];
   advert: Advert | null;
-  tags: string[];
+  tags: Tag[];
 };
 
 export default State;

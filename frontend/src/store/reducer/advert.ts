@@ -6,6 +6,9 @@ const advert = (state = defaultState.advert, action: Action) => {
     case "GET_ADVERT_FULFILLED": {
       return action.payload;
     }
+    case "DELETE_ADVERT_FULFILLED": {
+      return null;
+    }
     default: {
       return state;
     }

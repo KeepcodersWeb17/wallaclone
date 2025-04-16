@@ -1,5 +1,4 @@
 import User from "../models/User.js";
-import { deleteAllAdverts } from "./advertController.js";
 
 export const createUser = async (req, res, next) => {
   try {
@@ -30,9 +29,9 @@ export const createUser = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    const createdUser = await newUser.save();
+    await newUser.save();
 
-    res.status(201).json(createdUser);
+    res.status(201);
   } catch (error) {
     next(error);
   }
@@ -51,8 +50,13 @@ export const getUser = async (req, res, next) => {
       return;
     }
 
-    const { _id: id, __v, password, ...user } = foundUser._doc;
-    user.id = userId;
+    const user = {
+      id: foundUser._id,
+      username: foundUser.username,
+      email: foundUser.email,
+      createdAt: foundUser.createdAt,
+      updatedAt: foundUser.updatedAt,
+    };
 
     res.status(200).json(user);
   } catch (error) {
@@ -65,15 +69,6 @@ export const updateUser = async (req, res, next) => {
     const userId = req.user.id;
 
     const { username, email, password } = req.body;
-
-    const user = await User.findById(userId);
-
-    if (!user) {
-      const error = new Error("User not found");
-      error.status = 404;
-      next(error);
-      return;
-    }
 
     const updatedData = {};
 
@@ -90,11 +85,16 @@ export const updateUser = async (req, res, next) => {
       updatedData.password = hashedPassword;
     }
 
-    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
-      new: true,
-    });
+    const foundUser = await User.findOneAndUpdate({ _id: userId }, updatedData);
 
-    res.status(200).json({ updatedUser });
+    if (!foundUser) {
+      const error = new Error("User not found");
+      error.status = 404;
+      next(error);
+      return;
+    }
+
+    res.status(200);
   } catch (error) {
     next(error);
   }
@@ -113,12 +113,7 @@ export const deleteUser = async (req, res, next) => {
       return;
     }
 
-    const { _id: id, __v, password, ...user } = deletedUser._doc;
-    user.id = userId;
-
-    deleteAllAdverts(req, res, next);
-
-    res.status(200).json(user);
+    next();
   } catch (error) {
     next(error);
   }

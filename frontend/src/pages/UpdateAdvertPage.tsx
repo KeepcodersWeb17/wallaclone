@@ -16,7 +16,7 @@ const UpdateAdvertPage = () => {
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [image, setImage] = useState<string>("");
-  const [tag, setTag] = useState<string>("");
+  const [tag, setTag] = useState<string[]>([]);
   const [sale, setSale] = useState<Sale>("buy");
 
   const disabled = !name || !price;
@@ -37,7 +37,7 @@ const UpdateAdvertPage = () => {
     setDescription(advertDetails.description || "");
     setPrice(advertDetails.price);
     setImage(advertDetails.image || "");
-    setTag(advertDetails.tags?.[0] || "");
+    setTag(advertDetails.tags?.name || "");
     setSale(advertDetails.sale);
   }, [advertDetails, advertId]);
 
@@ -53,7 +53,7 @@ const UpdateAdvertPage = () => {
       price,
       image,
       tags: [tag],
-      sale,
+      sale
     };
 
     // @ts-expect-error lo tipamos más adelante
@@ -82,7 +82,8 @@ const UpdateAdvertPage = () => {
   const handleTagsAdvertChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setTag(event.target.value);
+    console.log(event.target.value);
+    setTag(event.target.value.split(","));
   };
 
   const handleSaleAdvertChange = (

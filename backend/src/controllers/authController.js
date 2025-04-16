@@ -5,12 +5,12 @@ export const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    let user = await User.findOne({ username });
+    let foundUser = await User.findOne({ username });
 
-    if (!user) {
-      user = await User.findOne({ email: username });
+    if (!foundUser) {
+      foundUser = await User.findOne({ email: username });
 
-      if (!user) {
+      if (!foundUser) {
         const error = new Error("Incorrect username or password");
         error.status = 401;
         next(error);
@@ -38,7 +38,15 @@ export const login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({ id: user._id, username: user.username });
+    const user = {
+      id: foundUser._id,
+      username: foundUser.username,
+      email: foundUser.email,
+      createdAt: foundUser.createdAt,
+      updatedAt: foundUser.updatedAt,
+    };
+
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -52,7 +60,7 @@ export const logout = (req, res) => {
       sameSite: "none",
     });
 
-    res.status(200).json({ message: "Logout successfully" });
+    res.status(200);
   } catch (error) {
     next(error);
   }

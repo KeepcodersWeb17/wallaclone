@@ -7,26 +7,26 @@ export const login = async (credentials: User) => {
       method: "POST",
       headers: { "content-type": "application/json" },
       credentials: "include",
-      body: JSON.stringify(credentials),
-    },
+      body: JSON.stringify(credentials)
+    }
   ).then((res) => res.json());
 
   if (response.error) {
     throw new Error(response.error);
   }
 
-  const { id, username } = response;
-
-  return { id, username };
+  return response.user;
 };
 
 export const logout = async () => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/auth/logout",
-    { credentials: "include" },
+    {
+      credentials: "include"
+    }
   );
+
   if (!response.ok) {
-    console.error(response);
     throw new Error(response.statusText);
   }
 };
@@ -38,19 +38,13 @@ export const create = async (userData: User) => {
       method: "POST",
       headers: { "content-type": "application/json" },
       credentials: "include",
-      body: JSON.stringify(userData),
-    },
+      body: JSON.stringify(userData)
+    }
   ).then((res) => res.json());
 
   if (response.error) {
     throw new Error(response.error);
   }
-
-  const { username, email } = response;
-
-  const id = response._id;
-
-  return { id, username, email };
 };
 
 export const remove = async () => {
@@ -59,13 +53,13 @@ export const remove = async () => {
     {
       method: "DELETE",
       headers: { "content-type": "application/json" },
-      credentials: "include",
-    },
+      credentials: "include"
+    }
   ).then((res) => res.json());
 
   if (response.error) {
     throw new Error(response.error);
   }
-
-  return response;
 };
+
+// TODO: UPDATE
