@@ -137,6 +137,7 @@ const AdvertsPage = () => {
         <button type="submit">Filter</button>
       </form>
 
+      {/* Sorting */}
       <div className="flex justify-center gap-5">
         <SortingButton
           queryParam="date-asc"
@@ -151,6 +152,8 @@ const AdvertsPage = () => {
           setSearchParams={handleSortParamsClick}
         />
       </div>
+
+      {/* Paginacion */}
 
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
