@@ -38,9 +38,6 @@ const AdvertsPage = () => {
       pathname,
       tags
     });
-
-    // TODO agregar skip sort y limit
-
     // @ts-expect-error lo vamos a tipar mas adelante
     dispatch(getAdverts(queryString));
   }, [dispatch, searchParams, username, user, pathname, tags]);
