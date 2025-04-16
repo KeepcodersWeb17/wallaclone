@@ -18,7 +18,7 @@ export const normalizePriceMongo = (priceString) => {
 
 export const normalizeTagsMongo = (tagsString) => {
   // return normalized tags
-  const tagsList = tagsString.toLowerCase().split("-");
+  const tagsList = tagsString.split("-");
   return tagsList;
 };
 

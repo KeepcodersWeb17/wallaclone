@@ -60,10 +60,7 @@ export const getAllAdverts = async (req, res, next) => {
     }
 
     if (tags) {
-      const tagsNames = normalizeTagsMongo(tags);
-      const tagsIds = await Tag.find({ name: { $in: tagsNames } }).select(
-        "_id"
-      );
+      const tagsIds = normalizeTagsMongo(tags);
       filters.tags = { $all: tagsIds };
     }
 
