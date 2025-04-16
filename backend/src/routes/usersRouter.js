@@ -11,6 +11,7 @@ import {
 } from "../middlewares/validateMiddleware.js";
 import { isAuthenticated } from "../middlewares/authMiddleware.js";
 import { deleteOwnerAdverts } from "../controllers/advertController.js";
+import { logout } from "../controllers/authController.js";
 
 const router = express.Router();
 
