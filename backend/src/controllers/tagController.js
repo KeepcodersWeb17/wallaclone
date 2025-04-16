@@ -9,7 +9,7 @@ export const getAllTags = async (req, res, next) => {
       name: tag.name,
     }));
 
-    res.json(tags);
+    res.json({ tags });
   } catch (error) {
     next(error);
   }

@@ -58,7 +58,7 @@ export const getUser = async (req, res, next) => {
       updatedAt: foundUser.updatedAt,
     };
 
-    res.status(200).json(user);
+    res.status(200).json({ user });
   } catch (error) {
     next(error);
   }
