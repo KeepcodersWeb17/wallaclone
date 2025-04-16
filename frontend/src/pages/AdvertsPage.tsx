@@ -9,6 +9,7 @@ import {
 import type State from "../store/state/types";
 import CloseIcon from "../components/icons/Close";
 import { getAdverts, getAllTags } from "../store/actions/creators";
+import { buildQueryString } from "../lib/buildQueryString";
 
 const AdvertsPage = () => {
   // const [isOpenModal, setIsOpenModal] = useState(false);
@@ -30,49 +31,19 @@ const AdvertsPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    let queryString = "";
-
-    if (pathname.includes("/favorites") && username) {
-      queryString += `favorites=${user?.id}&`;
-    }
-
-    if (pathname.includes("/user") && username) {
-      queryString += `username=${username}&`;
-    }
-
-    const name = searchParams.get("name") || "";
-
-    if (name) {
-      queryString += `name=${name}&`;
-    }
-
-    const price = searchParams.get("price") || "";
-
-    if (price) {
-      queryString += `price=${price}&`;
-    }
-
-    const tagsParam = searchParams.get("tags") || "";
-
-    if (tagsParam) {
-      const tagsIds: string[] = [];
-
-      tags.forEach((tag) => {
-        if (tagsParam.includes(tag.name)) {
-          tagsIds.push(tag.id);
-        }
-      });
-
-      queryString += `tags=${tagsIds.join("-")}&`;
-    }
-
-    queryString.slice(0, -1); // Eliminar el último '&'
+    const queryString = buildQueryString({
+      searchParams,
+      username,
+      user,
+      pathname,
+      tags
+    });
 
     // TODO agregar skip sort y limit
 
     // @ts-expect-error lo vamos a tipar mas adelante
     dispatch(getAdverts(queryString));
-  }, [dispatch, searchParams, username, user?.id, pathname, tags]);
+  }, [dispatch, searchParams, username, user, pathname, tags]);
 
   const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
