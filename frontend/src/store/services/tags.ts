@@ -9,5 +9,6 @@ export const getAll = async () => {
   if (response.error) {
     throw new Error(response.error);
   }
+
   return response.tags;
 };
