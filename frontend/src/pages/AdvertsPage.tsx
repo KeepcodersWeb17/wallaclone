@@ -87,7 +87,8 @@ const AdvertsPage = () => {
     const skip = searchParams.get("skip") || "";
 
     if (skip) {
-      params.skip = skip;
+      // Cuando aplicamos un filtro queremos volver a la primera pagina
+      params.skip = "";
     }
 
     const limit = searchParams.get("limit") || "";
