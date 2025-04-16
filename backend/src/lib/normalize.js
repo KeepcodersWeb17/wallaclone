@@ -28,4 +28,6 @@ export const normalizeSortMongo = (sortString) => {
   if (sortString === "name-desc") return { name: -1 };
   if (sortString === "price-asc") return { price: 1 };
   if (sortString === "price-desc") return { price: -1 };
+  if (sortString === "date-asc") return { updatedAt: 1 };
+  if (sortString === "date-desc") return { updatedAt: -1 };
 };
