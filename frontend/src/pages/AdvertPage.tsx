@@ -17,7 +17,7 @@ const AdvertPage = () => {
   const IsFavoriteInitialState =
     !!user?.id &&
     Array.isArray(advertDetails?.favorites) &&
-    advertDetails?.favorites?.some((favorite) => favorite._id === user.id);
+    advertDetails?.favorites?.some((favorite) => favorite.id === user.id);
 
   const [openModal, setOpenModal] = useState(false);
 
