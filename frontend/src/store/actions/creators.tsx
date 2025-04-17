@@ -15,8 +15,9 @@ import {
   remove as deleteUserAPI
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
+import type { ActionPending } from "./types";
 
-const actionPending = () => ({
+const actionPending = (): ActionPending => ({
   type: "ACTION_PENDING"
 });
 

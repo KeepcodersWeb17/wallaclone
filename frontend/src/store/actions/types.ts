@@ -19,7 +19,7 @@ type GetTagsFulfilled = {
   payload: Tag[];
 };
 
-type ActionPending = {
+export type ActionPending = {
   type: "ACTION_PENDING";
 };
 
