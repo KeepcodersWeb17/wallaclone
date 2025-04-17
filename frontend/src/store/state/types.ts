@@ -35,7 +35,7 @@ export type User = {
 
 type State = {
   user: User | null;
-  adverts: Advert[];
+  adverts: { list: Advert[]; quantity: number };
   tags: Tag[];
 };
 

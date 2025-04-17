@@ -74,9 +74,47 @@ const AdvertsPage = () => {
     setSearchParams(params);
   };
 
-  // Paginacion, necesitamos quantity para el handleNextPage
-  // const handleNextPageClick = (event: React.MouseEvent) => {}:
-  // const handlePrevPageClick = (event: React.MouseEvent) => {};
+  const handleNextPage = () => {
+    const skip = Number(searchParams.get("skip")) || 0;
+    const limit = Number(searchParams.get("limit")) || 5;
+
+    if (skip + limit >= adverts.quantity) return;
+
+    const params = new URLSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      skip: `${skip + limit}`
+    }).toString();
+
+    setSearchParams(params);
+  };
+
+  const handlePrevPage = () => {
+    const skip = Number(searchParams.get("skip"));
+    const limit = Number(searchParams.get("limit")) || 5;
+
+    if (!skip) return;
+
+    const newSkip = skip - limit < 0 ? 0 : skip - limit;
+
+    const params = new URLSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      skip: `${newSkip}`
+    }).toString();
+
+    setSearchParams(params);
+  };
+
+  const handleLimit = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      const params = new URLSearchParams({
+        ...Object.fromEntries(searchParams.entries()),
+        limit: `${event.currentTarget.value}`,
+        skip: "0"
+      }).toString();
+
+      setSearchParams(params);
+    }
+  };
 
   const handleOpenModal = async () => {
     dialogRef.current?.showModal();
@@ -159,12 +197,29 @@ const AdvertsPage = () => {
       </div>
 
       {/* Paginacion */}
+      <div className="flex justify-center gap-5">
+        <button type="button" onClick={handlePrevPage}>
+          Previous
+        </button>
+        <button type="button" onClick={handleNextPage}>
+          Next
+        </button>
+        <input
+          type="number"
+          step={2}
+          min={2}
+          max={10}
+          onKeyDown={handleLimit}
+          placeholder="Limit"
+        />
+      </div>
+
       <h2>Adverts</h2>
-      {adverts.length === 0 ? (
+      {adverts.list.length === 0 ? (
         <p> No adverts </p>
       ) : (
         <ul>
-          {adverts.map((advert) => (
+          {adverts.list.map((advert) => (
             <li key={advert.id}>
               <Link to={`/adverts/${advert.name}-${advert.id}`}>
                 <div>

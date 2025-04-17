@@ -28,14 +28,14 @@ export const getLatest = async (queryString: string) => {
     throw new Error(response.error);
   }
 
-  const adverts = response.adverts.map((advert: Advert) => {
+  const adverts: Advert[] = response.adverts.map((advert: Advert) => {
     if (!advert.image) {
       advert.image =
         "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg";
     }
     return advert;
   });
-  return adverts;
+  return { list: adverts, quantity: response.quantity as number };
 };
 
 export const getById = async (advertId: string) => {
@@ -50,13 +50,13 @@ export const getById = async (advertId: string) => {
     throw new Error(response.error);
   }
 
-  const advert = response.advert;
+  const advert: Advert = response.advert;
   if (!advert.image) {
     advert.image =
       "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg";
   }
 
-  return advert;
+  return { list: [advert], quantity: 1 };
 };
 
 export const update = async (advert: Advert) => {

@@ -33,7 +33,10 @@ const authLogoutFulfilled = () => ({
   type: "AUTH_LOGOUT_FULFILLED"
 });
 
-const getAdvertsFulfilled = (adverts: Advert[]) => ({
+const getAdvertsFulfilled = (adverts: {
+  list: Advert[];
+  quantity: number;
+}) => ({
   type: "GET_ADVERTS_FULFILLED",
   payload: adverts
 });
@@ -103,11 +106,14 @@ export const deleteUser = () => {
 export const getAdverts = (queryString: string) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
-    // dispatch(actionPending());
-    const adverts = await getLatest(queryString);
-    dispatch(getAdvertsFulfilled(adverts));
-    // dispatch(actionRejected(error.message));
-    // console.error(error);
+    try {
+      // dispatch(actionPending());
+      const adverts = await getLatest(queryString);
+      dispatch(getAdvertsFulfilled(adverts));
+    } catch (error) {
+      // dispatch(actionRejected(error.message));
+      console.error(error);
+    }
   };
 };
 
@@ -116,8 +122,8 @@ export const getAdvert = (advertId: string) => {
   return async function (dispatch) {
     try {
       // dispatch(actionPending());
-      const advert = await getById(advertId);
-      dispatch(getAdvertsFulfilled([advert]));
+      const adverts = await getById(advertId);
+      dispatch(getAdvertsFulfilled(adverts));
     } catch (error) {
       // dispatch(actionRejected(error.message));
       console.error(error);
