@@ -1,3 +1,5 @@
+import type { Tag } from "../state/types";
+
 export const getAll = async () => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/tags",
@@ -10,5 +12,5 @@ export const getAll = async () => {
     throw new Error(response.error);
   }
 
-  return response.tags;
+  return response.tags as Tag[];
 };

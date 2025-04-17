@@ -1,4 +1,5 @@
-import type { User, Advert } from "../state/types";
+import type { User, Advert, Tag } from "../state/types";
+import type { AppThunk } from "../store";
 import {
   create as createAdvertAPI,
   getById,
@@ -15,14 +16,14 @@ import {
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
 
-// export const actionPending = () => ({
-//   type: "ACTION_PENDING"
-// });
+const actionPending = () => ({
+  type: "ACTION_PENDING"
+});
 
-// export const actionRejected = (error: string) => ({
-//   type: "ACTION_REJECTED",
-//   payload: error
-// });
+const actionRejected = (error: string) => ({
+  type: "ACTION_REJECTED",
+  payload: error
+});
 
 const authLoginFulfilled = (userData: User) => ({
   type: "AUTH_LOGIN_FULFILLED",
@@ -41,20 +42,19 @@ const getAdvertsFulfilled = (adverts: {
   payload: adverts
 });
 
-const getAllTagsFulfilled = (tags: string[]) => ({
+const getAllTagsFulfilled = (tags: Tag[]) => ({
   type: "GET_TAGS_FULFILLED",
   payload: tags
 });
 
-export const authLogin = (userData: User) => {
-  // @ts-expect-error Lo vamos a tipar más adelante
+export const authLogin = (userData: User): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       const user = await login(userData);
       dispatch(authLoginFulfilled(user));
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -64,12 +64,12 @@ export const createUser = (userData: User) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       const { username, password } = userData;
       await createUserAPI(userData);
       dispatch(authLogin({ username, password }));
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -79,11 +79,11 @@ export const authLogout = () => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       await logout();
       dispatch(authLogoutFulfilled());
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -93,11 +93,11 @@ export const deleteUser = () => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       await deleteUserAPI();
       dispatch(authLogout());
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -107,11 +107,11 @@ export const getAdverts = (queryString: string) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       const adverts = await getLatest(queryString);
       dispatch(getAdvertsFulfilled(adverts));
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -121,11 +121,11 @@ export const getAdvert = (advertId: string) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       const adverts = await getById(advertId);
       dispatch(getAdvertsFulfilled(adverts));
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -134,10 +134,10 @@ export const getAdvert = (advertId: string) => {
 export const createAdvert = (advert: Advert) => {
   return async function () {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       await createAdvertAPI(advert);
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -146,10 +146,10 @@ export const createAdvert = (advert: Advert) => {
 export const updateAdvert = (advert: Advert) => {
   return async function () {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       await updateAdvertAPI(advert);
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -158,10 +158,10 @@ export const updateAdvert = (advert: Advert) => {
 export const deleteAdvert = (advertId: string) => {
   return async function () {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       await deleteAdvertAPI(advertId);
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -170,10 +170,10 @@ export const deleteAdvert = (advertId: string) => {
 export const toogleFavorite = (isFavorite: boolean, advertId: string) => {
   return async function () {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       await toogleFavoriteAPI(isFavorite, advertId);
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };
@@ -183,11 +183,11 @@ export const getAllTags = () => {
   // @ts-expect-error lo vamos a tipar mas adelante
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      dispatch(actionPending());
       const tags = await getAllTagsAPI();
       dispatch(getAllTagsFulfilled(tags));
     } catch (error) {
-      // dispatch(actionRejected(error.message));
+      dispatch(actionRejected(error.message));
       console.error(error);
     }
   };

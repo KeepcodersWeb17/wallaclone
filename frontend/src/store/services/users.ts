@@ -15,7 +15,7 @@ export const login = async (credentials: User) => {
     throw new Error(response.error);
   }
 
-  return response.user;
+  return response.user as User;
 };
 
 export const logout = async () => {

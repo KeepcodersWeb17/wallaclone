@@ -37,6 +37,7 @@ type State = {
   user: User | null;
   adverts: { list: Advert[]; quantity: number };
   tags: Tag[];
+  ui: { loading: boolean; error: string[] | null };
 };
 
 export default State;

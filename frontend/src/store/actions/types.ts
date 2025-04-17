@@ -1,11 +1,8 @@
-import { Advert } from "../state/types";
+import type { Advert, Tag, User } from "../state/types";
 
 type AuthLoginFulfilled = {
   type: "AUTH_LOGIN_FULFILLED";
-  payload: {
-    id: string;
-    username: string;
-  };
+  payload: User;
 };
 
 type AuthLogoutFulfilled = {
@@ -14,11 +11,20 @@ type AuthLogoutFulfilled = {
 
 type GetAdvertsFulfilled = {
   type: "GET_ADVERTS_FULFILLED";
-  payload: Advert[];
+  payload: { list: Advert[]; quantity: number };
 };
 
 type GetTagsFulfilled = {
   type: "GET_TAGS_FULFILLED";
+  payload: Tag[];
+};
+
+type ActionPending = {
+  type: "ACTION_PENDING";
+};
+
+type ActionRejected = {
+  type: "ACTION_REJECTED";
   payload: string[];
 };
 
@@ -26,6 +32,8 @@ type Action =
   | AuthLoginFulfilled
   | AuthLogoutFulfilled
   | GetAdvertsFulfilled
-  | GetTagsFulfilled;
+  | GetTagsFulfilled
+  | ActionPending
+  | ActionRejected;
 
 export default Action;
