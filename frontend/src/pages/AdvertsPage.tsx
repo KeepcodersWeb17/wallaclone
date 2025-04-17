@@ -12,6 +12,7 @@ import { getAdverts, getAllTags } from "../store/actions/creators";
 import { buildQueryString } from "../lib/buildQueryString";
 import SortingButton from "../components/SortingButton";
 import { getParamsFilters } from "../lib/getParamsFilter";
+import { ShowUserAdverts } from "../components/ShowUserAdverts";
 
 const AdvertsPage = () => {
   // const [isOpenModal, setIsOpenModal] = useState(false);
@@ -62,6 +63,7 @@ const AdvertsPage = () => {
 
     setSearchParams(params);
   };
+
   // Reutilizable para los 6 tipos de SORTING
   const handleSortParamsClick = (queryParam: string) => {
     const params = new URLSearchParams({
@@ -113,6 +115,7 @@ const AdvertsPage = () => {
         </ul>
         <button onClick={handleClose}>Confirm</button>
       </dialog>
+
       {/* Filtros */}
       <form onSubmit={handleFilterSubmit}>
         <input type="text" name="advertName" placeholder="Advert name..." />
@@ -135,6 +138,10 @@ const AdvertsPage = () => {
         </button>
         <button type="submit">Filter</button>
       </form>
+
+      {/* Filter by user */}
+      <ShowUserAdverts />
+
       {/* Sorting */}
       <div className="flex justify-center gap-5">
         <SortingButton
@@ -150,6 +157,7 @@ const AdvertsPage = () => {
           setSearchParams={handleSortParamsClick}
         />
       </div>
+
       {/* Paginacion */}
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
