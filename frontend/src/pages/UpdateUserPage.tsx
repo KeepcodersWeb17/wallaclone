@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../store/store";
+// import { useAppDispatch } from "../store/store";
 
 const UpdateUserPage = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,7 +16,7 @@ const UpdateUserPage = () => {
       return;
     }
 
-    await dispatch(updateUserPassword(newPassword));
+    // await dispatch(updateUserPassword(newPassword));
 
     alert("Password updated successfully");
 
