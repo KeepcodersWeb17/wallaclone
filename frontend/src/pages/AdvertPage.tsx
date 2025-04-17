@@ -12,7 +12,7 @@ import {
 const AdvertPage = () => {
   const user = useSelector((state: State) => state.user);
 
-  const advertDetails = useSelector((state: State) => state.adverts[0]);
+  const advertDetails = useSelector((state: State) => state.adverts.list[0]);
 
   const IsFavoriteInitialState =
     !!user?.id &&
@@ -84,7 +84,7 @@ const AdvertPage = () => {
         <article>
           <header>
             <nav>
-              <Link to="/adverts">Go back</Link>
+              <button onClick={() => navigate(-1)}>Go back</button>
               <button onClick={handleFavorite}>
                 {isFavorite ? "unset as favorite" : "set as favorite"}
               </button>
