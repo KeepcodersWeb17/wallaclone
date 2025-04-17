@@ -1,3 +1,4 @@
+import type { Location, NavigateFunction } from "react-router-dom";
 import type { User, Advert, Tag } from "../state/types";
 import type { AppThunk } from "../store";
 import {
@@ -48,17 +49,25 @@ const tagsFulfilled = (tags: Tag[]) => ({
   payload: tags
 });
 
-export const authLogin = (userData: User): AppThunk<Promise<void>> => {
+export const authLogin = (
+  userData: User,
+  navigate?: NavigateFunction,
+  location?: Location
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
       const user = await login(userData);
       dispatch(uiFulfilled());
       dispatch(userLoginFulfilled(user));
+      if (navigate && location) {
+        navigate(location.state?.from ?? "/adverts", { replace: true });
+      }
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
       alert(error);
     }
@@ -75,13 +84,17 @@ export const authLogout = (): AppThunk<Promise<void>> => {
     } catch (error) {
       if (error instanceof Error) {
         dispatch(uiRejected([error.message]));
+        return;
       }
       alert(error);
     }
   };
 };
 
-export const createUser = (userData: User): AppThunk<Promise<void>> => {
+export const createUser = (
+  userData: User,
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
@@ -89,12 +102,14 @@ export const createUser = (userData: User): AppThunk<Promise<void>> => {
       await createUserAPI(userData);
       dispatch(uiFulfilled());
       dispatch(authLogin({ username, password }));
+      navigate("/adverts"); // TODO: el res.end() de la API esta afectando a la redireccion por como manejamos el fetch
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
-      alert(error);
+      alert(error); // TODO: Si las password no coinciden se ejecuta el Alert
     }
   };
 };
@@ -110,6 +125,7 @@ export const deleteUser = (): AppThunk<Promise<void>> => {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
       alert(error);
     }
@@ -127,6 +143,7 @@ export const getAdverts = (queryString: string): AppThunk<Promise<void>> => {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
       alert(error);
     }
@@ -144,6 +161,7 @@ export const getAdvert = (advertId: string): AppThunk<Promise<void>> => {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
       alert(error);
     }
@@ -160,6 +178,7 @@ export const createAdvert = (advert: Advert): AppThunk<Promise<void>> => {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
       alert(error);
     }
@@ -176,6 +195,7 @@ export const updateAdvert = (advert: Advert): AppThunk<Promise<void>> => {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
       alert(error);
     }
@@ -192,6 +212,7 @@ export const deleteAdvert = (advertId: string): AppThunk<Promise<void>> => {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
       alert(error);
     }
@@ -212,6 +233,7 @@ export const toogleFavorite = (
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
       alert(error);
     }
@@ -229,6 +251,7 @@ export const getAllTags = (): AppThunk<Promise<void>> => {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        return;
       }
       alert(error);
     }

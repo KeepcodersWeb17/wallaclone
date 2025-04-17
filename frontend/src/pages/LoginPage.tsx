@@ -1,8 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { authLogin } from "../store/actions/creators";
+import { getUi } from "../store/selectors/selectors";
 
 const LoginPage = () => {
+  const { error, loading } = useAppSelector(getUi);
+
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -18,8 +21,7 @@ const LoginPage = () => {
     ) as HTMLInputElement;
 
     const userData = { username: username.value, password: password.value };
-    await dispatch(authLogin(userData));
-    navigate(location.state?.from ?? "/adverts", { replace: true });
+    await dispatch(authLogin(userData, navigate, location));
   };
 
   return (
@@ -47,7 +49,8 @@ const LoginPage = () => {
           />
         </div>
         <div>
-          <button type="submit">Login</button>
+          {error?.length && <p style={{ color: "red" }}>{error.join(", ")}</p>}
+          {loading ? <p>loading...</p> : <button type="submit">Login</button>}
         </div>
       </form>
     </>

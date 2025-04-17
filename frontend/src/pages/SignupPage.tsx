@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { useAppDispatch } from "../store/store";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { createUser } from "../store/actions/creators";
 
 const SignupPage = () => {
+  const { error, loading } = useAppSelector((state) => state.ui);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const disabledButton = !username || !email || !password || !confirmPassword;
-
-  const dispatch = useAppDispatch();
 
   const handleCreateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +26,7 @@ const SignupPage = () => {
 
     const userData = { username, email, password };
 
-    dispatch(createUser(userData));
+    dispatch(createUser(userData, navigate));
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,9 +92,14 @@ const SignupPage = () => {
           />
         </div>
         <div>
-          <button type="submit" disabled={disabledButton}>
-            Create
-          </button>
+          {error?.length && <p style={{ color: "red" }}>{error.join(", ")}</p>}
+          {loading ? (
+            <p>loading...</p>
+          ) : (
+            <button type="submit" disabled={disabledButton}>
+              Create
+            </button>
+          )}
         </div>
       </form>
     </>
