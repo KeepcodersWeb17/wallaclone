@@ -8,7 +8,7 @@ const getUser = async () => {
 
   if (response.error) return null;
 
-  return response;
+  return response.user;
 };
 
 const getPreloadedState = async () => {

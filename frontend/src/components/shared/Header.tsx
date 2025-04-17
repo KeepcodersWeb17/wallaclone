@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type State from "../../store/state/types";
 import { authLogout } from "../../store/actions/creators";
 import UserIcon from "../icons/User";
@@ -7,12 +7,12 @@ const Header = () => {
   const user = useSelector((state: State) => state.user);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     // @ts-expect-error lo vamos a tipar mas adelante
-    await dispatch(authLogout());
-    navigate("/login");
+    dispatch(authLogout());
+    // navigate("/");
   };
   return (
     <header className="fixed top-0 w-full bg-white text-gray-800 shadow-md">
@@ -52,7 +52,7 @@ const Header = () => {
               </Link>
               <button
                 onClick={handleLogout}
-                className="block px-4 py-2 text-sm hover:bg-gray-100"
+                className="block cursor-pointer px-4 py-2 text-sm hover:bg-gray-100"
               >
                 Logout
               </button>

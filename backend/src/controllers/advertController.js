@@ -113,7 +113,7 @@ export const createAdvert = async (req, res, next) => {
 
     await newAdvert.save();
 
-    res.status(201);
+    res.status(201).end();
   } catch (error) {
     next(error);
   }
@@ -154,7 +154,7 @@ export const getAdvert = async (req, res, next) => {
       updatedAt: foundAdvert.updatedAt,
     };
 
-    res.status(200).json({ advert });
+    res.json({ advert });
   } catch (error) {
     next(error);
   }
@@ -175,7 +175,7 @@ export const deleteAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    res.status(200);
+    res.status(204).end();
   } catch (error) {
     next(error);
   }
@@ -210,7 +210,7 @@ export const updateAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    res.status(200);
+    res.status(204).end();
   } catch (error) {
     next(error);
   }
@@ -234,7 +234,7 @@ export const toogleFavoriteAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    res.status(200);
+    res.status(204).end();
   } catch (error) {
     next(error);
   }

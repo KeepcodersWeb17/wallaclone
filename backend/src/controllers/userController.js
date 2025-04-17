@@ -31,7 +31,7 @@ export const createUser = async (req, res, next) => {
 
     await newUser.save();
 
-    res.status(201);
+    res.status(201).end();
   } catch (error) {
     next(error);
   }
@@ -58,7 +58,7 @@ export const getUser = async (req, res, next) => {
       updatedAt: foundUser.updatedAt,
     };
 
-    res.status(200).json({ user });
+    res.json({ user });
   } catch (error) {
     next(error);
   }
@@ -94,7 +94,7 @@ export const updateUser = async (req, res, next) => {
       return;
     }
 
-    res.status(200);
+    res.status(204).end();
   } catch (error) {
     next(error);
   }

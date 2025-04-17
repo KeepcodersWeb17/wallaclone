@@ -77,7 +77,7 @@ const UserPage = () => {
           <h2>My profile</h2>
 
           <div>
-            <p>Member since {user.createdAt!.split("-")[0]}</p>
+            <p>Member since {user.createdAt?.split("T")[0]}</p>
           </div>
 
           <div>

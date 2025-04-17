@@ -18,7 +18,7 @@ export const login = async (req, res, next) => {
       }
     }
 
-    const isPasswordCorrect = await user.comparePassword(password);
+    const isPasswordCorrect = await foundUser.comparePassword(password);
 
     if (!isPasswordCorrect) {
       const error = new Error("Incorrect username or password");
@@ -27,9 +27,13 @@ export const login = async (req, res, next) => {
       return;
     }
 
-    const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    const accessToken = jwt.sign(
+      { id: foundUser._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
@@ -48,6 +52,7 @@ export const login = async (req, res, next) => {
 
     res.status(200).json({ user });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -60,7 +65,7 @@ export const logout = (req, res) => {
       sameSite: "none",
     });
 
-    res.status(200);
+    res.status(204).end();
   } catch (error) {
     next(error);
   }

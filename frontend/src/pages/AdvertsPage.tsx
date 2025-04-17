@@ -113,7 +113,6 @@ const AdvertsPage = () => {
         </ul>
         <button onClick={handleClose}>Confirm</button>
       </dialog>
-
       {/* Filtros */}
       <form onSubmit={handleFilterSubmit}>
         <input type="text" name="advertName" placeholder="Advert name..." />
@@ -136,7 +135,6 @@ const AdvertsPage = () => {
         </button>
         <button type="submit">Filter</button>
       </form>
-
       {/* Sorting */}
       <div className="flex justify-center gap-5">
         <SortingButton
@@ -152,9 +150,7 @@ const AdvertsPage = () => {
           setSearchParams={handleSortParamsClick}
         />
       </div>
-
       {/* Paginacion */}
-
       <h2>Adverts</h2>
       {adverts.length === 0 ? (
         <p> No adverts </p>

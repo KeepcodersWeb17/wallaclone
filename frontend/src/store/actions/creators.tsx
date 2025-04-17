@@ -26,10 +26,7 @@ import { getAll as getAllTagsAPI } from "../services/tags";
 
 const authLoginFulfilled = (userData: User) => ({
   type: "AUTH_LOGIN_FULFILLED",
-  payload: {
-    id: userData.id,
-    username: userData.username
-  }
+  payload: userData
 });
 
 const authLogoutFulfilled = () => ({
@@ -51,8 +48,8 @@ export const authLogin = (userData: User) => {
   return async function (dispatch) {
     try {
       // dispatch(actionPending());
-      const { id, username } = await login(userData);
-      dispatch(authLoginFulfilled({ id, username }));
+      const user = await login(userData);
+      dispatch(authLoginFulfilled(user));
     } catch (error) {
       // dispatch(actionRejected(error.message));
       console.error(error);
@@ -106,14 +103,11 @@ export const deleteUser = () => {
 export const getAdverts = (queryString: string) => {
   // @ts-expect-error Lo vamos a tipar más adelante
   return async function (dispatch) {
-    try {
-      // dispatch(actionPending());
-      const adverts = await getLatest(queryString);
-      dispatch(getAdvertsFulfilled(adverts));
-    } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
-    }
+    // dispatch(actionPending());
+    const adverts = await getLatest(queryString);
+    dispatch(getAdvertsFulfilled(adverts));
+    // dispatch(actionRejected(error.message));
+    // console.error(error);
   };
 };
 
