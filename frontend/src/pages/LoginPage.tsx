@@ -18,7 +18,7 @@ const LoginPage = () => {
     ) as HTMLInputElement;
 
     const userData = { username: username.value, password: password.value };
-    await dispatch(authLogin(userData)); // este await es necesario para usar navigate luego!
+    await dispatch(authLogin(userData));
     navigate(location.state?.from ?? "/adverts", { replace: true });
   };
 
@@ -28,11 +28,23 @@ const LoginPage = () => {
       <form onSubmit={handleLogin}>
         <div>
           <label htmlFor="username">Username: </label>
-          <input type="text" name="username" id="username" />
+          <input
+            type="text"
+            name="username"
+            id="username"
+            minLength={3}
+            required
+          />
         </div>
         <div>
           <label htmlFor="">Password: </label>
-          <input type="password" name="password" id="password" />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            minLength={6}
+            required
+          />
         </div>
         <div>
           <button type="submit">Login</button>

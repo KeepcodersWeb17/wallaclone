@@ -12,9 +12,15 @@ export const login = async (credentials: User) => {
   ).then((res) => res.json());
 
   if (response.error) {
-    throw new Error(response.error);
+    if (typeof response.error === "string") {
+      throw new Error(response.error);
+    }
+    const errors: { field: string; message: string }[] = response.error;
+    const errorMessages = errors.map((error) => error.message).join("---");
+    throw new Error(errorMessages);
   }
 
+  // deberiamos validar con Zod
   return response.user as User;
 };
 
@@ -43,7 +49,12 @@ export const create = async (userData: User) => {
   ).then((res) => res.json());
 
   if (response.error) {
-    throw new Error(response.error);
+    if (typeof response.error === "string") {
+      throw new Error(response.error);
+    }
+    const errors: { field: string; message: string }[] = response.error;
+    const errorMessages = errors.map((error) => error.message).join("---");
+    throw new Error(errorMessages);
   }
 };
 
@@ -58,8 +69,14 @@ export const remove = async () => {
   ).then((res) => res.json());
 
   if (response.error) {
-    throw new Error(response.error);
+    if (typeof response.error === "string") {
+      throw new Error(response.error);
+    }
+    const errors: { field: string; message: string }[] = response.error;
+    const errorMessages = errors.map((error) => error.message).join("---");
+    throw new Error(errorMessages);
   }
 };
 
+// TODO: refactor handle errors
 // TODO: UPDATE

@@ -2,17 +2,18 @@ import * as thunk from "redux-thunk";
 import {
   legacy_createStore as createStore,
   applyMiddleware,
-  combineReducers
+  combineReducers,
+  Action
 } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import type State from "./state/types";
-import type Action from "./actions/types";
 import user from "./reducer/user";
 import adverts from "./reducer/adverts";
 import tags from "./reducer/tags";
+import ui from "./reducer/ui";
 
 const configureStore = (preloadedState: Partial<State>) => {
-  const rootReducer = combineReducers({ user, adverts, tags });
+  const rootReducer = combineReducers({ user, adverts, tags, ui });
   const store = createStore(
     rootReducer,
     preloadedState as never,

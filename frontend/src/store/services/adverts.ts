@@ -25,7 +25,12 @@ export const getLatest = async (queryString: string) => {
   ).then((res) => res.json());
 
   if (response.error) {
-    throw new Error(response.error);
+    if (typeof response.error === "string") {
+      throw new Error(response.error);
+    }
+    const errors: { field: string; message: string }[] = response.error;
+    const errorMessages = errors.map((error) => error.message).join("---");
+    throw new Error(errorMessages);
   }
 
   const adverts: Advert[] = response.adverts.map((advert: Advert) => {
@@ -47,7 +52,12 @@ export const getById = async (advertId: string) => {
   ).then((res) => res.json());
 
   if (response.error) {
-    throw new Error(response.error);
+    if (typeof response.error === "string") {
+      throw new Error(response.error);
+    }
+    const errors: { field: string; message: string }[] = response.error;
+    const errorMessages = errors.map((error) => error.message).join("---");
+    throw new Error(errorMessages);
   }
 
   const advert: Advert = response.advert;
@@ -74,9 +84,9 @@ export const update = async (advert: Advert) => {
     if (typeof response.error === "string") {
       throw new Error(response.error);
     }
-    // @ts-expect-error lo vamos a tipar mas adelante
-    const error = response.error.map((err) => err.message).join(", ");
-    throw new Error(error);
+    const errors: { field: string; message: string }[] = response.error;
+    const errorMessages = errors.map((error) => error.message).join("---");
+    throw new Error(errorMessages);
   }
 };
 
@@ -92,7 +102,12 @@ export const remove = async (advertId: string) => {
   ).then((res) => res.json());
 
   if (response.error) {
-    throw new Error(response.error);
+    if (typeof response.error === "string") {
+      throw new Error(response.error);
+    }
+    const errors: { field: string; message: string }[] = response.error;
+    const errorMessages = errors.map((error) => error.message).join("---");
+    throw new Error(errorMessages);
   }
 };
 
@@ -108,6 +123,11 @@ export const toogleFavorite = async (isFavorite: boolean, advertId: string) => {
   ).then((res) => res.json());
 
   if (response.error) {
-    throw new Error(response.error);
+    if (typeof response.error === "string") {
+      throw new Error(response.error);
+    }
+    const errors: { field: string; message: string }[] = response.error;
+    const errorMessages = errors.map((error) => error.message).join("---");
+    throw new Error(errorMessages);
   }
 };

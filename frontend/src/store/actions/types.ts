@@ -1,39 +1,44 @@
 import type { Advert, Tag, User } from "../state/types";
 
-type AuthLoginFulfilled = {
-  type: "AUTH_LOGIN_FULFILLED";
+type UserLoginFulfilled = {
+  type: "USER_LOGIN_FULFILLED";
   payload: User;
 };
 
-type AuthLogoutFulfilled = {
-  type: "AUTH_LOGOUT_FULFILLED";
+type UserLogoutFulfilled = {
+  type: "USER_LOGOUT_FULFILLED";
 };
 
-type GetAdvertsFulfilled = {
-  type: "GET_ADVERTS_FULFILLED";
+type AdvertsFulfilled = {
+  type: "ADVERTS_FULFILLED";
   payload: { list: Advert[]; quantity: number };
 };
 
-type GetTagsFulfilled = {
-  type: "GET_TAGS_FULFILLED";
+type TagsFulfilled = {
+  type: "TAGS_FULFILLED";
   payload: Tag[];
 };
 
-export type ActionPending = {
-  type: "ACTION_PENDING";
+type UiPending = {
+  type: "UI_PENDING";
 };
 
-type ActionRejected = {
-  type: "ACTION_REJECTED";
+type UiFulfilled = {
+  type: "UI_FULFILLED";
+};
+
+type UiRejected = {
+  type: "UI_REJECTED";
   payload: string[];
 };
 
 type Action =
-  | AuthLoginFulfilled
-  | AuthLogoutFulfilled
-  | GetAdvertsFulfilled
-  | GetTagsFulfilled
-  | ActionPending
-  | ActionRejected;
+  | UserLoginFulfilled
+  | UserLogoutFulfilled
+  | AdvertsFulfilled
+  | TagsFulfilled
+  | UiPending
+  | UiFulfilled
+  | UiRejected;
 
 export default Action;

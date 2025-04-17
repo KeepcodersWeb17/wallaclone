@@ -15,181 +15,222 @@ import {
   remove as deleteUserAPI
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
-import type { ActionPending } from "./types";
 
-const actionPending = (): ActionPending => ({
-  type: "ACTION_PENDING"
+const uiPending = () => ({
+  type: "UI_PENDING"
 });
 
-const actionRejected = (error: string) => ({
-  type: "ACTION_REJECTED",
+const uiFulfilled = () => ({
+  type: "UI_FULFILLED"
+});
+
+const uiRejected = (error: string[]) => ({
+  type: "UI_REJECTED",
   payload: error
 });
 
-const authLoginFulfilled = (userData: User) => ({
-  type: "AUTH_LOGIN_FULFILLED",
+const userLoginFulfilled = (userData: User) => ({
+  type: "USER_LOGIN_FULFILLED",
   payload: userData
 });
 
-const authLogoutFulfilled = () => ({
-  type: "AUTH_LOGOUT_FULFILLED"
+const userLogoutFulfilled = () => ({
+  type: "USER_LOGOUT_FULFILLED"
 });
 
-const getAdvertsFulfilled = (adverts: {
-  list: Advert[];
-  quantity: number;
-}) => ({
-  type: "GET_ADVERTS_FULFILLED",
+const advertsFulfilled = (adverts: { list: Advert[]; quantity: number }) => ({
+  type: "ADVERTS_FULFILLED",
   payload: adverts
 });
 
-const getAllTagsFulfilled = (tags: Tag[]) => ({
-  type: "GET_TAGS_FULFILLED",
+const tagsFulfilled = (tags: Tag[]) => ({
+  type: "TAGS_FULFILLED",
   payload: tags
 });
 
 export const authLogin = (userData: User): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      dispatch(actionPending());
+      dispatch(uiPending());
       const user = await login(userData);
-      dispatch(authLoginFulfilled(user));
+      dispatch(uiFulfilled());
+      dispatch(userLoginFulfilled(user));
     } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
     }
   };
 };
 
-export const createUser = (userData: User) => {
-  // @ts-expect-error Lo vamos a tipar más adelante
+export const authLogout = (): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      dispatch(actionPending());
+      dispatch(uiPending());
+      await logout();
+      dispatch(uiFulfilled());
+      dispatch(userLogoutFulfilled());
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(uiRejected([error.message]));
+      }
+      alert(error);
+    }
+  };
+};
+
+export const createUser = (userData: User): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      dispatch(uiPending());
       const { username, password } = userData;
       await createUserAPI(userData);
+      dispatch(uiFulfilled());
       dispatch(authLogin({ username, password }));
     } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
     }
   };
 };
 
-export const authLogout = () => {
-  // @ts-expect-error Lo vamos a tipar más adelante
+export const deleteUser = (): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      dispatch(actionPending());
-      await logout();
-      dispatch(authLogoutFulfilled());
-    } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const deleteUser = () => {
-  // @ts-expect-error Lo vamos a tipar más adelante
-  return async function (dispatch) {
-    try {
-      dispatch(actionPending());
+      dispatch(uiPending());
       await deleteUserAPI();
+      dispatch(uiFulfilled());
       dispatch(authLogout());
     } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
     }
   };
 };
 
-export const getAdverts = (queryString: string) => {
-  // @ts-expect-error Lo vamos a tipar más adelante
+export const getAdverts = (queryString: string): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      dispatch(actionPending());
+      dispatch(uiPending());
       const adverts = await getLatest(queryString);
-      dispatch(getAdvertsFulfilled(adverts));
+      dispatch(uiFulfilled());
+      dispatch(advertsFulfilled(adverts));
     } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
     }
   };
 };
 
-export const getAdvert = (advertId: string) => {
-  // @ts-expect-error Lo vamos a tipar más adelante
+export const getAdvert = (advertId: string): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      dispatch(actionPending());
+      dispatch(uiPending());
       const adverts = await getById(advertId);
-      dispatch(getAdvertsFulfilled(adverts));
+      dispatch(uiFulfilled());
+      dispatch(advertsFulfilled(adverts));
     } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
     }
   };
 };
 
-export const createAdvert = (advert: Advert) => {
-  return async function () {
-    try {
-      dispatch(actionPending());
-      await createAdvertAPI(advert);
-    } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const updateAdvert = (advert: Advert) => {
-  return async function () {
-    try {
-      dispatch(actionPending());
-      await updateAdvertAPI(advert);
-    } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const deleteAdvert = (advertId: string) => {
-  return async function () {
-    try {
-      dispatch(actionPending());
-      await deleteAdvertAPI(advertId);
-    } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const toogleFavorite = (isFavorite: boolean, advertId: string) => {
-  return async function () {
-    try {
-      dispatch(actionPending());
-      await toogleFavoriteAPI(isFavorite, advertId);
-    } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const getAllTags = () => {
-  // @ts-expect-error lo vamos a tipar mas adelante
+export const createAdvert = (advert: Advert): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      dispatch(actionPending());
-      const tags = await getAllTagsAPI();
-      dispatch(getAllTagsFulfilled(tags));
+      dispatch(uiPending());
+      await createAdvertAPI(advert);
+      dispatch(uiFulfilled());
     } catch (error) {
-      dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
+    }
+  };
+};
+
+export const updateAdvert = (advert: Advert): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      dispatch(uiPending());
+      await updateAdvertAPI(advert);
+      dispatch(uiFulfilled());
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
+    }
+  };
+};
+
+export const deleteAdvert = (advertId: string): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      dispatch(uiPending());
+      await deleteAdvertAPI(advertId);
+      dispatch(uiFulfilled());
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
+    }
+  };
+};
+
+export const toogleFavorite = (
+  isFavorite: boolean,
+  advertId: string
+): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      dispatch(uiPending());
+      await toogleFavoriteAPI(isFavorite, advertId);
+      dispatch(uiFulfilled());
+      dispatch(getAdvert(advertId));
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
+    }
+  };
+};
+
+export const getAllTags = (): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      dispatch(uiPending());
+      const tags = await getAllTagsAPI();
+      dispatch(uiFulfilled());
+      dispatch(tagsFulfilled(tags));
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+      }
+      alert(error);
     }
   };
 };

@@ -3,6 +3,15 @@ import defaultState from "../state/defaultState";
 
 const ui = (state = defaultState.ui, action: Action) => {
   switch (action.type) {
+    case "UI_PENDING": {
+      return { error: state.error, loading: true };
+    }
+    case "UI_FULFILLED": {
+      return { error: null, loading: false };
+    }
+    case "UI_REJECTED": {
+      return { error: action.payload, loading: false };
+    }
     default: {
       return state;
     }
