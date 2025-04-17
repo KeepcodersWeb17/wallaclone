@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../store/store";
 import { createUser } from "../store/actions/creators";
 
 const SignupPage = () => {
@@ -10,7 +10,7 @@ const SignupPage = () => {
 
   const disabledButton = !username || !email || !password || !confirmPassword;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleCreateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +23,6 @@ const SignupPage = () => {
 
     const userData = { username, email, password };
 
-    // @ts-expect-error Lo vamos a tipar más adelante
     dispatch(createUser(userData));
   };
 

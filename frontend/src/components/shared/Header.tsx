@@ -1,18 +1,18 @@
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import type State from "../../store/state/types";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { getUser } from "../../store/selectors/selectors";
 import { authLogout } from "../../store/actions/creators";
 import UserIcon from "../icons/User";
+
 const Header = () => {
-  const user = useSelector((state: State) => state.user);
+  const user = useAppSelector(getUser);
 
-  const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // @ts-expect-error lo vamos a tipar mas adelante
-    dispatch(authLogout());
-    // navigate("/");
+  const handleLogout = async () => {
+    await dispatch(authLogout());
+    navigate("/");
   };
   return (
     <header className="fixed top-0 w-full bg-white text-gray-800 shadow-md">

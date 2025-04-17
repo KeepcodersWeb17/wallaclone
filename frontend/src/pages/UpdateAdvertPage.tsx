@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAdvert, updateAdvert } from "../store/actions/creators";
-import State, { Sale } from "../store/state/types";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { getAdvert } from "../store/selectors/selectors";
+import {
+  getAdvert as getAdvertAction,
+  updateAdvert
+} from "../store/actions/creators";
+import type { Advert, Sale } from "../store/state/types";
 
 const UpdateAdvertPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const advertDetails = useAppSelector(getAdvert);
   const navigate = useNavigate();
   const { advert } = useParams();
 
   const advertId = advert ? advert.split("-")[1] : null;
-  const advertDetails = useSelector((state: State) => state.adverts.list[0]);
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -24,8 +28,7 @@ const UpdateAdvertPage = () => {
   // Cargar el anuncio al montar
   useEffect(() => {
     if (advertId) {
-      // @ts-expect-error lo tipamos más adelante
-      dispatch(getAdvert(advertId));
+      dispatch(getAdvertAction(advertId));
     }
   }, [dispatch, advertId]);
 
@@ -37,7 +40,11 @@ const UpdateAdvertPage = () => {
     setDescription(advertDetails.description || "");
     setPrice(advertDetails.price);
     setImage(advertDetails.image || "");
-    setTag(advertDetails.tags?.map((tag) => tag.name) || []);
+    setTag(
+      advertDetails.tags?.map((tag) =>
+        typeof tag === "string" ? tag : tag.name
+      ) || []
+    );
     setSale(advertDetails.sale);
   }, [advertDetails, advertId]);
 
@@ -46,17 +53,16 @@ const UpdateAdvertPage = () => {
 
     if (!advertDetails) return;
 
-    const updatedAdvert = {
+    const updatedAdvert: Advert = {
       id: advertDetails.id,
       name,
       description,
       price,
       image,
-      tags: [tag],
+      tags: tag,
       sale
     };
 
-    // @ts-expect-error lo tipamos más adelante
     dispatch(updateAdvert(updatedAdvert));
     navigate("/adverts");
   };

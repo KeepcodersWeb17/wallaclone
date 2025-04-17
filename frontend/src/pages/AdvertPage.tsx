@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import type State from "../store/state/types";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { getAdvert, getUser } from "../store/selectors/selectors";
 import {
-  getAdvert,
+  getAdvert as getAdvertAction,
   deleteAdvert,
   toogleFavorite
 } from "../store/actions/creators";
 
 const AdvertPage = () => {
-  const user = useSelector((state: State) => state.user);
+  const user = useAppSelector(getUser);
 
-  const advertDetails = useSelector((state: State) => state.adverts.list[0]);
+  const advertDetails = useAppSelector(getAdvert);
 
   const IsFavoriteInitialState =
     !!user?.id &&
@@ -23,7 +22,7 @@ const AdvertPage = () => {
 
   const [isFavorite, setIsFavorite] = useState(IsFavoriteInitialState);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
@@ -32,9 +31,7 @@ const AdvertPage = () => {
   const advertId = advert ? advert.split("-")[1] : null;
 
   useEffect(() => {
-    if (advertId)
-      // @ts-expect-error lo vamos a tipar mas adelante
-      dispatch(getAdvert(advertId));
+    if (advertId) dispatch(getAdvertAction(advertId));
   }, [advertId, dispatch]);
 
   const handleDelete = () => {
@@ -46,7 +43,7 @@ const AdvertPage = () => {
   };
 
   const handleConfirmDelete = async () => {
-    // @ts-expect-error lo vamos a tipar mas adelante
+    if (!advertId) return;
     await dispatch(deleteAdvert(advertId));
     alert("Advert deleted");
     handleCloseModal();
@@ -54,14 +51,13 @@ const AdvertPage = () => {
   };
 
   const handleFavorite = async () => {
-    if (!user?.id) {
+    if (!user?.id || !advertId) {
       navigate("/login");
       return;
     }
 
     setIsFavorite((favorite) => !favorite);
 
-    // @ts-expect-error lo vamos a tipar mas adelante
     await dispatch(toogleFavorite(isFavorite, advertId));
 
     const status = isFavorite ? "unmarked" : "marked";

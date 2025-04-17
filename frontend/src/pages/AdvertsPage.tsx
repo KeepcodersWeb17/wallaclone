@@ -1,35 +1,33 @@
 import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
   useLocation,
   useParams,
   useSearchParams
 } from "react-router-dom";
-import type State from "../store/state/types";
-import CloseIcon from "../components/icons/Close";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { getState } from "../store/selectors/selectors";
 import { getAdverts, getAllTags } from "../store/actions/creators";
 import { buildQueryString } from "../lib/buildQueryString";
-import SortingButton from "../components/SortingButton";
 import { getParamsFilters } from "../lib/getParamsFilter";
+import CloseIcon from "../components/icons/Close";
+import SortingButton from "../components/SortingButton";
 import { ShowUserAdverts } from "../components/ShowUserAdverts";
 
 const AdvertsPage = () => {
-  // const [isOpenModal, setIsOpenModal] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { username } = useParams();
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const { user, tags, adverts } = useSelector((state: State) => state);
+  const { user, tags, adverts } = useAppSelector(getState);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // @ts-expect-error lo vamos a tipar mas adelante
     dispatch(getAllTags());
   }, [dispatch]);
 
@@ -41,7 +39,7 @@ const AdvertsPage = () => {
       pathname,
       tags
     });
-    // @ts-expect-error lo vamos a tipar mas adelante
+
     dispatch(getAdverts(queryString));
   }, [dispatch, searchParams, username, user, pathname, tags]);
 

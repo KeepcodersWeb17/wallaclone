@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../store/store";
 import { createAdvert } from "../store/actions/creators";
 import { Sale } from "../store/state/types";
 
@@ -14,7 +14,7 @@ const NewAdvertPage = () => {
 
   const disabled = !name || !price;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
@@ -23,7 +23,6 @@ const NewAdvertPage = () => {
 
     const advert = { name, description, price, tag, image, sale };
 
-    // @ts-expect-error Lo vamos a tipar más adelante
     await dispatch(createAdvert(advert));
     navigate("/adverts");
   };

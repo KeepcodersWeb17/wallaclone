@@ -1,20 +1,20 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { Link, Navigate, useParams } from "react-router-dom";
-import type State from "../store/state/types";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { deleteUser } from "../store/actions/creators";
+import { getUser } from "../store/selectors/selectors";
 
 const UserPage = () => {
   const { username } = useParams();
 
-  const user = useSelector((state: State) => state.user)!;
+  const user = useAppSelector(getUser);
 
   const [isOpenDeleteAccountModal, setIsOpenDeleteAccountModal] =
     useState(false);
 
   const [isOpenSendAnEmailModal, setIsOpenSendAnEmailModal] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const maskedEmail = (email: string) => {
     const [username, domainWithTLD] = email.split("@");
@@ -45,7 +45,6 @@ const UserPage = () => {
   };
 
   const handleConfirmDelete = async () => {
-    // @ts-expect-error lo vamos a tipar mas adelante
     await dispatch(deleteUser());
     alert("Account deleted");
     setIsOpenDeleteAccountModal(false);
@@ -77,7 +76,7 @@ const UserPage = () => {
           <h2>My profile</h2>
 
           <div>
-            <p>Member since {user.createdAt?.split("T")[0]}</p>
+            <p>Member since {user?.createdAt?.split("T")[0]}</p>
           </div>
 
           <div>

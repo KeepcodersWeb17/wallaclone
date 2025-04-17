@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
-import State from "../../store/state/types";
 import { Navigate, useLocation } from "react-router-dom";
+import { useAppSelector } from "../../store/store";
+import { getIsLogged } from "../../store/selectors/selectors";
 
 const RequireAuth = ({ children }: { children: React.ReactNode }) => {
-  const isAuth = useSelector((state: State) => !!state.user);
+  const isAuth = useAppSelector(getIsLogged);
 
   const location = useLocation();
 

@@ -17,7 +17,7 @@ export type Advert = {
   price: number;
   sale: Sale;
   image?: string;
-  tags?: Tag[];
+  tags?: Tag[] | string[];
   owner?: Owner;
   favorites?: Owner[];
   createdAt?: string;
