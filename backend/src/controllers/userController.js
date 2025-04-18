@@ -85,7 +85,11 @@ export const updateUser = async (req, res, next) => {
       updatedData.password = hashedPassword;
     }
 
-    const foundUser = await User.findOneAndUpdate({ _id: userId }, updatedData);
+    const foundUser = await User.findOneAndUpdate(
+      { _id: userId },
+      updatedData,
+      { new: true }
+    );
 
     if (!foundUser) {
       const error = new Error("User not found");
@@ -94,7 +98,15 @@ export const updateUser = async (req, res, next) => {
       return;
     }
 
-    res.status(204).end();
+    const user = {
+      id: foundUser._id,
+      username: foundUser.username,
+      email: foundUser.email,
+      createdAt: foundUser.createdAt,
+      updatedAt: foundUser.updatedAt,
+    };
+
+    res.status(204).json({ user });
   } catch (error) {
     next(error);
   }
