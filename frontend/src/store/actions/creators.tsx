@@ -91,7 +91,7 @@ export const authLogout = (
       await logout();
       dispatch(uiFulfilled());
       dispatch(userLogoutFulfilled());
-      navigate("/", { replace: true });
+      navigate("/adverts");
     } catch (error) {
       if (error instanceof Error) {
         dispatch(uiRejected([error.message]));
