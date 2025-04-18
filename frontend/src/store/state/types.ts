@@ -45,8 +45,10 @@ export type UserSignup = UserLogin & {
 
 export type UserUpdate = Partial<UserSignup>;
 
-export type User = UserSignup & {
+export type User = {
   id: string;
+  username: string;
+  email: string;
   updatedAt: string;
   createdAt: string;
 };
