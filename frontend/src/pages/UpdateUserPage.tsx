@@ -41,11 +41,16 @@ const UpdateUserPage = () => {
       >
         <div>
           <label htmlFor="username">Username: </label>
-          <input type="text" name="username" id="username" value={username} />
+          <input
+            type="text"
+            name="username"
+            id="username"
+            defaultValue={username}
+          />
         </div>
         <div>
           <label htmlFor="email">Email: </label>
-          <input type="email" name="email" id="email" value={email} />
+          <input type="email" name="email" id="email" defaultValue={email} />
         </div>
         <div>
           <label htmlFor="password">Password: </label>

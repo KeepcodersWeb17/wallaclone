@@ -81,7 +81,7 @@ export const updateUser = async (req, res, next) => {
     }
 
     if (password) {
-      const hashedPassword = await User.hashPassword();
+      const hashedPassword = await User.hashPassword(password);
       updatedData.password = hashedPassword;
     }
 
@@ -106,7 +106,7 @@ export const updateUser = async (req, res, next) => {
       updatedAt: foundUser.updatedAt,
     };
 
-    res.status(204).json({ user });
+    res.status(200).json({ user });
   } catch (error) {
     next(error);
   }
