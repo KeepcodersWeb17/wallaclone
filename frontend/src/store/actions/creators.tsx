@@ -82,16 +82,13 @@ export const authLogin = (
   };
 };
 
-export const authLogout = (
-  navigate: NavigateFunction
-): AppThunk<Promise<void>> => {
+export const authLogout = (): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
       await logout();
       dispatch(uiFulfilled());
       dispatch(userLogoutFulfilled());
-      navigate("/adverts");
     } catch (error) {
       if (error instanceof Error) {
         dispatch(uiRejected([error.message]));
@@ -168,7 +165,8 @@ export const deleteUser = (
       dispatch(uiPending());
       await deleteUserAPI();
       dispatch(uiFulfilled());
-      dispatch(authLogout(navigate));
+      dispatch(authLogout());
+      navigate("/adverts", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");

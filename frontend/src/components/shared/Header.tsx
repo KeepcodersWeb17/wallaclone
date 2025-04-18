@@ -11,7 +11,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(authLogout(navigate));
+    navigate("/adverts");
+    dispatch(authLogout());
   };
 
   return (
