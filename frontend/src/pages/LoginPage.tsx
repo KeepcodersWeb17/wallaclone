@@ -13,12 +13,12 @@ const LoginPage = () => {
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const username = e.currentTarget.querySelector(
-      "#username"
-    ) as HTMLInputElement;
-    const password = e.currentTarget.querySelector(
-      "#password"
-    ) as HTMLInputElement;
+    const username =
+      e.currentTarget.querySelector<HTMLInputElement>("#username");
+    const password =
+      e.currentTarget.querySelector<HTMLInputElement>("#password");
+
+    if (!username || !password) return;
 
     const userData = { username: username.value, password: password.value };
     dispatch(authLogin(userData, navigate, location));
