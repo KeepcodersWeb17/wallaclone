@@ -37,7 +37,7 @@ const AdvertsPage = () => {
       username,
       user,
       pathname,
-      tags
+      tags: tags.list
     });
 
     dispatch(getAdverts(queryString));
@@ -139,7 +139,7 @@ const AdvertsPage = () => {
         </button>
         <h2 className="">Categories</h2>
         <ul className="sh flex w-full flex-col gap-5 text-center">
-          {tags.map((tag) => (
+          {tags.list.map((tag) => (
             <li
               key={tag.id}
               className="cursor-pointer rounded hover:bg-gray-100"
