@@ -26,8 +26,11 @@ const LoginPage = () => {
 
   return (
     <>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <h2 className="text-center">Login</h2>
+      <form
+        className="mx-auto flex max-w-3xl flex-col items-center justify-center gap-5"
+        onSubmit={handleLogin}
+      >
         <div>
           <label htmlFor="username">Username: </label>
           <input
