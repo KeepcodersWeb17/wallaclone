@@ -25,8 +25,10 @@ export const ShowUserAdverts = () => {
         onChange={handleInputChange}
         onKeyDown={handleEnterPress}
       />
-      {inputValue.trim() !== "" && (
+      {inputValue.trim() !== "" ? (
         <Link to={`/adverts/user/${inputValue}`}>SEARCH</Link>
+      ) : (
+        <p className="inline-block">SEARCH</p>
       )}
     </>
   );
