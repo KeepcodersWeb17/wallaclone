@@ -1,5 +1,5 @@
 import { handleFetchError } from "../../lib/handleFetchError";
-import type { User, UserLogin, UserSignup } from "../state/types";
+import type { User, UserLogin, UserSignup, UserUpdate } from "../state/types";
 
 export const login = async (credentials: UserLogin) => {
   const response = await fetch(
@@ -76,4 +76,23 @@ export const remove = async () => {
   }
 };
 
-// TODO: UPDATE
+export const update = async (userData: UserUpdate) => {
+  const response = await fetch(
+    "https://api.wallaclone.keepcoders.duckdns.org/users",
+    {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(userData)
+    }
+  );
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
+  }
+
+  return data.user as User;
+};
