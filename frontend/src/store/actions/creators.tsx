@@ -6,7 +6,8 @@ import type {
   UserLogin,
   UserSignup,
   AdvertCreate,
-  AdvertUpdate
+  AdvertUpdate,
+  UserUpdate
 } from "../state/types";
 import type { AppThunk } from "../store";
 import {
@@ -21,7 +22,8 @@ import {
   login,
   logout,
   create as createUserAPI,
-  remove as deleteUserAPI
+  remove as deleteUserAPI,
+  update as updateUserAPI
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
 
@@ -118,6 +120,35 @@ export const createUser = (
       await createUserAPI(userData);
       dispatch(uiFulfilled());
       dispatch(authLogin({ username, password }, navigate, location));
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
+    }
+  };
+};
+
+export const updateUser = (
+  userData: UserUpdate,
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      const { password, confirmPassword } = userData;
+      dispatch(uiPending());
+
+      // check if password and confirm password are the same
+      if (password !== confirmPassword) {
+        throw new Error("Passwords do not match");
+      }
+
+      const updatedUser = await updateUserAPI(userData);
+      dispatch(uiFulfilled());
+      dispatch(userLoginFulfilled(updatedUser));
+      navigate(`/users/${updatedUser.username}`);
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
