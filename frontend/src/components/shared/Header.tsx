@@ -10,9 +10,8 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await dispatch(authLogout());
-    navigate("/");
+  const handleLogout = () => {
+    dispatch(authLogout(navigate));
   };
   return (
     <header className="fixed top-0 w-full bg-white text-gray-800 shadow-md">
@@ -32,6 +31,14 @@ const Header = () => {
           )}
           <div className="absolute right-0 mt-2 flex flex-col rounded bg-white py-1 shadow-lg ring-1 ring-black">
             <nav className="flex flex-col space-x-8">
+              <Link
+                to={"/signup"}
+                className="block w-full px-4 py-2 text-center text-sm hover:bg-gray-100"
+                state={{ from: location.pathname }}
+                replace
+              >
+                Sign up
+              </Link>
               <Link
                 to={`/users/${user?.username}`}
                 className="block w-full px-4 py-2 text-center text-sm hover:bg-gray-100"
