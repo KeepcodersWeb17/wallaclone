@@ -1,3 +1,4 @@
+import { handleFetchError } from "../../lib/handleFetchError";
 import type { Tag } from "../state/types";
 
 export const getAll = async () => {
@@ -6,11 +7,15 @@ export const getAll = async () => {
     {
       credentials: "include"
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    throw new Error(response.error);
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 
-  return response.tags as Tag[];
+  return data.tags as Tag[];
 };

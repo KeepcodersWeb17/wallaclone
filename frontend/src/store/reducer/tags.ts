@@ -4,7 +4,10 @@ import defaultState from "../state/defaultState";
 const tags = (state = defaultState.tags, action: Action) => {
   switch (action.type) {
     case "TAGS_FULFILLED": {
-      return action.payload;
+      return {
+        list: action.payload,
+        loaded: true
+      };
     }
 
     default: {

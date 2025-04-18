@@ -23,8 +23,7 @@ const NewAdvertPage = () => {
 
     const advert = { name, description, price, tag, image, sale };
 
-    await dispatch(createAdvert(advert));
-    navigate("/adverts");
+    await dispatch(createAdvert(advert, navigate));
   };
 
   const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {

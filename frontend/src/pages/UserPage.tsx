@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { deleteUser } from "../store/actions/creators";
 import { getUser } from "../store/selectors/selectors";
 
 const UserPage = () => {
   const { username } = useParams();
+  const navigate = useNavigate();
 
   const user = useAppSelector(getUser);
 
@@ -44,9 +45,8 @@ const UserPage = () => {
     setIsOpenDeleteAccountModal(true);
   };
 
-  const handleConfirmDelete = async () => {
-    await dispatch(deleteUser());
-    alert("Account deleted");
+  const handleConfirmDelete = () => {
+    dispatch(deleteUser(navigate));
     setIsOpenDeleteAccountModal(false);
   };
 

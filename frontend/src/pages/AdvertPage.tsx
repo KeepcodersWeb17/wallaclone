@@ -42,12 +42,10 @@ const AdvertPage = () => {
     setOpenModal(false);
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = () => {
     if (!advertId) return;
-    await dispatch(deleteAdvert(advertId));
-    alert("Advert deleted");
+    dispatch(deleteAdvert(advertId, navigate));
     handleCloseModal();
-    navigate("/adverts");
   };
 
   const handleFavorite = async () => {

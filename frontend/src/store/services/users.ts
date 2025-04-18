@@ -1,3 +1,4 @@
+import { handleFetchError } from "../../lib/handleFetchError";
 import type { User } from "../state/types";
 
 export const login = async (credentials: User) => {
@@ -9,19 +10,18 @@ export const login = async (credentials: User) => {
       credentials: "include",
       body: JSON.stringify(credentials)
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    if (typeof response.error === "string") {
-      throw new Error(response.error);
-    }
-    const errors: { field: string; message: string }[] = response.error;
-    const errorMessages = errors.map((error) => error.message).join("---");
-    throw new Error(errorMessages);
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 
   // deberiamos validar con Zod
-  return response.user as User;
+  return data.user as User;
 };
 
 export const logout = async () => {
@@ -46,15 +46,14 @@ export const create = async (userData: User) => {
       credentials: "include",
       body: JSON.stringify(userData)
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    if (typeof response.error === "string") {
-      throw new Error(response.error);
-    }
-    const errors: { field: string; message: string }[] = response.error;
-    const errorMessages = errors.map((error) => error.message).join("---");
-    throw new Error(errorMessages);
+  if (!response.ok) {
+    const data = await response.json();
+
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 };
 
@@ -66,17 +65,15 @@ export const remove = async () => {
       headers: { "content-type": "application/json" },
       credentials: "include"
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    if (typeof response.error === "string") {
-      throw new Error(response.error);
-    }
-    const errors: { field: string; message: string }[] = response.error;
-    const errorMessages = errors.map((error) => error.message).join("---");
-    throw new Error(errorMessages);
+  if (!response.ok) {
+    const data = await response.json();
+
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 };
 
-// TODO: refactor handle errors
 // TODO: UPDATE

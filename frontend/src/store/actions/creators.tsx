@@ -44,15 +44,15 @@ const advertsFulfilled = (adverts: { list: Advert[]; quantity: number }) => ({
   payload: adverts
 });
 
-const tagsFulfilled = (tags: Tag[]) => ({
+const tagsFulfilled = (list: Tag[]) => ({
   type: "TAGS_FULFILLED",
-  payload: tags
+  payload: list
 });
 
 export const authLogin = (
   userData: User,
   navigate: NavigateFunction,
-  location?: Location
+  location: Location
 ): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
@@ -60,9 +60,7 @@ export const authLogin = (
       const user = await login(userData);
       dispatch(uiFulfilled());
       dispatch(userLoginFulfilled(user));
-      if (location) {
-        navigate(location.state?.from ?? "/adverts", { replace: true });
-      }
+      navigate(location.state?.from || "/adverts", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
@@ -74,13 +72,16 @@ export const authLogin = (
   };
 };
 
-export const authLogout = (): AppThunk<Promise<void>> => {
+export const authLogout = (
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
       await logout();
       dispatch(uiFulfilled());
       dispatch(userLogoutFulfilled());
+      navigate("/", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         dispatch(uiRejected([error.message]));
@@ -93,34 +94,42 @@ export const authLogout = (): AppThunk<Promise<void>> => {
 
 export const createUser = (
   userData: User,
-  navigate: NavigateFunction
+  navigate: NavigateFunction,
+  location: Location
 ): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
+      const { username, password, confirmPassword } = userData;
       dispatch(uiPending());
-      const { username, password } = userData;
+
+      // check if password and confirm password are the same
+      if (password !== confirmPassword) {
+        throw new Error("Passwords do not match");
+      }
+
       await createUserAPI(userData);
       dispatch(uiFulfilled());
-      dispatch(authLogin({ username, password }));
-      navigate("/adverts"); // TODO: el res.end() de la API esta afectando a la redireccion por como manejamos el fetch
+      dispatch(authLogin({ username, password }, navigate, location));
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
         return;
       }
-      alert(error); // TODO: Si las password no coinciden se ejecuta el Alert
+      alert(error);
     }
   };
 };
 
-export const deleteUser = (): AppThunk<Promise<void>> => {
+export const deleteUser = (
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
       await deleteUserAPI();
       dispatch(uiFulfilled());
-      dispatch(authLogout());
+      dispatch(authLogout(navigate));
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
@@ -168,12 +177,16 @@ export const getAdvert = (advertId: string): AppThunk<Promise<void>> => {
   };
 };
 
-export const createAdvert = (advert: Advert): AppThunk<Promise<void>> => {
+export const createAdvert = (
+  advert: Advert,
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
       await createAdvertAPI(advert);
       dispatch(uiFulfilled());
+      navigate(`/adverts/${advert.name}-${advert.id}`);
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
@@ -185,12 +198,16 @@ export const createAdvert = (advert: Advert): AppThunk<Promise<void>> => {
   };
 };
 
-export const updateAdvert = (advert: Advert): AppThunk<Promise<void>> => {
+export const updateAdvert = (
+  advert: Advert,
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
       await updateAdvertAPI(advert);
       dispatch(uiFulfilled());
+      navigate(`/adverts/${advert.name}-${advert.id}`);
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
@@ -202,12 +219,16 @@ export const updateAdvert = (advert: Advert): AppThunk<Promise<void>> => {
   };
 };
 
-export const deleteAdvert = (advertId: string): AppThunk<Promise<void>> => {
+export const deleteAdvert = (
+  advertId: string,
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
       await deleteAdvertAPI(advertId);
       dispatch(uiFulfilled());
+      navigate("/adverts", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
@@ -219,6 +240,7 @@ export const deleteAdvert = (advertId: string): AppThunk<Promise<void>> => {
   };
 };
 
+//TODO: logica que tenemos en el AdvertPage para marcar y desmarcar favoritos
 export const toogleFavorite = (
   isFavorite: boolean,
   advertId: string
@@ -241,12 +263,15 @@ export const toogleFavorite = (
 };
 
 export const getAllTags = (): AppThunk<Promise<void>> => {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
     try {
+      const state = getState();
+      const loaded = state.tags.loaded;
+      if (loaded) return;
       dispatch(uiPending());
-      const tags = await getAllTagsAPI();
+      const list = await getAllTagsAPI();
       dispatch(uiFulfilled());
-      dispatch(tagsFulfilled(tags));
+      dispatch(tagsFulfilled(list));
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");

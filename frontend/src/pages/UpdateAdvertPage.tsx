@@ -63,8 +63,7 @@ const UpdateAdvertPage = () => {
       sale
     };
 
-    dispatch(updateAdvert(updatedAdvert));
-    navigate("/adverts");
+    dispatch(updateAdvert(updatedAdvert, navigate));
   };
 
   const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {

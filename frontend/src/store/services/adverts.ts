@@ -1,3 +1,4 @@
+import { handleFetchError } from "../../lib/handleFetchError";
 import type { Advert } from "../state/types";
 
 export const create = async (advert: Advert) => {
@@ -22,25 +23,25 @@ export const getLatest = async (queryString: string) => {
     {
       credentials: "include"
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    if (typeof response.error === "string") {
-      throw new Error(response.error);
-    }
-    const errors: { field: string; message: string }[] = response.error;
-    const errorMessages = errors.map((error) => error.message).join("---");
-    throw new Error(errorMessages);
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 
-  const adverts: Advert[] = response.adverts.map((advert: Advert) => {
+  const adverts: Advert[] = data.adverts.map((advert: Advert) => {
     if (!advert.image) {
       advert.image =
         "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg";
     }
     return advert;
   });
-  return { list: adverts, quantity: response.quantity as number };
+
+  return { list: adverts, quantity: data.quantity as number };
 };
 
 export const getById = async (advertId: string) => {
@@ -49,18 +50,17 @@ export const getById = async (advertId: string) => {
     {
       credentials: "include"
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    if (typeof response.error === "string") {
-      throw new Error(response.error);
-    }
-    const errors: { field: string; message: string }[] = response.error;
-    const errorMessages = errors.map((error) => error.message).join("---");
-    throw new Error(errorMessages);
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 
-  const advert: Advert = response.advert;
+  const advert: Advert = data.advert;
   if (!advert.image) {
     advert.image =
       "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg";
@@ -78,15 +78,14 @@ export const update = async (advert: Advert) => {
       credentials: "include",
       body: JSON.stringify(advert)
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    if (typeof response.error === "string") {
-      throw new Error(response.error);
-    }
-    const errors: { field: string; message: string }[] = response.error;
-    const errorMessages = errors.map((error) => error.message).join("---");
-    throw new Error(errorMessages);
+  if (!response.ok) {
+    const data = await response.json();
+
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 };
 
@@ -99,15 +98,14 @@ export const remove = async (advertId: string) => {
       credentials: "include",
       body: JSON.stringify({ advertId })
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    if (typeof response.error === "string") {
-      throw new Error(response.error);
-    }
-    const errors: { field: string; message: string }[] = response.error;
-    const errorMessages = errors.map((error) => error.message).join("---");
-    throw new Error(errorMessages);
+  if (!response.ok) {
+    const data = await response.json();
+
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 };
 
@@ -120,14 +118,13 @@ export const toogleFavorite = async (isFavorite: boolean, advertId: string) => {
       credentials: "include",
       body: JSON.stringify({ isFavorite })
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    if (typeof response.error === "string") {
-      throw new Error(response.error);
-    }
-    const errors: { field: string; message: string }[] = response.error;
-    const errorMessages = errors.map((error) => error.message).join("---");
-    throw new Error(errorMessages);
+  if (!response.ok) {
+    const data = await response.json();
+
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 };

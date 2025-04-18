@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { createUser } from "../store/actions/creators";
 
 const SignupPage = () => {
   const { error, loading } = useAppSelector((state) => state.ui);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
 
   const [username, setUsername] = useState("");
@@ -18,16 +19,9 @@ const SignupPage = () => {
   const handleCreateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // check if password and confirm password are the same
-    if (password !== confirmPassword) {
-      dispatch(uiRej);
-      alert("Passwords do not match");
-      return;
-    }
+    const userData = { username, email, password, confirmPassword };
 
-    const userData = { username, email, password };
-
-    dispatch(createUser(userData, navigate));
+    dispatch(createUser(userData, navigate, location));
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
