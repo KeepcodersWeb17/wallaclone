@@ -17,7 +17,7 @@ const configureStore = (preloadedState: Partial<State>) => {
   const store = createStore(
     rootReducer,
     preloadedState as never,
-    applyMiddleware(thunk.thunk)
+    applyMiddleware(thunk.withExtraArgument<State, Action>())
   );
 
   return store;
