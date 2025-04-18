@@ -113,7 +113,7 @@ export const createAdvert = async (req, res, next) => {
 
     await newAdvert.save();
 
-    res.status(201).end();
+    res.status(201).json({ advert: newAdvert });
   } catch (error) {
     next(error);
   }
@@ -201,7 +201,8 @@ export const updateAdvert = async (req, res, next) => {
         _id: id,
         owner: req.user.id,
       },
-      updatedData
+      updatedData,
+      { new: true }
     );
 
     if (!foundAdvert) {
@@ -210,7 +211,7 @@ export const updateAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    res.status(204).end();
+    res.status(204).json({ advert: foundAdvert });
   } catch (error) {
     next(error);
   }
