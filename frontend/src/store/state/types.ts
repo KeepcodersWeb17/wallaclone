@@ -10,28 +10,45 @@ export type Owner = {
   username: string;
 };
 
-export type Advert = {
-  id?: string;
+type AdvertOriginal = {
   name: string;
   description?: string;
   price: number;
   sale: Sale;
   image?: string;
-  tags?: Tag[] | string[];
-  owner?: Owner;
-  favorites?: Owner[];
-  createdAt?: string;
-  updatedAt?: string;
 };
 
-export type User = {
-  id?: string;
-  username?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-  updatedAt?: string;
-  createdAt?: string;
+export type AdvertCreate = AdvertOriginal & {
+  tags: string;
+};
+
+export type AdvertUpdate = Partial<AdvertCreate>;
+
+export type Advert = Required<AdvertOriginal> & {
+  id: string;
+  tags: Tag[] | string[];
+  owner: Owner;
+  favorites: Owner[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UserLogin = {
+  username: string;
+  password: string;
+};
+
+export type UserSignup = UserLogin & {
+  email: string;
+  confirmPassword: string;
+};
+
+export type UserUpdate = Partial<UserSignup>;
+
+export type User = UserSignup & {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
 };
 
 type State = {

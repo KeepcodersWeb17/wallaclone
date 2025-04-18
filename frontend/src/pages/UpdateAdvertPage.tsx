@@ -6,7 +6,7 @@ import {
   getAdvert as getAdvertAction,
   updateAdvert
 } from "../store/actions/creators";
-import type { Advert, Sale } from "../store/state/types";
+import type { Sale } from "../store/state/types";
 
 const UpdateAdvertPage = () => {
   const dispatch = useAppDispatch();
@@ -14,13 +14,13 @@ const UpdateAdvertPage = () => {
   const navigate = useNavigate();
   const { advert } = useParams();
 
-  const advertId = advert ? advert.split("-")[1] : null;
+  const advertId = advert ? advert.split("-")[1] : "";
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [image, setImage] = useState<string>("");
-  const [tag, setTag] = useState<string[]>([]);
+  const [tag, setTag] = useState<string>();
   const [sale, setSale] = useState<Sale>("buy");
 
   const disabled = !name || !price;
@@ -41,9 +41,9 @@ const UpdateAdvertPage = () => {
     setPrice(advertDetails.price);
     setImage(advertDetails.image || "");
     setTag(
-      advertDetails.tags?.map((tag) =>
-        typeof tag === "string" ? tag : tag.name
-      ) || []
+      advertDetails.tags
+        ?.map((tag) => (typeof tag === "string" ? tag : tag.name))
+        .join("-")
     );
     setSale(advertDetails.sale);
   }, [advertDetails, advertId]);
@@ -53,8 +53,7 @@ const UpdateAdvertPage = () => {
 
     if (!advertDetails) return;
 
-    const updatedAdvert: Advert = {
-      id: advertDetails.id,
+    const updatedAdvert = {
       name,
       description,
       price,
@@ -63,7 +62,7 @@ const UpdateAdvertPage = () => {
       sale
     };
 
-    dispatch(updateAdvert(updatedAdvert, navigate));
+    dispatch(updateAdvert(updatedAdvert, advertId, navigate));
   };
 
   const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,8 +86,7 @@ const UpdateAdvertPage = () => {
   const handleTagsAdvertChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    console.log(event.target.value);
-    setTag(event.target.value.split(","));
+    setTag(event.target.value);
   };
 
   const handleSaleAdvertChange = (

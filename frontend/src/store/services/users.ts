@@ -1,7 +1,7 @@
 import { handleFetchError } from "../../lib/handleFetchError";
-import type { User } from "../state/types";
+import type { User, UserLogin, UserSignup } from "../state/types";
 
-export const login = async (credentials: User) => {
+export const login = async (credentials: UserLogin) => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/auth/login",
     {
@@ -37,7 +37,7 @@ export const logout = async () => {
   }
 };
 
-export const create = async (userData: User) => {
+export const create = async (userData: UserSignup) => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/users",
     {

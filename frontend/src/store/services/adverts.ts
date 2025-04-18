@@ -1,7 +1,7 @@
 import { handleFetchError } from "../../lib/handleFetchError";
-import type { Advert } from "../state/types";
+import type { Advert, AdvertCreate, AdvertUpdate } from "../state/types";
 
-export const create = async (advert: Advert) => {
+export const create = async (advert: AdvertCreate) => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/adverts",
     {
@@ -12,9 +12,16 @@ export const create = async (advert: Advert) => {
     }
   );
 
+  const data = await response.json();
+
   if (!response.ok) {
-    throw new Error("Error al crear el anuncio");
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
+
+  // deberiamos validar con Zod
+  return data.advert as Advert;
 };
 
 export const getLatest = async (queryString: string) => {
@@ -69,9 +76,9 @@ export const getById = async (advertId: string) => {
   return { list: [advert], quantity: 1 };
 };
 
-export const update = async (advert: Advert) => {
+export const update = async (advert: AdvertUpdate, advertId: string) => {
   const response = await fetch(
-    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advert.id}`,
+    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -80,13 +87,16 @@ export const update = async (advert: Advert) => {
     }
   );
 
-  if (!response.ok) {
-    const data = await response.json();
+  const data = await response.json();
 
+  if (!response.ok) {
     const error = handleFetchError(data);
 
     throw new Error(error);
   }
+
+  // deberiamos validar con Zod
+  return data.advert as Advert;
 };
 
 export const remove = async (advertId: string) => {

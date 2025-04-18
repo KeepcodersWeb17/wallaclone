@@ -9,7 +9,7 @@ const NewAdvertPage = () => {
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [image, setImage] = useState<string>();
-  const [tag, setTag] = useState<string>("");
+  const [tags, setTag] = useState<string>("");
   const [sale, setSale] = useState<Sale>(undefined);
 
   const disabled = !name || !price;
@@ -21,7 +21,7 @@ const NewAdvertPage = () => {
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const advert = { name, description, price, tag, image, sale };
+    const advert = { name, description, price, tags, image, sale };
 
     await dispatch(createAdvert(advert, navigate));
   };
@@ -103,7 +103,7 @@ const NewAdvertPage = () => {
           <select
             name="tags"
             id="tags"
-            value={tag}
+            value={tags}
             onChange={handleTagsAdvertChange}
           >
             <option value="work">Select a category</option>

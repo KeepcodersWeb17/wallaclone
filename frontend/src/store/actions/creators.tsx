@@ -1,5 +1,13 @@
 import type { Location, NavigateFunction } from "react-router-dom";
-import type { User, Advert, Tag } from "../state/types";
+import type {
+  User,
+  Advert,
+  Tag,
+  UserLogin,
+  UserSignup,
+  AdvertCreate,
+  AdvertUpdate
+} from "../state/types";
 import type { AppThunk } from "../store";
 import {
   create as createAdvertAPI,
@@ -50,7 +58,7 @@ const tagsFulfilled = (list: Tag[]) => ({
 });
 
 export const authLogin = (
-  userData: User,
+  userData: UserLogin,
   navigate: NavigateFunction,
   location: Location
 ): AppThunk<Promise<void>> => {
@@ -93,7 +101,7 @@ export const authLogout = (
 };
 
 export const createUser = (
-  userData: User,
+  userData: UserSignup,
   navigate: NavigateFunction,
   location: Location
 ): AppThunk<Promise<void>> => {
@@ -178,15 +186,15 @@ export const getAdvert = (advertId: string): AppThunk<Promise<void>> => {
 };
 
 export const createAdvert = (
-  advert: Advert,
+  advert: AdvertCreate,
   navigate: NavigateFunction
 ): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
-      await createAdvertAPI(advert);
+      const createdAdvert = await createAdvertAPI(advert);
       dispatch(uiFulfilled());
-      navigate(`/adverts/${advert.name}-${advert.id}`);
+      navigate(`/adverts/${createdAdvert.name}-${createdAdvert.id}`);
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
@@ -199,15 +207,16 @@ export const createAdvert = (
 };
 
 export const updateAdvert = (
-  advert: Advert,
+  advert: AdvertUpdate,
+  advertId: string,
   navigate: NavigateFunction
 ): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
-      await updateAdvertAPI(advert);
+      const updatedAdvert = await updateAdvertAPI(advert, advertId);
       dispatch(uiFulfilled());
-      navigate(`/adverts/${advert.name}-${advert.id}`);
+      navigate(`/adverts/${updatedAdvert.name}-${updatedAdvert.id}`);
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
