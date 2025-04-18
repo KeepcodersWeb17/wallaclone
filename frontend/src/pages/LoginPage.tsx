@@ -10,7 +10,7 @@ const LoginPage = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const username = e.currentTarget.querySelector(
@@ -21,7 +21,7 @@ const LoginPage = () => {
     ) as HTMLInputElement;
 
     const userData = { username: username.value, password: password.value };
-    await dispatch(authLogin(userData, navigate, location));
+    dispatch(authLogin(userData, navigate, location));
   };
 
   return (

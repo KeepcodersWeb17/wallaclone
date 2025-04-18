@@ -20,6 +20,7 @@ const SignupPage = () => {
 
     // check if password and confirm password are the same
     if (password !== confirmPassword) {
+      dispatch(uiRej);
       alert("Passwords do not match");
       return;
     }

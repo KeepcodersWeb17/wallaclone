@@ -25,7 +25,7 @@ const uiFulfilled = () => ({
   type: "UI_FULFILLED"
 });
 
-const uiRejected = (error: string[]) => ({
+export const uiRejected = (error: string[]) => ({
   type: "UI_REJECTED",
   payload: error
 });
@@ -51,7 +51,7 @@ const tagsFulfilled = (tags: Tag[]) => ({
 
 export const authLogin = (
   userData: User,
-  navigate?: NavigateFunction,
+  navigate: NavigateFunction,
   location?: Location
 ): AppThunk<Promise<void>> => {
   return async function (dispatch) {
@@ -60,7 +60,7 @@ export const authLogin = (
       const user = await login(userData);
       dispatch(uiFulfilled());
       dispatch(userLoginFulfilled(user));
-      if (navigate && location) {
+      if (location) {
         navigate(location.state?.from ?? "/adverts", { replace: true });
       }
     } catch (error) {
