@@ -13,6 +13,7 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(authLogout(navigate));
   };
+
   return (
     <header className="fixed top-0 w-full bg-white text-gray-800 shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-2">
