@@ -189,6 +189,8 @@ export const getAdverts = (queryString: string): AppThunk<Promise<void>> => {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        // esto es para que no se quede la lista de anuncios en el estado si hay un error
+        dispatch(advertsFulfilled({ list: [], quantity: 0 }));
         return;
       }
       alert(error);
