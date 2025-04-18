@@ -29,6 +29,7 @@ export type User = {
   username?: string;
   email?: string;
   password?: string;
+  confirmPassword?: string;
   updatedAt?: string;
   createdAt?: string;
 };
@@ -36,7 +37,7 @@ export type User = {
 type State = {
   user: User | null;
   adverts: { list: Advert[]; quantity: number };
-  tags: Tag[];
+  tags: { list: Tag[]; loaded: boolean };
   ui: { loading: boolean; error: string[] | null };
 };
 

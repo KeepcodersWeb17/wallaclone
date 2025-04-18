@@ -10,7 +10,7 @@ export const getAdvertsQuantity = (state: State) => state.adverts.quantity;
 
 export const getAdvert = (state: State) => state.adverts.list[0];
 
-export const getTags = (state: State) => state.tags;
+export const getTags = (state: State) => state.tags.list;
 
 export const getUi = (state: State) => state.ui;
 
