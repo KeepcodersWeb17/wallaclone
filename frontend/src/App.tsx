@@ -11,6 +11,8 @@ import UpdateAdvertPage from "./pages/UpdateAdvertPage";
 import UserPage from "./pages/UserPage";
 import ForbbidenPage from "./pages/Forbbiden";
 import Layout from "./layouts/Layout";
+import UpdateUserPage from "./pages/UpdateUserPage";
+import SelfUser from "./components/auth/SelfUser";
 
 function App() {
   const [test, setTest] = useState<string>("Loading...");
@@ -54,7 +56,19 @@ function App() {
             path="/users/:username"
             element={
               <RequireAuth>
-                <UserPage />
+                <SelfUser>
+                  <UserPage />
+                </SelfUser>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/users/:username/edit"
+            element={
+              <RequireAuth>
+                <SelfUser>
+                  <UpdateUserPage />
+                </SelfUser>
               </RequireAuth>
             }
           />

@@ -1,23 +1,15 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getUi, getUser } from "../store/selectors/selectors";
 import { User } from "../store/state/types";
 import { maskedEmail } from "../lib/maskEmail";
 import { deleteUser } from "../store/actions/creators";
-import { useEffect } from "react";
 
 const UserPage = () => {
-  const { username } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser) as User;
   const { error, loading } = useAppSelector(getUi);
-
-  useEffect(() => {
-    if (username !== user.username) {
-      navigate("/403");
-    }
-  }, [navigate, username, user.username]);
 
   const handleDelete = () => {
     // TODO: reemplazar confirm por un modal
