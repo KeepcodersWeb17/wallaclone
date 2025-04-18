@@ -1,65 +1,64 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useAppDispatch } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { updateUser } from "../store/actions/creators";
+import { User } from "../store/state/types";
 
 const UpdateUserPage = () => {
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
+  const { username, email } = useAppSelector((state) => state.user as User);
+  const { error, loading } = useAppSelector((state) => state.ui);
 
-  const handleChangePassword = async (e: React.FormEvent) => {
+  const handleUpdateUser = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (newPassword !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+    const username =
+      e.currentTarget.querySelector<HTMLInputElement>("#username");
+    const email = e.currentTarget.querySelector<HTMLInputElement>("#email");
+    const password =
+      e.currentTarget.querySelector<HTMLInputElement>("#password");
+    const confirmPassword =
+      e.currentTarget.querySelector<HTMLInputElement>("#confirmPassword");
 
-    // await dispatch(updateUserPassword(newPassword));
+    if (!username || !email || !password || !confirmPassword) return;
 
-    alert("Password updated successfully");
+    const userData = {
+      username: username.value,
+      email: email.value,
+      password: password.value,
+      confirmPassword: confirmPassword.value
+    };
 
-    navigate("/login");
-  };
-
-  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewPassword(e.target.value);
-  };
-
-  const handleConfirmPasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setConfirmPassword(e.target.value);
+    await dispatch(updateUser(userData, navigate));
   };
 
   return (
     <>
-      <h2>Change password</h2>
-      <form>
+      <h2 className="text-center">Update user</h2>
+      <form
+        className="mx-auto flex max-w-3xl flex-col items-center justify-center gap-5"
+        onSubmit={handleUpdateUser}
+      >
         <div>
-          <label htmlFor="newPassword">New password</label>
-          <input
-            type="password"
-            id="newPassword"
-            name="newPassword"
-            value={newPassword}
-            onChange={handleNewPasswordChange}
-          />
+          <label htmlFor="username">Username: </label>
+          <input type="text" name="username" id="username" value={username} />
         </div>
         <div>
-          <label htmlFor="confirmPassword">Confirm password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-          />
+          <label htmlFor="email">Email: </label>
+          <input type="email" name="email" id="email" value={email} />
         </div>
-        <button type="submit" onSubmit={handleChangePassword}>
-          Update
-        </button>
+        <div>
+          <label htmlFor="password">Password: </label>
+          <input type="password" name="password" id="password" />
+        </div>
+        <div>
+          <label htmlFor="confirmPassword">Confirm Password: </label>
+          <input type="password" name="confirmPassword" id="confirmPassword" />
+        </div>
+        <div>
+          {error?.length && <p style={{ color: "red" }}>{error.join(", ")}</p>}
+          {loading ? <p>loading...</p> : <button type="submit">Update</button>}
+        </div>
       </form>
     </>
   );
