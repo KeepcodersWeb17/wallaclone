@@ -145,7 +145,7 @@ export const updateUser = (
       const updatedUser = await updateUserAPI(userData);
       dispatch(uiFulfilled());
       dispatch(userLoginFulfilled(updatedUser));
-      navigate(`/users/${updatedUser.username}`);
+      navigate(`/users/${updatedUser.username}`, { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");

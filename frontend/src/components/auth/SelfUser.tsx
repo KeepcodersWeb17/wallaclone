@@ -9,7 +9,11 @@ const SelfUser = ({ children }: { children: React.ReactNode }) => {
 
   const isSelf = user.username === username;
 
-  return isSelf ? children : <Navigate to="/403" replace />;
+  return isSelf ? (
+    children
+  ) : (
+    <Navigate to={`/users/${user.username}`} replace />
+  );
 };
 
 export default SelfUser;
