@@ -2,15 +2,12 @@ import { handleFetchError } from "../../lib/handleFetchError";
 import type { Advert, AdvertCreate, AdvertUpdate } from "../state/types";
 
 export const create = async (advert: AdvertCreate) => {
-  const response = await fetch(
-    "https://api.wallaclone.keepcoders.duckdns.org/adverts",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(advert)
-    }
-  );
+  const response = await fetch("http://localhost:4000/adverts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(advert)
+  });
 
   const data = await response.json();
 
@@ -25,12 +22,9 @@ export const create = async (advert: AdvertCreate) => {
 };
 
 export const getLatest = async (queryString: string) => {
-  const response = await fetch(
-    `https://api.wallaclone.keepcoders.duckdns.org/adverts?${queryString}`,
-    {
-      credentials: "include"
-    }
-  );
+  const response = await fetch(`http://localhost:4000/adverts?${queryString}`, {
+    credentials: "include"
+  });
 
   const data = await response.json();
 
@@ -52,12 +46,9 @@ export const getLatest = async (queryString: string) => {
 };
 
 export const getById = async (advertId: string) => {
-  const response = await fetch(
-    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}`,
-    {
-      credentials: "include"
-    }
-  );
+  const response = await fetch(`http://localhost:4000/adverts/${advertId}`, {
+    credentials: "include"
+  });
 
   const data = await response.json();
 
@@ -77,15 +68,12 @@ export const getById = async (advertId: string) => {
 };
 
 export const update = async (advert: AdvertUpdate, advertId: string) => {
-  const response = await fetch(
-    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}`,
-    {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(advert)
-    }
-  );
+  const response = await fetch(`http://localhost:4000/adverts/${advertId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(advert)
+  });
 
   const data = await response.json();
 
@@ -100,15 +88,12 @@ export const update = async (advert: AdvertUpdate, advertId: string) => {
 };
 
 export const remove = async (advertId: string) => {
-  const response = await fetch(
-    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}`,
-    {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ advertId })
-    }
-  );
+  const response = await fetch(`http://localhost:4000/adverts/${advertId}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ advertId })
+  });
 
   if (!response.ok) {
     const data = await response.json();
@@ -121,7 +106,7 @@ export const remove = async (advertId: string) => {
 
 export const toogleFavorite = async (isFavorite: boolean, advertId: string) => {
   const response = await fetch(
-    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}/favorite`,
+    `http://localhost:4000/adverts/${advertId}/favorite`,
     {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
