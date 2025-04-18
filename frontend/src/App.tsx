@@ -39,10 +39,11 @@ function App() {
             </Layout>
           }
         >
+          <Route path="/adverts" element={<AdvertsPage />} />
+          <Route index element={<Navigate to="/adverts" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/recoverypassword" element={<h2>RecoveryPage</h2>} />
-          <Route path="/adverts" element={<AdvertsPage />} />
           <Route
             path="/adverts/favorites/:username"
             element={<AdvertsPage />}
@@ -73,7 +74,6 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="/" element={<Navigate to="/adverts" />} />
           <Route path="/404" element={<NotFoundPage />} />
           <Route path="/403" element={<ForbbidenPage />} />
           <Route path="*" element={<Navigate to="/404" />} />
