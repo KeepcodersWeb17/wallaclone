@@ -41,7 +41,7 @@ export const createAdvert = async (req, res, next) => {
     const advertData = req.body;
     const owner = req.user.id;
 
-    const { tags } = advertData.tags.split("-");
+    const tags = advertData.tags.split("-");
 
     const newAdvert = new Advert({ ...advertData, tags, owner });
 
@@ -118,6 +118,8 @@ export const updateAdvert = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedData = req.body;
+
+    updatedData.tags = updatedData.tags.split("-");
 
     const foundAdvert = await Advert.findOneAndUpdate(
       {
