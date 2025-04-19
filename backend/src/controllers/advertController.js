@@ -47,7 +47,12 @@ export const createAdvert = async (req, res, next) => {
 
     const savedAdvert = await newAdvert.save();
 
-    const advert = setAdvert(savedAdvert);
+    const populatedAdvert = await savedAdvert
+      .populate("owner", "username")
+      .populate("tags", "name")
+      .populate("favorites", "username");
+
+    const advert = setAdvert(populatedAdvert);
 
     res.status(201).json({ advert });
   } catch (error) {
@@ -121,7 +126,10 @@ export const updateAdvert = async (req, res, next) => {
       },
       updatedData,
       { new: true }
-    );
+    )
+      .populate("owner", "username")
+      .populate("tags", "name")
+      .populate("favorites", "username");
 
     if (!foundAdvert) {
       const error = new Error("Advert not found or not owned by user");

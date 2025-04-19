@@ -32,6 +32,33 @@ const UpdateAdvertPage = () => {
 
   const checkedBuy = advertDetails?.sale === "buy";
 
+  const previousTags = advertDetails?.tags.map((tag) => tag.name);
+  console.log(previousTags);
+  if (
+    motorRef.current?.textContent &&
+    previousTags.includes(motorRef.current.textContent)
+  ) {
+    motorRef.current.classList.remove("hidden");
+  }
+  if (
+    workRef.current?.textContent &&
+    previousTags.includes(workRef.current.textContent)
+  ) {
+    workRef.current.classList.remove("hidden");
+  }
+  if (
+    mobileRef.current?.textContent &&
+    previousTags.includes(mobileRef.current.textContent)
+  ) {
+    mobileRef.current.classList.remove("hidden");
+  }
+  if (
+    lifestyleRef.current?.textContent &&
+    previousTags.includes(lifestyleRef.current.textContent)
+  ) {
+    lifestyleRef.current.classList.remove("hidden");
+  }
+
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
 
