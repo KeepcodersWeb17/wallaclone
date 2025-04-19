@@ -26,7 +26,7 @@ const TagsDiaglog = ({ handleClose, handleSelected, ref }: Props) => {
         <CloseIcon />
       </button>
       <h2 className="">Categories</h2>
-      <ul className="sh flex w-full flex-col gap-5 text-center">
+      <ul className="flex w-full flex-col gap-5 text-center">
         {tags.map((tag) => (
           <li
             id={tag.id}
@@ -38,7 +38,9 @@ const TagsDiaglog = ({ handleClose, handleSelected, ref }: Props) => {
           </li>
         ))}
       </ul>
-      <button onClick={handleClose}>Confirm</button>
+      <button className="cursor-pointer" onClick={handleClose}>
+        Confirm
+      </button>
     </dialog>
   );
 };

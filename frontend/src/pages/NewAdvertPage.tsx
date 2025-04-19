@@ -1,19 +1,19 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Sale } from "../store/state/types";
-import { useAppDispatch } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { createAdvert } from "../store/actions/creators";
 import TagsDiaglog from "../components/TagsDialog";
+import { getTags } from "../store/selectors/selectors";
 
 const NewAdvertPage = () => {
-  const workRef = useRef<HTMLParagraphElement>(null);
-  const motorRef = useRef<HTMLParagraphElement>(null);
-  const mobileRef = useRef<HTMLParagraphElement>(null);
-  const lifestyleRef = useRef<HTMLParagraphElement>(null);
+  const tagsContainerRef = useRef<HTMLUListElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const tags = useAppSelector(getTags);
 
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -50,6 +50,7 @@ const NewAdvertPage = () => {
 
   const handleOpenModal = async () => {
     dialogRef.current?.showModal();
+    dialogRef.current?.focus();
   };
 
   const handleClose = () => {
@@ -59,18 +60,22 @@ const NewAdvertPage = () => {
   const handleSelected = (event: React.MouseEvent) => {
     event.currentTarget.toggleAttribute("selected");
     event.currentTarget.classList.toggle("bg-yellow-200");
-    if (motorRef.current?.textContent === event.currentTarget.textContent) {
-      motorRef.current.classList.toggle("hidden");
+
+    const tagsSelected = Array.from(
+      dialogRef.current!.querySelectorAll("li[selected]")
+    );
+
+    if (tagsSelected.length) {
+      tagsContainerRef.current?.classList.remove("hidden");
+    } else {
+      tagsContainerRef.current?.classList.add("hidden");
     }
-    if (workRef.current?.textContent === event.currentTarget.textContent) {
-      workRef.current.classList.toggle("hidden");
-    }
-    if (mobileRef.current?.textContent === event.currentTarget.textContent) {
-      mobileRef.current.classList.toggle("hidden");
-    }
-    if (lifestyleRef.current?.textContent === event.currentTarget.textContent) {
-      lifestyleRef.current.classList.toggle("hidden");
-    }
+
+    const selectedTag = tagsContainerRef.current?.querySelector(
+      `li[title="${event.currentTarget.textContent}"]`
+    );
+
+    selectedTag?.classList.toggle("hidden");
   };
 
   return (
@@ -113,39 +118,56 @@ const NewAdvertPage = () => {
           <label htmlFor="image">Image</label>
           <input type="text" id="image" placeholder="Image URL of the advert" />
         </div>
-        <button type="button" onClick={handleOpenModal}>
+        <button
+          className="cursor-pointer"
+          type="button"
+          onClick={handleOpenModal}
+        >
           TAGS
         </button>
-        <div className="flex justify-around">
-          <div>
-            <p ref={motorRef} className="hidden">
-              motor
-            </p>
-            <p ref={workRef} className="hidden">
-              work
-            </p>
-          </div>
-          <div>
-            <p ref={mobileRef} className="hidden">
-              mobile
-            </p>
-            <p ref={lifestyleRef} className="hidden">
-              lifestyle
-            </p>
-          </div>
-        </div>
+        <ul ref={tagsContainerRef} className="hidden">
+          {tags.map((tag) => (
+            <li
+              title={tag.name}
+              key={tag.id}
+              className="hidden cursor-pointer rounded hover:bg-gray-100"
+            >
+              {tag.name}
+            </li>
+          ))}
+        </ul>
         <fieldset className="flex justify-around">
           <div>
-            <input type="radio" id="buy" name="sale" value="buy" />
-            <label htmlFor="buy">Buy</label>
+            <input
+              className="cursor-pointer"
+              type="radio"
+              id="buy"
+              name="sale"
+              value="buy"
+            />
+            <label className="cursor-pointer" htmlFor="buy">
+              Buy
+            </label>
           </div>
           <div>
-            <input type="radio" id="sell" name="sale" value="sell" />
-            <label htmlFor="sell">Sell</label>
+            <input
+              className="cursor-pointer"
+              type="radio"
+              id="sell"
+              name="sale"
+              value="sell"
+            />
+            <label className="cursor-pointer" htmlFor="sell">
+              Sell
+            </label>
           </div>
         </fieldset>
         <div>
-          <button type="submit" onSubmit={handleCreateAdvert}>
+          <button
+            className="cursor-pointer"
+            type="submit"
+            onSubmit={handleCreateAdvert}
+          >
             Create
           </button>
         </div>

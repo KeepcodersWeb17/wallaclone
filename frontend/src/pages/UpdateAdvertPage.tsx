@@ -77,15 +77,13 @@ const UpdateAdvertPage = () => {
       dialogRef.current!.querySelectorAll("li[selected]")
     ).map((element) => element.getAttribute("id"));
 
-    const saleElement = event.currentTarget.querySelector<HTMLInputElement>(
+    const sale = event.currentTarget.querySelector<HTMLInputElement>(
       "input[name='sale']:checked"
-    );
+    )?.value as Sale;
 
-    if (!name || !price || !tagsArray.length || !saleElement?.value) return;
+    if (!name || !price || !tagsArray.length || !sale) return;
 
     const tags = tagsArray.join("-").toLowerCase();
-
-    const sale = saleElement.value as Sale;
 
     const advertToAPI = { name, price: +price, description, image, tags, sale };
 
@@ -103,16 +101,19 @@ const UpdateAdvertPage = () => {
   const handleSelected = (event: React.MouseEvent) => {
     event.currentTarget.toggleAttribute("selected");
     event.currentTarget.classList.toggle("bg-yellow-200");
-    if (motorRef.current?.textContent === event.currentTarget.textContent) {
+
+    const selectedTag = event.currentTarget.textContent;
+
+    if (motorRef.current?.textContent === selectedTag) {
       motorRef.current.classList.toggle("hidden");
     }
-    if (workRef.current?.textContent === event.currentTarget.textContent) {
+    if (workRef.current?.textContent === selectedTag) {
       workRef.current.classList.toggle("hidden");
     }
-    if (mobileRef.current?.textContent === event.currentTarget.textContent) {
+    if (mobileRef.current?.textContent === selectedTag) {
       mobileRef.current.classList.toggle("hidden");
     }
-    if (lifestyleRef.current?.textContent === event.currentTarget.textContent) {
+    if (lifestyleRef.current?.textContent === selectedTag) {
       lifestyleRef.current.classList.toggle("hidden");
     }
   };
