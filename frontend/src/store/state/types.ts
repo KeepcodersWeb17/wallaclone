@@ -26,7 +26,7 @@ export type AdvertUpdate = Partial<AdvertCreate>;
 
 export type Advert = Required<AdvertOriginal> & {
   id: string;
-  tags: Tag[] | string[];
+  tags: Tag[];
   owner: Owner;
   favorites: Owner[];
   createdAt: string;

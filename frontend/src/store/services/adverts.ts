@@ -114,12 +114,13 @@ export const toogleFavorite = async (isFavorite: boolean, advertId: string) => {
       body: JSON.stringify({ isFavorite })
     }
   );
+  const data = await response.json();
 
   if (!response.ok) {
-    const data = await response.json();
-
     const error = handleFetchError(data);
 
     throw new Error(error);
   }
+
+  return data.advert as Advert;
 };

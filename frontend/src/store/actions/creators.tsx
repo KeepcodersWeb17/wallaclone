@@ -199,8 +199,15 @@ export const getAdverts = (queryString: string): AppThunk<Promise<void>> => {
 };
 
 export const getAdvert = (advertId: string): AppThunk<Promise<void>> => {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
     try {
+      const state = getState();
+      const advert = state.adverts.list.find(
+        (advert) => advert.id === advertId
+      );
+
+      if (advert) return;
+
       dispatch(uiPending());
       const adverts = await getById(advertId);
       dispatch(uiFulfilled());
@@ -288,9 +295,9 @@ export const toogleFavorite = (
   return async function (dispatch) {
     try {
       dispatch(uiPending());
-      await toogleFavoriteAPI(isFavorite, advertId);
+      const advert = await toogleFavoriteAPI(isFavorite, advertId);
       dispatch(uiFulfilled());
-      dispatch(getAdvert(advertId));
+      dispatch(advertsFulfilled({ list: [advert], quantity: 1 }));
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");

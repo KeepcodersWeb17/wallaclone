@@ -227,7 +227,12 @@ export const toogleFavoriteAdvert = async (req, res, next) => {
       ? { $pull: { favorites: userId } }
       : { $addToSet: { favorites: userId } };
 
-    const foundAdvert = await Advert.findOneAndUpdate({ _id: id }, update);
+    const foundAdvert = await Advert.findOneAndUpdate({ _id: id }, update, {
+      new: true,
+    })
+      .populate("owner", "username")
+      .populate("tags", "name")
+      .populate("favorites", "username");
 
     if (!foundAdvert) {
       const error = new Error("Advert not found");
@@ -235,7 +240,27 @@ export const toogleFavoriteAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    res.status(204).end();
+    const advert = {
+      id: foundAdvert._id,
+      name: foundAdvert.name,
+      description: foundAdvert.description,
+      price: foundAdvert.price,
+      sale: foundAdvert.sale,
+      image: foundAdvert.image,
+      tags: foundAdvert.tags.map((tag) => ({ id: tag._id, name: tag.name })),
+      owner: {
+        id: foundAdvert.owner._id,
+        username: foundAdvert.owner.username,
+      },
+      favorites: foundAdvert.favorites.map((user) => ({
+        id: user._id,
+        username: user.username,
+      })),
+      createdAt: foundAdvert.createdAt,
+      updatedAt: foundAdvert.updatedAt,
+    };
+
+    res.status(200).json({ advert });
   } catch (error) {
     next(error);
   }
