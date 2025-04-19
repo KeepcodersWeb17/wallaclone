@@ -1,5 +1,7 @@
-import { useAppSelector } from "../store/store";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { getTags } from "../store/selectors/selectors";
+import { getAllTags } from "../store/actions/creators";
 import CloseIcon from "./icons/Close";
 
 interface Props extends React.ComponentProps<"dialog"> {
@@ -9,6 +11,12 @@ interface Props extends React.ComponentProps<"dialog"> {
 
 const TagsDiaglog = ({ handleClose, handleSelected, ref }: Props) => {
   const tags = useAppSelector(getTags);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAllTags());
+  }, [dispatch]);
+
   return (
     <dialog ref={ref} className="h-full w-full">
       <button

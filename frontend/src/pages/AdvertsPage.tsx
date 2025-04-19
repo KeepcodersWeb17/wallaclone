@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getState } from "../store/selectors/selectors";
-import { getAdverts, getAllTags } from "../store/actions/creators";
+import { getAdverts } from "../store/actions/creators";
 import { buildQueryString } from "../lib/buildQueryString";
 import { getParamsFilters } from "../lib/getParamsFilter";
 import SortingButton from "../components/SortingButton";
@@ -26,10 +26,6 @@ const AdvertsPage = () => {
   const dispatch = useAppDispatch();
 
   const { pathname } = useLocation();
-
-  useEffect(() => {
-    dispatch(getAllTags());
-  }, [dispatch]);
 
   useEffect(() => {
     const queryString = buildQueryString({
