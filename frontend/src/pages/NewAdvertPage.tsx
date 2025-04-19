@@ -163,7 +163,7 @@ const NewAdvertPage = () => {
             </label>
           </div>
         </fieldset>
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500">{error.join(", ")}</p>}
         <div>
           {loading ? (
             <p>Loading...</p>

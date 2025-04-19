@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { Sale } from "../store/state/types";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { getAdvert } from "../store/selectors/selectors";
+import { getAdvert, getTags, getUi } from "../store/selectors/selectors";
 import {
   getAdvert as getAdvertAction,
   updateAdvert
@@ -10,10 +10,7 @@ import {
 import TagsDiaglog from "../components/TagsDialog";
 
 const UpdateAdvertPage = () => {
-  const workRef = useRef<HTMLParagraphElement>(null);
-  const motorRef = useRef<HTMLParagraphElement>(null);
-  const mobileRef = useRef<HTMLParagraphElement>(null);
-  const lifestyleRef = useRef<HTMLParagraphElement>(null);
+  const tagsContainerRef = useRef<HTMLUListElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const navigate = useNavigate();
@@ -21,6 +18,9 @@ const UpdateAdvertPage = () => {
 
   const dispatch = useAppDispatch();
   const advertDetails = useAppSelector(getAdvert);
+
+  const tags = useAppSelector(getTags);
+  const { error, loading } = useAppSelector(getUi);
 
   useEffect(() => {
     if (!advert || !advert.includes("-")) {
@@ -33,31 +33,6 @@ const UpdateAdvertPage = () => {
   const checkedBuy = advertDetails?.sale === "buy";
 
   const previousTags = advertDetails?.tags.map((tag) => tag.name);
-
-  if (
-    motorRef.current?.textContent &&
-    previousTags.includes(motorRef.current.textContent)
-  ) {
-    motorRef.current.classList.remove("hidden");
-  }
-  if (
-    workRef.current?.textContent &&
-    previousTags.includes(workRef.current.textContent)
-  ) {
-    workRef.current.classList.remove("hidden");
-  }
-  if (
-    mobileRef.current?.textContent &&
-    previousTags.includes(mobileRef.current.textContent)
-  ) {
-    mobileRef.current.classList.remove("hidden");
-  }
-  if (
-    lifestyleRef.current?.textContent &&
-    previousTags.includes(lifestyleRef.current.textContent)
-  ) {
-    lifestyleRef.current.classList.remove("hidden");
-  }
 
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -102,20 +77,21 @@ const UpdateAdvertPage = () => {
     event.currentTarget.toggleAttribute("selected");
     event.currentTarget.classList.toggle("bg-yellow-200");
 
-    const selectedTag = event.currentTarget.textContent;
+    const tagsSelected = Array.from(
+      dialogRef.current!.querySelectorAll("li[selected]")
+    );
 
-    if (motorRef.current?.textContent === selectedTag) {
-      motorRef.current.classList.toggle("hidden");
+    if (tagsSelected.length) {
+      tagsContainerRef.current?.classList.remove("hidden");
+    } else {
+      tagsContainerRef.current?.classList.add("hidden");
     }
-    if (workRef.current?.textContent === selectedTag) {
-      workRef.current.classList.toggle("hidden");
-    }
-    if (mobileRef.current?.textContent === selectedTag) {
-      mobileRef.current.classList.toggle("hidden");
-    }
-    if (lifestyleRef.current?.textContent === selectedTag) {
-      lifestyleRef.current.classList.toggle("hidden");
-    }
+
+    const selectedTag = tagsContainerRef.current?.querySelector(
+      `li[title="${event.currentTarget.textContent}"]`
+    );
+
+    selectedTag?.classList.toggle("hidden");
   };
 
   return (
@@ -158,53 +134,65 @@ const UpdateAdvertPage = () => {
           <label htmlFor="image">Image</label>
           <input type="text" id="image" defaultValue={advertDetails?.image} />
         </div>
-        <button type="button" onClick={handleOpenModal}>
+        <button
+          className="cursor-pointer"
+          type="button"
+          onClick={handleOpenModal}
+        >
           TAGS
         </button>
-        <div className="flex justify-around">
-          <div>
-            <p ref={motorRef} className="hidden">
-              motor
-            </p>
-            <p ref={workRef} className="hidden">
-              work
-            </p>
-          </div>
-          <div>
-            <p ref={mobileRef} className="hidden">
-              mobile
-            </p>
-            <p ref={lifestyleRef} className="hidden">
-              lifestyle
-            </p>
-          </div>
-        </div>
+        <ul ref={tagsContainerRef} className="hidden">
+          {tags.map((tag) => (
+            <li
+              title={tag.name}
+              key={tag.id}
+              className="hidden cursor-pointer rounded hover:bg-gray-100"
+            >
+              {tag.name}
+            </li>
+          ))}
+        </ul>
         <fieldset className="flex justify-around">
           <div>
             <input
+              className="cursor-pointer"
               type="radio"
               id="buy"
               name="sale"
               value="buy"
               defaultChecked={checkedBuy}
             />
-            <label htmlFor="buy">Buy</label>
+            <label className="cursor-pointer" htmlFor="buy">
+              Buy
+            </label>
           </div>
           <div>
             <input
+              className="cursor-pointer"
               type="radio"
               id="sell"
               name="sale"
               value="sell"
               defaultChecked={!checkedBuy}
             />
-            <label htmlFor="sell">Sell</label>
+            <label className="cursor-pointer" htmlFor="sell">
+              Sell
+            </label>
           </div>
         </fieldset>
+        {error && <p className="text-red-500">{error.join(", ")}</p>}
         <div>
-          <button type="submit" onSubmit={handleCreateAdvert}>
-            Update
-          </button>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <button
+              className="cursor-pointer"
+              type="submit"
+              onSubmit={handleCreateAdvert}
+            >
+              Update
+            </button>
+          )}
         </div>
       </form>
     </>
