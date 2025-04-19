@@ -1,5 +1,6 @@
-import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
+import { setUser } from "../lib/setUser.js";
 
 export const login = async (req, res, next) => {
   try {
