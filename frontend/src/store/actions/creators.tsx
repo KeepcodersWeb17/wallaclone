@@ -254,6 +254,7 @@ export const updateAdvert = (
       dispatch(uiPending());
       const updatedAdvert = await updateAdvertAPI(advert, advertId);
       dispatch(uiFulfilled());
+      dispatch(advertsFulfilled({ list: [updatedAdvert], quantity: 1 }));
       navigate(`/adverts/${updatedAdvert.name}-${updatedAdvert.id}`);
     } catch (error) {
       if (error instanceof Error) {
