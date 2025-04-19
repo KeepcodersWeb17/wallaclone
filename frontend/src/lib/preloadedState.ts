@@ -1,7 +1,10 @@
 const getUser = async () => {
-  const response = await fetch("http://localhost:4000/users", {
-    credentials: "include"
-  }).then((res) => res.json());
+  const response = await fetch(
+    "https://api.wallaclone.keepcoders.duckdns.org/users",
+    {
+      credentials: "include"
+    }
+  ).then((res) => res.json());
 
   if (response.error) return null;
 
