@@ -12,6 +12,7 @@ import NewAdvertPage from "./pages/NewAdvertPage";
 import UpdateAdvertPage from "./pages/UpdateAdvertPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ForbbidenPage from "./pages/Forbbiden";
+import IsOwner from "./components/auth/IsOwner";
 
 function App() {
   return (
@@ -64,7 +65,9 @@ function App() {
           path="/adverts/update/:advert"
           element={
             <RequireAuth>
-              <UpdateAdvertPage />
+              <IsOwner>
+                <UpdateAdvertPage />
+              </IsOwner>
             </RequireAuth>
           }
         />
