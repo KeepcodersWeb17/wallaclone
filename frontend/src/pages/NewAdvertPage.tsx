@@ -4,7 +4,7 @@ import type { Sale } from "../store/state/types";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { createAdvert } from "../store/actions/creators";
 import TagsDiaglog from "../components/TagsDialog";
-import { getTags } from "../store/selectors/selectors";
+import { getTags, getUi } from "../store/selectors/selectors";
 
 const NewAdvertPage = () => {
   const tagsContainerRef = useRef<HTMLUListElement>(null);
@@ -14,6 +14,7 @@ const NewAdvertPage = () => {
   const navigate = useNavigate();
 
   const tags = useAppSelector(getTags);
+  const { error, loading } = useAppSelector(getUi);
 
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -162,14 +163,19 @@ const NewAdvertPage = () => {
             </label>
           </div>
         </fieldset>
+        {error && <p className="text-red-500">{error}</p>}
         <div>
-          <button
-            className="cursor-pointer"
-            type="submit"
-            onSubmit={handleCreateAdvert}
-          >
-            Create
-          </button>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <button
+              className="cursor-pointer"
+              type="submit"
+              onSubmit={handleCreateAdvert}
+            >
+              Create
+            </button>
+          )}
         </div>
       </form>
     </>
