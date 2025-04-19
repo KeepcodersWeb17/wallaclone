@@ -75,7 +75,6 @@ export const getAdvert = async (req, res, next) => {
       error.status = 404;
       return next(error);
     }
-    console.log(foundAdvert);
     const advert = setAdvert(foundAdvert);
 
     res.json({ advert });
