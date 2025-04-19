@@ -47,10 +47,11 @@ export const createAdvert = async (req, res, next) => {
 
     const savedAdvert = await newAdvert.save();
 
-    const populatedAdvert = await savedAdvert
-      .populate("owner", "username")
-      .populate("tags", "name")
-      .populate("favorites", "username");
+    const populatedAdvert = await savedAdvert.populate([
+      { path: "owner", select: "username" },
+      { path: "tags", select: "name" },
+      { path: "favorites", select: "username" },
+    ]);
 
     const advert = setAdvert(populatedAdvert);
 
@@ -74,7 +75,7 @@ export const getAdvert = async (req, res, next) => {
       error.status = 404;
       return next(error);
     }
-
+    console.log(foundAdvert);
     const advert = setAdvert(foundAdvert);
 
     res.json({ advert });

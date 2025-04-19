@@ -33,7 +33,7 @@ const UpdateAdvertPage = () => {
   const checkedBuy = advertDetails?.sale === "buy";
 
   const previousTags = advertDetails?.tags.map((tag) => tag.name);
-  console.log(previousTags);
+  console.log(advertDetails);
   if (
     motorRef.current?.textContent &&
     previousTags.includes(motorRef.current.textContent)
