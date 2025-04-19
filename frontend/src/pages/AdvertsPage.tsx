@@ -10,9 +10,9 @@ import { getState } from "../store/selectors/selectors";
 import { getAdverts, getAllTags } from "../store/actions/creators";
 import { buildQueryString } from "../lib/buildQueryString";
 import { getParamsFilters } from "../lib/getParamsFilter";
-import CloseIcon from "../components/icons/Close";
 import SortingButton from "../components/SortingButton";
 import { ShowUserAdverts } from "../components/ShowUserAdverts";
+import TagsDiaglog from "../components/TagsDialog";
 
 const AdvertsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -130,27 +130,11 @@ const AdvertsPage = () => {
   return (
     <>
       {/* Modal Cateogries */}
-      <dialog ref={dialogRef} className="h-full w-full">
-        <button
-          className="absolute top-5 right-5 cursor-pointer"
-          onClick={handleClose}
-        >
-          <CloseIcon />
-        </button>
-        <h2 className="">Categories</h2>
-        <ul className="sh flex w-full flex-col gap-5 text-center">
-          {tags.list.map((tag) => (
-            <li
-              key={tag.id}
-              className="cursor-pointer rounded hover:bg-gray-100"
-              onClick={handleSelected}
-            >
-              {tag.name}
-            </li>
-          ))}
-        </ul>
-        <button onClick={handleClose}>Confirm</button>
-      </dialog>
+      <TagsDiaglog
+        ref={dialogRef}
+        handleClose={handleClose}
+        handleSelected={handleSelected}
+      />
 
       {/* Filtros */}
       <form onSubmit={handleFilterSubmit}>
