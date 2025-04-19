@@ -3,8 +3,11 @@ import defaultState from "../state/defaultState";
 
 const tags = (state = defaultState.tags, action: Action) => {
   switch (action.type) {
-    case "GET_TAGS_FULFILLED": {
-      return action.payload;
+    case "TAGS_FULFILLED": {
+      return {
+        list: action.payload,
+        loaded: true
+      };
     }
 
     default: {

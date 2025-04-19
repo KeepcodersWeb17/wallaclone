@@ -1,37 +1,32 @@
 import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
   useLocation,
   useParams,
   useSearchParams
 } from "react-router-dom";
-import type State from "../store/state/types";
-import CloseIcon from "../components/icons/Close";
-import { getAdverts, getAllTags } from "../store/actions/creators";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { getState } from "../store/selectors/selectors";
+import { getAdverts } from "../store/actions/creators";
 import { buildQueryString } from "../lib/buildQueryString";
-import SortingButton from "../components/SortingButton";
 import { getParamsFilters } from "../lib/getParamsFilter";
+import SortingButton from "../components/SortingButton";
 import { ShowUserAdverts } from "../components/ShowUserAdverts";
+import TagsDiaglog from "../components/TagsDialog";
 
 const AdvertsPage = () => {
-  // const [isOpenModal, setIsOpenModal] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { username } = useParams();
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const { user, tags, adverts } = useSelector((state: State) => state);
+  const { user, tags, adverts, ui } = useAppSelector(getState);
+  const { error, loading } = ui;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { pathname } = useLocation();
-
-  useEffect(() => {
-    // @ts-expect-error lo vamos a tipar mas adelante
-    dispatch(getAllTags());
-  }, [dispatch]);
 
   useEffect(() => {
     const queryString = buildQueryString({
@@ -39,9 +34,9 @@ const AdvertsPage = () => {
       username,
       user,
       pathname,
-      tags
+      tags: tags.list
     });
-    // @ts-expect-error lo vamos a tipar mas adelante
+
     dispatch(getAdverts(queryString));
   }, [dispatch, searchParams, username, user, pathname, tags]);
 
@@ -132,29 +127,14 @@ const AdvertsPage = () => {
   return (
     <>
       {/* Modal Cateogries */}
-      <dialog ref={dialogRef} className="h-full w-full">
-        <button
-          className="absolute top-5 right-5 cursor-pointer"
-          onClick={handleClose}
-        >
-          <CloseIcon />
-        </button>
-        <h2 className="">Categories</h2>
-        <ul className="sh flex w-full flex-col gap-5 text-center">
-          {tags.map((tag) => (
-            <li
-              key={tag.id}
-              className="cursor-pointer rounded hover:bg-gray-100"
-              onClick={handleSelected}
-            >
-              {tag.name}
-            </li>
-          ))}
-        </ul>
-        <button onClick={handleClose}>Confirm</button>
-      </dialog>
+      <TagsDiaglog
+        ref={dialogRef}
+        handleClose={handleClose}
+        handleSelected={handleSelected}
+      />
 
       {/* Filtros */}
+      {error && <p className="text-red-500">{error.join(", ")}</p>}
       <form onSubmit={handleFilterSubmit}>
         <input type="text" name="advertName" placeholder="Advert name..." />
         <input
@@ -174,7 +154,7 @@ const AdvertsPage = () => {
         <button type="button" onClick={handleOpenModal}>
           Category
         </button>
-        <button type="submit">Filter</button>
+        {loading ? <p>Loading...</p> : <button type="submit">Filter</button>}
       </form>
 
       {/* Filter by user */}
@@ -220,7 +200,7 @@ const AdvertsPage = () => {
       ) : (
         <ul>
           {adverts.list.map((advert) => (
-            <li key={advert.id}>
+            <li key={`${advert.name}-${advert.id}`}>
               <Link to={`/adverts/${advert.name}-${advert.id}`}>
                 <div>
                   <img src={advert.image} alt={advert.name} />

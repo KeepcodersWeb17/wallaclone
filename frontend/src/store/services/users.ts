@@ -1,6 +1,7 @@
-import type { User } from "../state/types";
+import { handleFetchError } from "../../lib/handleFetchError";
+import type { User, UserLogin, UserSignup, UserUpdate } from "../state/types";
 
-export const login = async (credentials: User) => {
+export const login = async (credentials: UserLogin) => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/auth/login",
     {
@@ -9,13 +10,18 @@ export const login = async (credentials: User) => {
       credentials: "include",
       body: JSON.stringify(credentials)
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    throw new Error(response.error);
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 
-  return response.user;
+  // deberiamos validar con Zod
+  return data.user as User;
 };
 
 export const logout = async () => {
@@ -31,7 +37,7 @@ export const logout = async () => {
   }
 };
 
-export const create = async (userData: User) => {
+export const create = async (userData: UserSignup) => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/users",
     {
@@ -40,10 +46,14 @@ export const create = async (userData: User) => {
       credentials: "include",
       body: JSON.stringify(userData)
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    throw new Error(response.error);
+  if (!response.ok) {
+    const data = await response.json();
+
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 };
 
@@ -55,11 +65,34 @@ export const remove = async () => {
       headers: { "content-type": "application/json" },
       credentials: "include"
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    throw new Error(response.error);
+  if (!response.ok) {
+    const data = await response.json();
+
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 };
 
-// TODO: UPDATE
+export const update = async (userData: UserUpdate) => {
+  const response = await fetch(
+    "https://api.wallaclone.keepcoders.duckdns.org/users",
+    {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(userData)
+    }
+  );
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
+  }
+
+  return data.user as User;
+};

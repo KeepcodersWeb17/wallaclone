@@ -1,98 +1,65 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { createUser } from "../store/actions/creators";
 
 const SignupPage = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const disabledButton = !username || !email || !password || !confirmPassword;
-
-  const dispatch = useDispatch();
+  const { error, loading } = useAppSelector((state) => state.ui);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useAppDispatch();
 
   const handleCreateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // check if password and confirm password are the same
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+    const username =
+      e.currentTarget.querySelector<HTMLInputElement>("#username")?.value;
+    const email =
+      e.currentTarget.querySelector<HTMLInputElement>("#email")?.value;
+    const password =
+      e.currentTarget.querySelector<HTMLInputElement>("#password")?.value;
+    const confirmPassword =
+      e.currentTarget.querySelector<HTMLInputElement>(
+        "#confirmPassword"
+      )?.value;
 
-    const userData = { username, email, password };
+    if (!username || !email || !password || !confirmPassword) return;
 
-    // @ts-expect-error Lo vamos a tipar más adelante
-    dispatch(createUser(userData));
-  };
+    const userData = {
+      username,
+      email,
+      password,
+      confirmPassword
+    };
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const handleConfirmPasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setConfirmPassword(e.target.value);
+    dispatch(createUser(userData, navigate, location));
   };
 
   return (
     <>
-      <h2>Signup</h2>
-      <form onSubmit={handleCreateUser}>
+      <h2 className="text-center">Signup</h2>
+      <form
+        className="mx-auto flex max-w-3xl flex-col items-center justify-center gap-5"
+        onSubmit={handleCreateUser}
+      >
         <div>
           <label htmlFor="username">Username: </label>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            value={username}
-            onChange={handleUsernameChange}
-          />
+          <input type="text" name="username" id="username" />
         </div>
         <div>
           <label htmlFor="email">Email: </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            onChange={handleEmailChange}
-          />
+          <input type="email" name="email" id="email" />
         </div>
         <div>
           <label htmlFor="password">Password: </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
+          <input type="password" name="password" id="password" />
         </div>
         <div>
           <label htmlFor="confirmPassword">Confirm Password: </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-          />
+          <input type="password" name="confirmPassword" id="confirmPassword" />
         </div>
         <div>
-          <button type="submit" disabled={disabledButton}>
-            Create
-          </button>
+          {error?.length && <p style={{ color: "red" }}>{error.join(", ")}</p>}
+          {loading ? <p>loading...</p> : <button type="submit">Create</button>}
         </div>
       </form>
     </>

@@ -11,7 +11,7 @@ export const ShowUserAdverts = () => {
   };
 
   const handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && inputValue.trim() !== "") {
       navigate(`/adverts/user/${inputValue}`);
     }
   };
@@ -25,7 +25,11 @@ export const ShowUserAdverts = () => {
         onChange={handleInputChange}
         onKeyDown={handleEnterPress}
       />
-      <Link to={`/adverts/user/${inputValue}`}>SEARCH</Link>
+      {inputValue.trim() !== "" ? (
+        <Link to={`/adverts/user/${inputValue}`}>SEARCH</Link>
+      ) : (
+        <p className="inline-block">SEARCH</p>
+      )}
     </>
   );
 };

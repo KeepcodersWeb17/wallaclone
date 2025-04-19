@@ -5,7 +5,7 @@ export const createAdvertZodSchema = z.object({
   description: z.string().optional(),
   price: z.number().min(0, "Price must be greater than 0"),
   image: z.string().optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.string(),
   sale: z.enum(["sell", "buy"], {
     required_error: "Sale type is required",
   }),

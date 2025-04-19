@@ -1,179 +1,207 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAdvert, updateAdvert } from "../store/actions/creators";
-import State, { Sale } from "../store/state/types";
+import type { Advert, AdvertUpdate, Sale } from "../store/state/types";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { getAdvert, getTags, getUi } from "../store/selectors/selectors";
+import {
+  getAdvert as getAdvertAction,
+  updateAdvert
+} from "../store/actions/creators";
+import TagsDiaglog from "../components/TagsDialog";
 
 const UpdateAdvertPage = () => {
-  const dispatch = useDispatch();
+  const tagsContainerRef = useRef<HTMLUListElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
   const navigate = useNavigate();
   const { advert } = useParams();
 
-  const advertId = advert ? advert.split("-")[1] : null;
-  const advertDetails = useSelector((state: State) => state.adverts.list[0]);
+  const advertId = advert?.split("-")[1] || "";
 
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
-  const [image, setImage] = useState<string>("");
-  const [tag, setTag] = useState<string[]>([]);
-  const [sale, setSale] = useState<Sale>("buy");
+  const dispatch = useAppDispatch();
+  const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
 
-  const disabled = !name || !price;
+  const tags = useAppSelector(getTags);
+  const { error, loading } = useAppSelector(getUi);
 
-  // Cargar el anuncio al montar
   useEffect(() => {
-    if (advertId) {
-      // @ts-expect-error lo tipamos más adelante
-      dispatch(getAdvert(advertId));
+    if (!advertId) {
+      navigate("/404");
+      return;
     }
-  }, [dispatch, advertId]);
+    dispatch(getAdvertAction(advertId));
+  }, [dispatch, navigate, advertId]);
 
-  // Rellenar campos cuando llegue el anuncio
-  useEffect(() => {
-    if (!advertDetails || advertDetails.id !== advertId) return;
+  const checkedBuy = advertDetails?.sale === "buy";
 
-    setName(advertDetails.name);
-    setDescription(advertDetails.description || "");
-    setPrice(advertDetails.price);
-    setImage(advertDetails.image || "");
-    setTag(advertDetails.tags?.map((tag) => tag.name) || []);
-    setSale(advertDetails.sale);
-  }, [advertDetails, advertId]);
+  const previousTags = advertDetails?.tags.map((tag) => tag.name);
 
-  const handleUpdateAdvert = (event: React.FormEvent) => {
+  const handleUpdateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!advertDetails) return;
+    const name =
+      event.currentTarget.querySelector<HTMLInputElement>("#name")?.value;
+    const price =
+      event.currentTarget.querySelector<HTMLInputElement>("#price")?.value;
+    const description =
+      event.currentTarget.querySelector<HTMLInputElement>(
+        "#description"
+      )?.value;
+    const image =
+      event.currentTarget.querySelector<HTMLInputElement>("#image")?.value;
 
-    const updatedAdvert = {
-      id: advertDetails.id,
-      name,
-      description,
-      price,
-      image,
-      tags: [tag],
-      sale
-    };
+    const tagsArray = Array.from(
+      dialogRef.current!.querySelectorAll("li[selected]")
+    ).map((element) => element.getAttribute("id"));
 
-    // @ts-expect-error lo tipamos más adelante
-    dispatch(updateAdvert(updatedAdvert));
-    navigate("/adverts");
+    const sale = event.currentTarget.querySelector<HTMLInputElement>(
+      "input[name='sale']:checked"
+    )?.value as Sale;
+
+    const tags = tagsArray.join("-").toLowerCase();
+
+    const advertToAPI: AdvertUpdate = {};
+
+    if (name) advertToAPI.name = name;
+    if (price) advertToAPI.price = +price;
+    if (description) advertToAPI.description = description;
+    if (image) advertToAPI.image = image;
+    if (tags) advertToAPI.tags = tags;
+    if (sale) advertToAPI.sale = sale;
+
+    await dispatch(updateAdvert(advertToAPI, advert!.split("-")[1], navigate));
   };
 
-  const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+  const handleOpenModal = async () => {
+    dialogRef.current?.showModal();
   };
 
-  const handleDescriptionAdvert = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setDescription(event.target.value);
+  const handleClose = () => {
+    dialogRef.current?.close();
   };
 
-  const handlePriceAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrice(Number(event.target.value));
-  };
+  const handleSelected = (event: React.MouseEvent) => {
+    event.currentTarget.toggleAttribute("selected");
+    event.currentTarget.classList.toggle("bg-yellow-200");
 
-  const handleImageAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImage(event.target.value);
-  };
+    const tagsSelected = Array.from(
+      dialogRef.current!.querySelectorAll("li[selected]")
+    );
 
-  const handleTagsAdvertChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    console.log(event.target.value);
-    setTag(event.target.value.split(","));
-  };
-
-  const handleSaleAdvertChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    if (event.target.value === "buy" || event.target.value === "sell") {
-      setSale(event.target.value);
+    if (tagsSelected.length) {
+      tagsContainerRef.current?.classList.remove("hidden");
+    } else {
+      tagsContainerRef.current?.classList.add("hidden");
     }
-  };
 
-  if (!advert || !advertId || !advertDetails?.id) {
-    return <p>Loading advert...</p>;
-  }
+    const selectedTag = tagsContainerRef.current?.querySelector(
+      `li[title="${event.currentTarget.textContent}"]`
+    );
+
+    selectedTag?.classList.toggle("hidden");
+  };
 
   return (
     <>
-      <h2>Update Advert</h2>
-      <form onSubmit={handleUpdateAdvert}>
+      <TagsDiaglog
+        ref={dialogRef}
+        handleClose={handleClose}
+        handleSelected={handleSelected}
+      />
+      <h2 className="mb-5">New Advert</h2>
+      <form
+        onSubmit={handleUpdateAdvert}
+        className="mx-auto flex max-w-3xl flex-col justify-center gap-5"
+      >
         <div>
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name"> Name</label>
           <input
             type="text"
             id="name"
-            value={name}
-            onChange={handleNameAdvert}
+            minLength={3}
+            required
+            defaultValue={advertDetails?.name}
           />
         </div>
         <div>
           <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            rows={3}
-            value={description}
-            onChange={handleDescriptionAdvert}
-          ></textarea>
+          <textarea id="description" rows={3}></textarea>
         </div>
         <div>
           <label htmlFor="price">Price</label>
           <input
             type="number"
             id="price"
-            value={price}
-            onChange={handlePriceAdvert}
+            required
+            defaultValue={advertDetails?.price}
+            min={0}
           />
         </div>
         <div>
           <label htmlFor="image">Image</label>
-          <input
-            type="text"
-            id="image"
-            value={image}
-            onChange={handleImageAdvert}
-          />
+          <input type="text" id="image" defaultValue={advertDetails?.image} />
         </div>
         <div>
-          <label htmlFor="tags">Category:</label>
-          <select
-            name="tags"
-            id="tags"
-            value={tag}
-            onChange={handleTagsAdvertChange}
-          >
-            <option value="">Select a category</option>
-            <option value="work">Work</option>
-            <option value="lifestyle">Lifestyle</option>
-            <option value="motor">Motor</option>
-            <option value="mobile">Mobile</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="sale">Sale:</label>
-          <select
-            name="sale"
-            id="sale"
-            value={sale}
-            onChange={handleSaleAdvertChange}
-          >
-            <option value="">Select a sale type</option>
-            <option value="buy">Buy</option>
-            <option value="sell">Sell</option>
-          </select>
+          <h3>PREVIOUS TAGS</h3>
+          <ul>{previousTags?.map((tag) => <li key={tag}>{tag}</li>)}</ul>
         </div>
         <div>
           <button
-            type="submit"
-            disabled={disabled}
-            onSubmit={handleUpdateAdvert}
+            className="cursor-pointer"
+            type="button"
+            onClick={handleOpenModal}
           >
-            Update
+            UPDATED TAGS
           </button>
+          <ul ref={tagsContainerRef} className="hidden">
+            {tags.map((tag) => (
+              <li title={tag.name} key={tag.id} className="hidden">
+                {tag.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <fieldset className="flex justify-around">
+          <div>
+            <input
+              className="cursor-pointer"
+              type="radio"
+              id="buy"
+              name="sale"
+              value="buy"
+              defaultChecked={checkedBuy}
+            />
+            <label className="cursor-pointer" htmlFor="buy">
+              Buy
+            </label>
+          </div>
+          <div>
+            <input
+              className="cursor-pointer"
+              type="radio"
+              id="sell"
+              name="sale"
+              value="sell"
+              defaultChecked={!checkedBuy}
+            />
+            <label className="cursor-pointer" htmlFor="sell">
+              Sell
+            </label>
+          </div>
+        </fieldset>
+        {error && <p className="text-red-500">{error.join(", ")}</p>}
+        <div>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <button
+              className="cursor-pointer"
+              type="submit"
+              onSubmit={handleUpdateAdvert}
+            >
+              Update
+            </button>
+          )}
         </div>
       </form>
     </>

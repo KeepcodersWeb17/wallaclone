@@ -1,162 +1,170 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import type State from "../store/state/types";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { getAdvert, getUi, getUser } from "../store/selectors/selectors";
 import {
-  getAdvert,
+  getAdvert as getAdvertAction,
   deleteAdvert,
   toogleFavorite
 } from "../store/actions/creators";
+import { Advert } from "../store/state/types";
 
 const AdvertPage = () => {
-  const user = useSelector((state: State) => state.user);
-
-  const advertDetails = useSelector((state: State) => state.adverts.list[0]);
-
-  const IsFavoriteInitialState =
-    !!user?.id &&
-    Array.isArray(advertDetails?.favorites) &&
-    advertDetails?.favorites?.some((favorite) => favorite.id === user.id);
-
-  const [openModal, setOpenModal] = useState(false);
-
-  const [isFavorite, setIsFavorite] = useState(IsFavoriteInitialState);
-
-  const dispatch = useDispatch();
-
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();
-
   const { advert } = useParams();
 
-  const advertId = advert ? advert.split("-")[1] : null;
+  const advertId = advert?.split("-")[1] || "";
+
+  const dispatch = useAppDispatch();
+  const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
+  const user = useAppSelector(getUser);
+  const { error, loading } = useAppSelector(getUi);
+
+  const advertOwner = advertDetails?.owner.username;
+  const isOwner = user?.username === advertOwner;
+  const isFavorite = !!advertDetails?.favorites.find(
+    (owner) => owner.id === user?.id
+  );
 
   useEffect(() => {
-    if (advertId)
-      // @ts-expect-error lo vamos a tipar mas adelante
-      dispatch(getAdvert(advertId));
-  }, [advertId, dispatch]);
+    if (!advertId) {
+      navigate("/404");
+      return;
+    }
+    dispatch(getAdvertAction(advertId));
+  }, [advert, dispatch, navigate, advertId]);
 
-  const handleDelete = () => {
-    setOpenModal(true);
+  const handleOpenModal = () => {
+    dialogRef.current?.showModal();
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false);
+    dialogRef.current?.close();
   };
 
-  const handleConfirmDelete = async () => {
-    // @ts-expect-error lo vamos a tipar mas adelante
-    await dispatch(deleteAdvert(advertId));
-    alert("Advert deleted");
-    handleCloseModal();
-    navigate("/adverts");
+  const handleDelete = () => {
+    if (!advertDetails.id) return;
+    dispatch(deleteAdvert(advertDetails.id, navigate, handleCloseModal));
   };
 
-  const handleFavorite = async () => {
-    if (!user?.id) {
+  const handleFavorite = () => {
+    if (!user?.id || !advertDetails.id) {
       navigate("/login");
       return;
     }
 
-    setIsFavorite((favorite) => !favorite);
-
-    // @ts-expect-error lo vamos a tipar mas adelante
-    await dispatch(toogleFavorite(isFavorite, advertId));
-
-    const status = isFavorite ? "unmarked" : "marked";
-    const message = `Advert ${status} as favorite`;
-    alert(message);
+    dispatch(toogleFavorite(isFavorite, advertDetails.id));
   };
+
+  const textFavorite = isFavorite ? "unset" : "set";
+
+  const textStatus =
+    advertDetails?.sale === "sell" ? "for sale" : "looking to buy";
 
   return (
     <>
-      <dialog open={openModal}>
-        <h3>
-          Are you sure you want to delete this advert?
-          <button onClick={handleCloseModal}>Cancel</button>
-          <button onClick={handleConfirmDelete}>Delete</button>
-        </h3>
+      {/* modal */}
+      <dialog
+        ref={dialogRef}
+        className="mx-auto mt-[30vh] rounded-2xl px-6 py-4"
+      >
+        <h3>Are you sure you want to delete this advert?</h3>
+
+        {error && <p className="text-red-500">{error.join(", ")}</p>}
+        <div className="mt-4 flex justify-around">
+          <button className="cursor-pointer" onClick={handleCloseModal}>
+            Cancel
+          </button>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <button className="cursor-pointer" onClick={handleDelete}>
+              Delete
+            </button>
+          )}
+        </div>
       </dialog>
-      {!advertDetails ? (
-        <p>Advert not found</p>
-      ) : (
-        <article>
-          <header>
-            <nav>
-              <button onClick={() => navigate(-1)}>Go back</button>
-              <button onClick={handleFavorite}>
-                {isFavorite ? "unset as favorite" : "set as favorite"}
+
+      {/* advertDetails  */}
+      <article>
+        {error && <p className="text-red-500">{error.join(", ")}</p>}
+        <header>
+          <nav className="flex gap-2">
+            <button className="cursor-pointer" onClick={() => navigate(-1)}>
+              Go back
+            </button>
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <button className="cursor-pointer" onClick={handleFavorite}>
+                {textFavorite} favorite
               </button>
-              <button>Share</button>
-            </nav>
-          </header>
-
-          <section>
-            <div>
-              <img src={advertDetails.image} alt={advertDetails.name} />
-            </div>
-
-            <div>
-              <h2>{advertDetails.name}</h2>
-            </div>
-
-            <div>
-              <p>{advertDetails.price} €</p>
-            </div>
-
-            <div>
-              <p>
-                Published by:{" "}
-                <Link to={`/adverts?username=${advertDetails.owner?.username}`}>
-                  {advertDetails.owner?.username}
-                </Link>
-              </p>
-              <p>
-                Status:{" "}
-                {advertDetails.sale === "sell" ? (
-                  <span>for sale</span>
-                ) : (
-                  <span>looking to buy</span>
-                )}
-              </p>
-            </div>
-
-            <div>
-              {user?.username === advertDetails.owner?.username ? (
-                <>
-                  <button onClick={handleDelete}>Delete</button>
-                  <Link
-                    to={`/adverts/update/${advertDetails.name}-${advertDetails.id}`}
-                  >
-                    Update
-                  </Link>
-                </>
-              ) : (
-                <button>Send a message</button>
-              )}
-            </div>
-
-            <div>
-              <p>Description:</p>
-              {!advertDetails.description ? (
-                <p>No description available</p>
-              ) : (
-                <p>{advertDetails.description}</p>
-              )}
-            </div>
-          </section>
-          <footer>
-            <p>Published on {advertDetails.createdAt?.split("T")[0]}</p>
-
-            {advertDetails.updatedAt !== advertDetails.createdAt && (
-              <p>Updated on {advertDetails.updatedAt?.split("T")[0]}</p>
             )}
+            <button>Share</button>
+          </nav>
+        </header>
 
-            <p>Marked as favorite {advertDetails.favorites?.length} times</p>
-          </footer>
-        </article>
-      )}
+        <section>
+          <div className="h-auto w-1/5">
+            <img src={advertDetails?.image} alt={advertDetails?.name} />
+          </div>
+
+          <div>
+            <h2>{advertDetails?.name}</h2>
+          </div>
+
+          <div>
+            <p>{advertDetails?.price} €</p>
+          </div>
+
+          <div>
+            <p>
+              Published by:{" "}
+              <Link to={`/adverts/user/${advertOwner}`}>{advertOwner}</Link>
+            </p>
+            <p>Status: {textStatus}</p>
+          </div>
+
+          {/* actions */}
+          {isOwner ? (
+            <div className="flex gap-4">
+              <button className="cursor-pointer" onClick={handleOpenModal}>
+                Delete
+              </button>
+              <Link
+                to={`/adverts/update/${advertDetails.name}-${advertDetails.id}`}
+              >
+                Update
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <button>Send a message</button>
+              <button>Buy</button>
+            </div>
+          )}
+
+          <div>
+            <p>Description:</p>
+            {!advertDetails?.description ? (
+              <p>No description available</p>
+            ) : (
+              <p>{advertDetails?.description}</p>
+            )}
+          </div>
+        </section>
+
+        <footer>
+          <p>Published on {advertDetails?.createdAt?.split("T")[0]}</p>
+
+          {advertDetails?.updatedAt !== advertDetails?.createdAt && (
+            <p>Updated on {advertDetails?.updatedAt?.split("T")[0]}</p>
+          )}
+
+          <p>Marked as favorite {advertDetails?.favorites?.length} times</p>
+        </footer>
+      </article>
     </>
   );
 };

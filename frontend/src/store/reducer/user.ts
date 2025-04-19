@@ -3,10 +3,10 @@ import defaultState from "../state/defaultState";
 
 const user = (state = defaultState.user, action: Action) => {
   switch (action.type) {
-    case "AUTH_LOGIN_FULFILLED": {
+    case "USER_LOGIN_FULFILLED": {
       return action.payload;
     }
-    case "AUTH_LOGOUT_FULFILLED": {
+    case "USER_LOGOUT_FULFILLED": {
       return null;
     }
     default: {

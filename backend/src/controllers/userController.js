@@ -1,3 +1,4 @@
+import { setUser } from "../lib/setUser.js";
 import User from "../models/User.js";
 
 export const createUser = async (req, res, next) => {
@@ -50,13 +51,7 @@ export const getUser = async (req, res, next) => {
       return;
     }
 
-    const user = {
-      id: foundUser._id,
-      username: foundUser.username,
-      email: foundUser.email,
-      createdAt: foundUser.createdAt,
-      updatedAt: foundUser.updatedAt,
-    };
+    const user = setUser(foundUser);
 
     res.json({ user });
   } catch (error) {
@@ -81,11 +76,15 @@ export const updateUser = async (req, res, next) => {
     }
 
     if (password) {
-      const hashedPassword = await User.hashPassword();
+      const hashedPassword = await User.hashPassword(password);
       updatedData.password = hashedPassword;
     }
 
-    const foundUser = await User.findOneAndUpdate({ _id: userId }, updatedData);
+    const foundUser = await User.findOneAndUpdate(
+      { _id: userId },
+      updatedData,
+      { new: true }
+    );
 
     if (!foundUser) {
       const error = new Error("User not found");
@@ -94,7 +93,9 @@ export const updateUser = async (req, res, next) => {
       return;
     }
 
-    res.status(204).end();
+    const user = setUser(foundUser);
+
+    res.status(200).json({ user });
   } catch (error) {
     next(error);
   }

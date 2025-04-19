@@ -1,78 +1,61 @@
-import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import type State from "../store/state/types";
-import { authLogin, authLogout } from "../store/actions/creators";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { authLogin } from "../store/actions/creators";
+import { getUi } from "../store/selectors/selectors";
 
 const LoginPage = () => {
-  const isAuth = useSelector((state: State) => !!state.user?.id);
-  const persistedUsername = useSelector((state: State) => state.user?.username);
+  const { error, loading } = useAppSelector(getUi);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const username =
+      e.currentTarget.querySelector<HTMLInputElement>("#username")?.value;
+    const password =
+      e.currentTarget.querySelector<HTMLInputElement>("#password")?.value;
+
+    if (!username || !password) return;
+
     const userData = { username, password };
-    // @ts-expect-error Lo vamos a tipar más adelante
-    await dispatch(authLogin(userData)); // este await es necesario para usar navigate luego!
-    navigate(location.state?.from ?? "/adverts", { replace: true });
-  };
-
-  const handleLogout = () => {
-    // @ts-expect-error Lo vamos a tipar más adelante
-    dispatch(authLogout());
-  };
-
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    dispatch(authLogin(userData, navigate, location));
   };
 
   return (
     <>
-      {isAuth ? (
-        <>
-          <h2>Bienvenido {persistedUsername}</h2>{" "}
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <>
-          <h2>Login</h2>
-          <form onSubmit={handleLogin}>
-            <div>
-              <label htmlFor="username">Username: </label>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                value={username}
-                onChange={handleUsernameChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="">Password: </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </div>
-            <div>
-              <button type="submit">Login</button>
-            </div>
-          </form>
-        </>
-      )}
+      <h2 className="text-center">Login</h2>
+      <form
+        className="mx-auto flex max-w-3xl flex-col items-center justify-center gap-5"
+        onSubmit={handleLogin}
+      >
+        <div>
+          <label htmlFor="username">Username: </label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            minLength={3}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="">Password: </label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            minLength={6}
+            required
+          />
+        </div>
+        <div>
+          {error?.length && <p style={{ color: "red" }}>{error.join(", ")}</p>}
+          {loading ? <p>loading...</p> : <button type="submit">Login</button>}
+        </div>
+      </form>
     </>
   );
 };

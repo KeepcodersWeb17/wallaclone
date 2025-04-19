@@ -1,5 +1,6 @@
-import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
+import { setUser } from "../lib/setUser.js";
 
 export const login = async (req, res, next) => {
   try {
@@ -42,15 +43,9 @@ export const login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    const user = {
-      id: foundUser._id,
-      username: foundUser.username,
-      email: foundUser.email,
-      createdAt: foundUser.createdAt,
-      updatedAt: foundUser.updatedAt,
-    };
+    const user = setUser(foundUser);
 
-    res.status(200).json({ user });
+    res.json({ user });
   } catch (error) {
     console.log(error);
     next(error);

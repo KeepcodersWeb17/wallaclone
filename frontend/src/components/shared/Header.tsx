@@ -1,21 +1,22 @@
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import type State from "../../store/state/types";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { getUser } from "../../store/selectors/selectors";
 import { authLogout } from "../../store/actions/creators";
 import UserIcon from "../icons/User";
-const Header = () => {
-  const user = useSelector((state: State) => state.user);
 
-  const dispatch = useDispatch();
-  // const navigate = useNavigate();
+const Header = () => {
+  const user = useAppSelector(getUser);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    // @ts-expect-error lo vamos a tipar mas adelante
+    navigate("/adverts");
     dispatch(authLogout());
-    // navigate("/");
   };
+
   return (
-    <header className="fixed top-0 w-full bg-white text-gray-800 shadow-md">
+    <header className="w-full bg-white text-gray-800 shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-2">
         <div>
           <Link to={"/adverts"}>
@@ -32,6 +33,14 @@ const Header = () => {
           )}
           <div className="absolute right-0 mt-2 flex flex-col rounded bg-white py-1 shadow-lg ring-1 ring-black">
             <nav className="flex flex-col space-x-8">
+              <Link
+                to={"/signup"}
+                className="block w-full px-4 py-2 text-center text-sm hover:bg-gray-100"
+                state={{ from: location.pathname }}
+                replace
+              >
+                Sign up
+              </Link>
               <Link
                 to={`/users/${user?.username}`}
                 className="block w-full px-4 py-2 text-center text-sm hover:bg-gray-100"

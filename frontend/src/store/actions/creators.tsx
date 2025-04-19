@@ -1,4 +1,15 @@
-import type { User, Advert } from "../state/types";
+import type { Location, NavigateFunction } from "react-router-dom";
+import type {
+  User,
+  Advert,
+  Tag,
+  UserLogin,
+  UserSignup,
+  AdvertCreate,
+  AdvertUpdate,
+  UserUpdate
+} from "../state/types";
+import type { AppThunk } from "../store";
 import {
   create as createAdvertAPI,
   getById,
@@ -11,184 +22,313 @@ import {
   login,
   logout,
   create as createUserAPI,
-  remove as deleteUserAPI
+  remove as deleteUserAPI,
+  update as updateUserAPI
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
 
-// export const actionPending = () => ({
-//   type: "ACTION_PENDING"
-// });
+const uiPending = () => ({
+  type: "UI_PENDING"
+});
 
-// export const actionRejected = (error: string) => ({
-//   type: "ACTION_REJECTED",
-//   payload: error
-// });
+const uiFulfilled = () => ({
+  type: "UI_FULFILLED"
+});
 
-const authLoginFulfilled = (userData: User) => ({
-  type: "AUTH_LOGIN_FULFILLED",
+export const uiRejected = (error: string[]) => ({
+  type: "UI_REJECTED",
+  payload: error
+});
+
+const userLoginFulfilled = (userData: User) => ({
+  type: "USER_LOGIN_FULFILLED",
   payload: userData
 });
 
-const authLogoutFulfilled = () => ({
-  type: "AUTH_LOGOUT_FULFILLED"
+const userLogoutFulfilled = () => ({
+  type: "USER_LOGOUT_FULFILLED"
 });
 
-const getAdvertsFulfilled = (adverts: {
-  list: Advert[];
-  quantity: number;
-}) => ({
-  type: "GET_ADVERTS_FULFILLED",
+const advertsFulfilled = (adverts: { list: Advert[]; quantity: number }) => ({
+  type: "ADVERTS_FULFILLED",
   payload: adverts
 });
 
-const getAllTagsFulfilled = (tags: string[]) => ({
-  type: "GET_TAGS_FULFILLED",
-  payload: tags
+const tagsFulfilled = (list: Tag[]) => ({
+  type: "TAGS_FULFILLED",
+  payload: list
 });
 
-export const authLogin = (userData: User) => {
-  // @ts-expect-error Lo vamos a tipar más adelante
+export const authLogin = (
+  userData: UserLogin,
+  navigate: NavigateFunction,
+  location: Location
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      dispatch(uiPending());
       const user = await login(userData);
-      dispatch(authLoginFulfilled(user));
+      dispatch(uiFulfilled());
+      dispatch(userLoginFulfilled(user));
+      navigate(location.state?.from || "/adverts", { replace: true });
     } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
     }
   };
 };
 
-export const createUser = (userData: User) => {
-  // @ts-expect-error Lo vamos a tipar más adelante
+export const authLogout = (): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
-      const { username, password } = userData;
-      await createUserAPI(userData);
-      dispatch(authLogin({ username, password }));
-    } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const authLogout = () => {
-  // @ts-expect-error Lo vamos a tipar más adelante
-  return async function (dispatch) {
-    try {
-      // dispatch(actionPending());
+      dispatch(uiPending());
       await logout();
-      dispatch(authLogoutFulfilled());
+      dispatch(uiFulfilled());
+      dispatch(userLogoutFulfilled());
     } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        dispatch(uiRejected([error.message]));
+        return;
+      }
+      alert(error);
     }
   };
 };
 
-export const deleteUser = () => {
-  // @ts-expect-error Lo vamos a tipar más adelante
+export const createUser = (
+  userData: UserSignup,
+  navigate: NavigateFunction,
+  location: Location
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      const { username, password, confirmPassword } = userData;
+      dispatch(uiPending());
+
+      // check if password and confirm password are the same
+      if (password !== confirmPassword) {
+        throw new Error("Passwords do not match");
+      }
+
+      await createUserAPI(userData);
+      dispatch(uiFulfilled());
+      dispatch(authLogin({ username, password }, navigate, location));
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
+    }
+  };
+};
+
+export const updateUser = (
+  userData: UserUpdate,
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      const { password, confirmPassword } = userData;
+      dispatch(uiPending());
+
+      // check if password and confirm password are the same
+      if (password !== confirmPassword) {
+        throw new Error("Passwords do not match");
+      }
+
+      const updatedUser = await updateUserAPI(userData);
+      dispatch(uiFulfilled());
+      dispatch(userLoginFulfilled(updatedUser));
+      navigate(`/users/${updatedUser.username}`, { replace: true });
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
+    }
+  };
+};
+
+export const deleteUser = (
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      dispatch(uiPending());
       await deleteUserAPI();
+      dispatch(uiFulfilled());
       dispatch(authLogout());
+      navigate("/adverts", { replace: true });
     } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
     }
   };
 };
 
-export const getAdverts = (queryString: string) => {
-  // @ts-expect-error Lo vamos a tipar más adelante
+export const getAdverts = (queryString: string): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
+      dispatch(uiPending());
       const adverts = await getLatest(queryString);
-      dispatch(getAdvertsFulfilled(adverts));
+      dispatch(uiFulfilled());
+      dispatch(advertsFulfilled(adverts));
     } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        // esto es para que no se quede la lista de anuncios en el estado si hay un error
+        dispatch(advertsFulfilled({ list: [], quantity: 0 }));
+        return;
+      }
+      alert(error);
     }
   };
 };
 
-export const getAdvert = (advertId: string) => {
-  // @ts-expect-error Lo vamos a tipar más adelante
-  return async function (dispatch) {
+export const getAdvert = (advertId: string): AppThunk<Promise<void>> => {
+  return async function (dispatch, getState) {
     try {
-      // dispatch(actionPending());
+      const state = getState();
+      const advert = state.adverts.list.find(
+        (advert) => advert.id === advertId
+      );
+
+      if (advert) return;
+
+      dispatch(uiPending());
       const adverts = await getById(advertId);
-      dispatch(getAdvertsFulfilled(adverts));
+      dispatch(uiFulfilled());
+      dispatch(advertsFulfilled(adverts));
     } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
     }
   };
 };
 
-export const createAdvert = (advert: Advert) => {
-  return async function () {
-    try {
-      // dispatch(actionPending());
-      await createAdvertAPI(advert);
-    } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const updateAdvert = (advert: Advert) => {
-  return async function () {
-    try {
-      // dispatch(actionPending());
-      await updateAdvertAPI(advert);
-    } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const deleteAdvert = (advertId: string) => {
-  return async function () {
-    try {
-      // dispatch(actionPending());
-      await deleteAdvertAPI(advertId);
-    } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const toogleFavorite = (isFavorite: boolean, advertId: string) => {
-  return async function () {
-    try {
-      // dispatch(actionPending());
-      await toogleFavoriteAPI(isFavorite, advertId);
-    } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
-    }
-  };
-};
-
-export const getAllTags = () => {
-  // @ts-expect-error lo vamos a tipar mas adelante
+export const createAdvert = (
+  advert: AdvertCreate,
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
-      // dispatch(actionPending());
-      const tags = await getAllTagsAPI();
-      dispatch(getAllTagsFulfilled(tags));
+      dispatch(uiPending());
+      const createdAdvert = await createAdvertAPI(advert);
+      dispatch(uiFulfilled());
+      navigate(`/adverts/${createdAdvert.name}-${createdAdvert.id}`);
     } catch (error) {
-      // dispatch(actionRejected(error.message));
-      console.error(error);
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
+    }
+  };
+};
+
+export const updateAdvert = (
+  advert: AdvertUpdate,
+  advertId: string,
+  navigate: NavigateFunction
+): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      dispatch(uiPending());
+      const updatedAdvert = await updateAdvertAPI(advert, advertId);
+      dispatch(uiFulfilled());
+      dispatch(advertsFulfilled({ list: [updatedAdvert], quantity: 1 }));
+      navigate(`/adverts/${updatedAdvert.name}-${updatedAdvert.id}`);
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
+    }
+  };
+};
+
+export const deleteAdvert = (
+  advertId: string,
+  navigate: NavigateFunction,
+  handleCloseModal: () => void
+): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      dispatch(uiPending());
+      await deleteAdvertAPI(advertId);
+      dispatch(uiFulfilled());
+      handleCloseModal();
+      navigate("/adverts", { replace: true });
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
+    }
+  };
+};
+
+//TODO: logica que tenemos en el AdvertPage para marcar y desmarcar favoritos
+export const toogleFavorite = (
+  isFavorite: boolean,
+  advertId: string
+): AppThunk<Promise<void>> => {
+  return async function (dispatch) {
+    try {
+      dispatch(uiPending());
+      const advert = await toogleFavoriteAPI(isFavorite, advertId);
+      dispatch(uiFulfilled());
+      dispatch(advertsFulfilled({ list: [advert], quantity: 1 }));
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
+    }
+  };
+};
+
+export const getAllTags = (): AppThunk<Promise<void>> => {
+  return async function (dispatch, getState) {
+    try {
+      const state = getState();
+      const loaded = state.tags.loaded;
+      if (loaded) return;
+      dispatch(uiPending());
+      const list = await getAllTagsAPI();
+      dispatch(uiFulfilled());
+      dispatch(tagsFulfilled(list));
+    } catch (error) {
+      if (error instanceof Error) {
+        const errors = error.message.split("---");
+        dispatch(uiRejected(errors));
+        return;
+      }
+      alert(error);
     }
   };
 };

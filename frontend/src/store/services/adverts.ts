@@ -1,6 +1,7 @@
-import type { Advert } from "../state/types";
+import { handleFetchError } from "../../lib/handleFetchError";
+import type { Advert, AdvertCreate, AdvertUpdate } from "../state/types";
 
-export const create = async (advert: Advert) => {
+export const create = async (advert: AdvertCreate) => {
   const response = await fetch(
     "https://api.wallaclone.keepcoders.duckdns.org/adverts",
     {
@@ -11,9 +12,16 @@ export const create = async (advert: Advert) => {
     }
   );
 
+  const data = await response.json();
+
   if (!response.ok) {
-    throw new Error("Error al crear el anuncio");
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
+
+  // deberiamos validar con Zod
+  return data.advert as Advert;
 };
 
 export const getLatest = async (queryString: string) => {
@@ -22,20 +30,25 @@ export const getLatest = async (queryString: string) => {
     {
       credentials: "include"
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    throw new Error(response.error);
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 
-  const adverts: Advert[] = response.adverts.map((advert: Advert) => {
+  const adverts: Advert[] = data.adverts.map((advert: Advert) => {
     if (!advert.image) {
       advert.image =
         "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg";
     }
     return advert;
   });
-  return { list: adverts, quantity: response.quantity as number };
+
+  return { list: adverts, quantity: data.quantity as number };
 };
 
 export const getById = async (advertId: string) => {
@@ -44,13 +57,17 @@ export const getById = async (advertId: string) => {
     {
       credentials: "include"
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    throw new Error(response.error);
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 
-  const advert: Advert = response.advert;
+  const advert: Advert = data.advert;
   if (!advert.image) {
     advert.image =
       "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg";
@@ -59,25 +76,27 @@ export const getById = async (advertId: string) => {
   return { list: [advert], quantity: 1 };
 };
 
-export const update = async (advert: Advert) => {
+export const update = async (advert: AdvertUpdate, advertId: string) => {
   const response = await fetch(
-    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advert.id}`,
+    `https://api.wallaclone.keepcoders.duckdns.org/adverts/${advertId}`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(advert)
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    if (typeof response.error === "string") {
-      throw new Error(response.error);
-    }
-    // @ts-expect-error lo vamos a tipar mas adelante
-    const error = response.error.map((err) => err.message).join(", ");
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
     throw new Error(error);
   }
+
+  // deberiamos validar con Zod
+  return data.advert as Advert;
 };
 
 export const remove = async (advertId: string) => {
@@ -89,10 +108,14 @@ export const remove = async (advertId: string) => {
       credentials: "include",
       body: JSON.stringify({ advertId })
     }
-  ).then((res) => res.json());
+  );
 
-  if (response.error) {
-    throw new Error(response.error);
+  if (!response.ok) {
+    const data = await response.json();
+
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
 };
 
@@ -105,9 +128,14 @@ export const toogleFavorite = async (isFavorite: boolean, advertId: string) => {
       credentials: "include",
       body: JSON.stringify({ isFavorite })
     }
-  ).then((res) => res.json());
+  );
+  const data = await response.json();
 
-  if (response.error) {
-    throw new Error(response.error);
+  if (!response.ok) {
+    const error = handleFetchError(data);
+
+    throw new Error(error);
   }
+
+  return data.advert as Advert;
 };
