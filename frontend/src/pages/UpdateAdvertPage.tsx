@@ -148,11 +148,7 @@ const UpdateAdvertPage = () => {
           </button>
           <ul ref={tagsContainerRef} className="hidden">
             {tags.map((tag) => (
-              <li
-                title={tag.name}
-                key={tag.id}
-                className="hidden cursor-pointer rounded hover:bg-gray-100"
-              >
+              <li title={tag.name} key={tag.id}>
                 {tag.name}
               </li>
             ))}
