@@ -134,24 +134,30 @@ const UpdateAdvertPage = () => {
           <label htmlFor="image">Image</label>
           <input type="text" id="image" defaultValue={advertDetails?.image} />
         </div>
-        <button
-          className="cursor-pointer"
-          type="button"
-          onClick={handleOpenModal}
-        >
-          TAGS
-        </button>
-        <ul ref={tagsContainerRef} className="hidden">
-          {tags.map((tag) => (
-            <li
-              title={tag.name}
-              key={tag.id}
-              className="hidden cursor-pointer rounded hover:bg-gray-100"
-            >
-              {tag.name}
-            </li>
-          ))}
-        </ul>
+        <div>
+          <h3>PREVIOUS TAGS</h3>
+          <ul>{previousTags?.map((tag) => <li key={tag}>{tag}</li>)}</ul>
+        </div>
+        <div>
+          <button
+            className="cursor-pointer"
+            type="button"
+            onClick={handleOpenModal}
+          >
+            UPDATED TAGS
+          </button>
+          <ul ref={tagsContainerRef} className="hidden">
+            {tags.map((tag) => (
+              <li
+                title={tag.name}
+                key={tag.id}
+                className="hidden cursor-pointer rounded hover:bg-gray-100"
+              >
+                {tag.name}
+              </li>
+            ))}
+          </ul>
+        </div>
         <fieldset className="flex justify-around">
           <div>
             <input
