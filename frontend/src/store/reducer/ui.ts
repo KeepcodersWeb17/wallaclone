@@ -4,7 +4,7 @@ import defaultState from "../state/defaultState";
 const ui = (state = defaultState.ui, action: Action) => {
   switch (action.type) {
     case "UI_PENDING": {
-      return { error: state.error, loading: true };
+      return { error: null, loading: true };
     }
     case "UI_FULFILLED": {
       return { error: null, loading: false };

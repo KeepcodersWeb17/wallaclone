@@ -268,13 +268,15 @@ export const updateAdvert = (
 
 export const deleteAdvert = (
   advertId: string,
-  navigate: NavigateFunction
+  navigate: NavigateFunction,
+  handleCloseModal: () => void
 ): AppThunk<Promise<void>> => {
   return async function (dispatch) {
     try {
       dispatch(uiPending());
       await deleteAdvertAPI(advertId);
       dispatch(uiFulfilled());
+      handleCloseModal();
       navigate("/adverts", { replace: true });
     } catch (error) {
       if (error instanceof Error) {

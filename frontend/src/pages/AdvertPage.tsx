@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { getAdvert, getUser } from "../store/selectors/selectors";
+import { getAdvert, getUi, getUser } from "../store/selectors/selectors";
 import {
   getAdvert as getAdvertAction,
   deleteAdvert,
@@ -16,6 +16,7 @@ const AdvertPage = () => {
   const dispatch = useAppDispatch();
   const advertDetails = useAppSelector(getAdvert);
   const user = useAppSelector(getUser);
+  const { error, loading } = useAppSelector(getUi);
 
   const advertOwner = advertDetails?.owner.username;
   const isOwner = user?.username === advertOwner;
@@ -41,8 +42,7 @@ const AdvertPage = () => {
 
   const handleDelete = () => {
     if (!advertDetails.id) return;
-    handleCloseModal();
-    dispatch(deleteAdvert(advertDetails.id, navigate));
+    dispatch(deleteAdvert(advertDetails.id, navigate, handleCloseModal));
   };
 
   const handleFavorite = () => {
@@ -62,18 +62,37 @@ const AdvertPage = () => {
   return (
     <>
       {/* modal */}
-      <dialog ref={dialogRef}>
+      <dialog
+        ref={dialogRef}
+        className="mx-auto mt-[30vh] rounded-2xl px-6 py-4"
+      >
         <h3>Are you sure you want to delete this advert?</h3>
-        <button onClick={handleCloseModal}>Cancel</button>
-        <button onClick={handleDelete}>Delete</button>
+
+        {error && <p className="text-red-500">{error.join(", ")}</p>}
+        <div className="mt-4 flex justify-around">
+          <button className="cursor-pointer" onClick={handleCloseModal}>
+            Cancel
+          </button>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <button className="cursor-pointer" onClick={handleDelete}>
+              Delete
+            </button>
+          )}
+        </div>
       </dialog>
 
       {/* advertDetail  */}
       <article>
         <header>
-          <nav>
-            <button onClick={() => navigate(-1)}>Go back</button>
-            <button onClick={handleFavorite}>{textFavorite} favorite</button>
+          <nav className="flex gap-2">
+            <button className="cursor-pointer" onClick={() => navigate(-1)}>
+              Go back
+            </button>
+            <button className="cursor-pointer" onClick={handleFavorite}>
+              {textFavorite} favorite
+            </button>
             <button>Share</button>
           </nav>
         </header>
@@ -101,8 +120,10 @@ const AdvertPage = () => {
 
           {/* actions */}
           {isOwner ? (
-            <div>
-              <button onClick={handleOpenModal}>Delete</button>
+            <div className="flex gap-4">
+              <button className="cursor-pointer" onClick={handleOpenModal}>
+                Delete
+              </button>
               <Link
                 to={`/adverts/update/${advertDetails.name}-${advertDetails.id}`}
               >
