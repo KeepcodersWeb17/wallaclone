@@ -41,7 +41,9 @@ export const createAdvert = async (req, res, next) => {
     const advertData = req.body;
     const owner = req.user.id;
 
-    const newAdvert = new Advert({ ...advertData, owner });
+    const { tags } = advertData.tags.split("-");
+
+    const newAdvert = new Advert({ ...advertData, tags, owner });
 
     const savedAdvert = await newAdvert.save();
 
