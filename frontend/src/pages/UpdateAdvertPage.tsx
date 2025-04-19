@@ -4,8 +4,8 @@ import type { Sale } from "../store/state/types";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getAdvert } from "../store/selectors/selectors";
 import {
-  createAdvert,
-  getAdvert as getAdvertAction
+  getAdvert as getAdvertAction,
+  updateAdvert
 } from "../store/actions/creators";
 import TagsDiaglog from "../components/TagsDialog";
 
@@ -87,9 +87,9 @@ const UpdateAdvertPage = () => {
 
     const sale = saleElement.value as Sale;
 
-    const advert = { name, price: +price, description, image, tags, sale };
+    const advertToAPI = { name, price: +price, description, image, tags, sale };
 
-    await dispatch(createAdvert(advert, navigate));
+    await dispatch(updateAdvert(advertToAPI, advert!.split("-")[1], navigate));
   };
 
   const handleOpenModal = async () => {
