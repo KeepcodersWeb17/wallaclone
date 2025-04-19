@@ -12,20 +12,23 @@ const SignupPage = () => {
     e.preventDefault();
 
     const username =
-      e.currentTarget.querySelector<HTMLInputElement>("#username");
-    const email = e.currentTarget.querySelector<HTMLInputElement>("#email");
+      e.currentTarget.querySelector<HTMLInputElement>("#username")?.value;
+    const email =
+      e.currentTarget.querySelector<HTMLInputElement>("#email")?.value;
     const password =
-      e.currentTarget.querySelector<HTMLInputElement>("#password");
+      e.currentTarget.querySelector<HTMLInputElement>("#password")?.value;
     const confirmPassword =
-      e.currentTarget.querySelector<HTMLInputElement>("#confirmPassword");
+      e.currentTarget.querySelector<HTMLInputElement>(
+        "#confirmPassword"
+      )?.value;
 
     if (!username || !email || !password || !confirmPassword) return;
 
     const userData = {
-      username: username.value,
-      email: email.value,
-      password: password.value,
-      confirmPassword: confirmPassword.value
+      username,
+      email,
+      password,
+      confirmPassword
     };
 
     dispatch(createUser(userData, navigate, location));

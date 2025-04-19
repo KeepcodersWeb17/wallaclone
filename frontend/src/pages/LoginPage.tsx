@@ -14,13 +14,13 @@ const LoginPage = () => {
     e.preventDefault();
 
     const username =
-      e.currentTarget.querySelector<HTMLInputElement>("#username");
+      e.currentTarget.querySelector<HTMLInputElement>("#username")?.value;
     const password =
-      e.currentTarget.querySelector<HTMLInputElement>("#password");
+      e.currentTarget.querySelector<HTMLInputElement>("#password")?.value;
 
     if (!username || !password) return;
 
-    const userData = { username: username.value, password: password.value };
+    const userData = { username, password };
     dispatch(authLogin(userData, navigate, location));
   };
 

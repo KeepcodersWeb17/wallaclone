@@ -5,43 +5,31 @@ import { createAdvert } from "../store/actions/creators";
 import { Sale } from "../store/state/types";
 
 const NewAdvertPage = () => {
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
-  const [image, setImage] = useState<string>();
   const [tags, setTag] = useState<string>("");
   const [sale, setSale] = useState<Sale>(undefined);
 
-  const disabled = !name || !price;
-
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
 
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const advert = { name, description, price, tags, image, sale };
+    const name =
+      event.currentTarget.querySelector<HTMLInputElement>("#name")?.value;
+    const price =
+      event.currentTarget.querySelector<HTMLInputElement>("#price")?.value;
+    const description =
+      event.currentTarget.querySelector<HTMLInputElement>(
+        "#description"
+      )?.value;
+    const image =
+      event.currentTarget.querySelector<HTMLInputElement>("#image")?.value;
+
+    if (!name || !price) return;
+
+    const advert = { name, price: +price, description, image, tags, sale };
 
     await dispatch(createAdvert(advert, navigate));
-  };
-
-  const handleNameAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleDescriptionAdvert = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setDescription(event.target.value);
-  };
-
-  const handlePriceAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrice(Number(event.target.value));
-  };
-
-  const handleImageAdvert = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImage(event.target.value);
   };
 
   const handleTagsAdvertChange = (
@@ -67,36 +55,28 @@ const NewAdvertPage = () => {
           <input
             type="text"
             id="name"
-            value={name}
-            onChange={handleNameAdvert}
+            minLength={3}
+            required
+            placeholder="Name of the advert"
           />
         </div>
         <div>
           <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            rows={3}
-            value={description}
-            onChange={handleDescriptionAdvert}
-          ></textarea>
+          <textarea id="description" rows={3}></textarea>
         </div>
         <div>
           <label htmlFor="price">Price</label>
           <input
             type="number"
             id="price"
-            value={price}
-            onChange={handlePriceAdvert}
+            required
+            placeholder="Price of the advert"
+            min={0}
           />
         </div>
         <div>
           <label htmlFor="image">Image</label>
-          <input
-            type="text"
-            id="image"
-            value={image}
-            onChange={handleImageAdvert}
-          />
+          <input type="text" id="image" placeholder="Image URL of the advert" />
         </div>
         <div>
           <label htmlFor="tags">Category:</label>
@@ -127,11 +107,7 @@ const NewAdvertPage = () => {
           </select>
         </div>
         <div>
-          <button
-            type="submit"
-            disabled={disabled}
-            onSubmit={handleCreateAdvert}
-          >
+          <button type="submit" onSubmit={handleCreateAdvert}>
             Create
           </button>
         </div>
