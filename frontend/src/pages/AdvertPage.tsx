@@ -7,14 +7,17 @@ import {
   deleteAdvert,
   toogleFavorite
 } from "../store/actions/creators";
+import { Advert } from "../store/state/types";
 
 const AdvertPage = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();
   const { advert } = useParams();
 
+  const advertId = advert?.split("-")[1] || "";
+
   const dispatch = useAppDispatch();
-  const advertDetails = useAppSelector(getAdvert);
+  const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
   const user = useAppSelector(getUser);
   const { error, loading } = useAppSelector(getUi);
 
@@ -29,8 +32,8 @@ const AdvertPage = () => {
       navigate("/404");
       return;
     }
-    dispatch(getAdvertAction(advert.split("-")[1]));
-  }, [advert, dispatch, navigate]);
+    dispatch(getAdvertAction(advertId));
+  }, [advert, dispatch, navigate, advertId]);
 
   const handleOpenModal = () => {
     dialogRef.current?.showModal();

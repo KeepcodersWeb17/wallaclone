@@ -200,7 +200,7 @@ const AdvertsPage = () => {
       ) : (
         <ul>
           {adverts.list.map((advert) => (
-            <li key={advert.id}>
+            <li key={`${advert.name}-${advert.id}`}>
               <Link to={`/adverts/${advert.name}-${advert.id}`}>
                 <div>
                   <img src={advert.image} alt={advert.name} />

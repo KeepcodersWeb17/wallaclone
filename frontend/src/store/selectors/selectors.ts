@@ -8,7 +8,8 @@ export const getAdverts = (state: State) => state.adverts.list;
 
 export const getAdvertsQuantity = (state: State) => state.adverts.quantity;
 
-export const getAdvert = (state: State) => state.adverts.list[0];
+export const getAdvert = (advertId: string) => (state: State) =>
+  state.adverts.list.find((advert) => advert.id === advertId);
 
 export const getTags = (state: State) => state.tags.list;
 
