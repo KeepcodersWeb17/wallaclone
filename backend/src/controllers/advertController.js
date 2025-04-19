@@ -211,7 +211,7 @@ export const updateAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    res.status(204).json({ advert: foundAdvert });
+    res.json({ advert: foundAdvert });
   } catch (error) {
     next(error);
   }
@@ -260,7 +260,7 @@ export const toogleFavoriteAdvert = async (req, res, next) => {
       updatedAt: foundAdvert.updatedAt,
     };
 
-    res.status(200).json({ advert });
+    res.json({ advert });
   } catch (error) {
     next(error);
   }
