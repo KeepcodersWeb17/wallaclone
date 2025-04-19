@@ -21,7 +21,8 @@ const AdvertsPage = () => {
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const { user, tags, adverts } = useAppSelector(getState);
+  const { user, tags, adverts, ui } = useAppSelector(getState);
+  const { error, loading } = ui;
 
   const dispatch = useAppDispatch();
 
@@ -133,6 +134,7 @@ const AdvertsPage = () => {
       />
 
       {/* Filtros */}
+      {error && <p className="text-red-500">{error.join(", ")}</p>}
       <form onSubmit={handleFilterSubmit}>
         <input type="text" name="advertName" placeholder="Advert name..." />
         <input
@@ -152,7 +154,7 @@ const AdvertsPage = () => {
         <button type="button" onClick={handleOpenModal}>
           Category
         </button>
-        <button type="submit">Filter</button>
+        {loading ? <p>Loading...</p> : <button type="submit">Filter</button>}
       </form>
 
       {/* Filter by user */}
