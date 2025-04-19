@@ -1,21 +1,21 @@
 export const setAdvert = (advert) => {
   return {
-    id: foundAdvert._id,
-    name: foundAdvert.name,
-    description: foundAdvert.description,
-    price: foundAdvert.price,
-    sale: foundAdvert.sale,
-    image: foundAdvert.image,
-    tags: foundAdvert.tags.map((tag) => ({ id: tag._id, name: tag.name })),
+    id: advert._id,
+    name: advert.name,
+    description: advert.description,
+    price: advert.price,
+    sale: advert.sale,
+    image: advert.image,
+    tags: advert.tags.map((tag) => ({ id: tag._id, name: tag.name })),
     owner: {
-      id: foundAdvert.owner._id,
-      username: foundAdvert.owner.username,
+      id: advert.owner._id,
+      username: advert.owner.username,
     },
-    favorites: foundAdvert.favorites.map((user) => ({
+    favorites: advert.favorites.map((user) => ({
       id: user._id,
       username: user.username,
     })),
-    createdAt: foundAdvert.createdAt,
-    updatedAt: foundAdvert.updatedAt,
+    createdAt: advert.createdAt,
+    updatedAt: advert.updatedAt,
   };
 };

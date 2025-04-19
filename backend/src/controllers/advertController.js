@@ -1,12 +1,6 @@
 import { Advert } from "../models/Advert.js";
 import User from "../models/User.js";
 import { queryZodSchema } from "../validations/querySchema.js";
-import {
-  normalizeNameMongo,
-  normalizePriceMongo,
-  normalizeTagsMongo,
-  normalizeSortMongo,
-} from "../lib/normalize.js";
 import { setAdvert } from "../lib/setAdvert.js";
 import { setFiltersOptions } from "../lib/setFiltersOptions.js";
 

@@ -1,4 +1,11 @@
-export const setFiltersOptions = async (validateQuery) => {
+import {
+  normalizeNameMongo,
+  normalizePriceMongo,
+  normalizeTagsMongo,
+  normalizeSortMongo,
+} from "./normalize.js";
+
+export const setFiltersOptions = (validateQuery) => {
   const { name, price, tags, favorites, sale, skip, limit, sort, fields } =
     validateQuery;
 
@@ -34,5 +41,6 @@ export const setFiltersOptions = async (validateQuery) => {
     sort: sort ? normalizeSortMongo(sort) : { updatedAt: -1 },
     fields,
   };
+
   return { filters, options };
 };
