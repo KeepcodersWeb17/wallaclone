@@ -5,7 +5,6 @@ import CloseIcon from "./icons/Close";
 interface Props extends React.ComponentProps<"dialog"> {
   handleClose: () => void;
   handleSelected: (event: React.MouseEvent) => void;
-  ref: React.RefObject<HTMLDialogElement> | null;
 }
 
 const TagsDiaglog = ({ handleClose, handleSelected, ref }: Props) => {
