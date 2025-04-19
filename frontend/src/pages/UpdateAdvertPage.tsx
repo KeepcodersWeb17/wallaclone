@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Sale } from "../store/state/types";
+import type { AdvertUpdate, Sale } from "../store/state/types";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getAdvert, getTags, getUi } from "../store/selectors/selectors";
 import {
@@ -34,7 +34,7 @@ const UpdateAdvertPage = () => {
 
   const previousTags = advertDetails?.tags.map((tag) => tag.name);
 
-  const handleCreateAdvert = async (event: React.FormEvent) => {
+  const handleUpdateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const name =
@@ -56,11 +56,16 @@ const UpdateAdvertPage = () => {
       "input[name='sale']:checked"
     )?.value as Sale;
 
-    if (!name || !price || !tagsArray.length || !sale) return;
-
     const tags = tagsArray.join("-").toLowerCase();
 
-    const advertToAPI = { name, price: +price, description, image, tags, sale };
+    const advertToAPI: AdvertUpdate = {};
+
+    if (name) advertToAPI.name = name;
+    if (price) advertToAPI.price = +price;
+    if (description) advertToAPI.description = description;
+    if (image) advertToAPI.image = image;
+    if (tags) advertToAPI.tags = tags;
+    if (sale) advertToAPI.sale = sale;
 
     await dispatch(updateAdvert(advertToAPI, advert!.split("-")[1], navigate));
   };
@@ -103,7 +108,7 @@ const UpdateAdvertPage = () => {
       />
       <h2 className="mb-5">New Advert</h2>
       <form
-        onSubmit={handleCreateAdvert}
+        onSubmit={handleUpdateAdvert}
         className="mx-auto flex max-w-3xl flex-col justify-center gap-5"
       >
         <div>
@@ -190,7 +195,7 @@ const UpdateAdvertPage = () => {
             <button
               className="cursor-pointer"
               type="submit"
-              onSubmit={handleCreateAdvert}
+              onSubmit={handleUpdateAdvert}
             >
               Update
             </button>
