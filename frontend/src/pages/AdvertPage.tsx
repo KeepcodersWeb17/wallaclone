@@ -85,14 +85,19 @@ const AdvertPage = () => {
 
       {/* advertDetail  */}
       <article>
+        {error && <p className="text-red-500">{error.join(", ")}</p>}
         <header>
           <nav className="flex gap-2">
             <button className="cursor-pointer" onClick={() => navigate(-1)}>
               Go back
             </button>
-            <button className="cursor-pointer" onClick={handleFavorite}>
-              {textFavorite} favorite
-            </button>
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <button className="cursor-pointer" onClick={handleFavorite}>
+                {textFavorite} favorite
+              </button>
+            )}
             <button>Share</button>
           </nav>
         </header>
