@@ -28,7 +28,7 @@ const AdvertPage = () => {
   );
 
   useEffect(() => {
-    if (!advert || !advert.includes("-")) {
+    if (!advertId) {
       navigate("/404");
       return;
     }
@@ -86,7 +86,7 @@ const AdvertPage = () => {
         </div>
       </dialog>
 
-      {/* advertDetail  */}
+      {/* advertDetails  */}
       <article>
         {error && <p className="text-red-500">{error.join(", ")}</p>}
         <header>

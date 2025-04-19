@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { AdvertUpdate, Sale } from "../store/state/types";
+import type { Advert, AdvertUpdate, Sale } from "../store/state/types";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getAdvert, getTags, getUi } from "../store/selectors/selectors";
 import {
@@ -16,19 +16,21 @@ const UpdateAdvertPage = () => {
   const navigate = useNavigate();
   const { advert } = useParams();
 
+  const advertId = advert?.split("-")[1] || "";
+
   const dispatch = useAppDispatch();
-  const advertDetails = useAppSelector(getAdvert);
+  const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
 
   const tags = useAppSelector(getTags);
   const { error, loading } = useAppSelector(getUi);
 
   useEffect(() => {
-    if (!advert || !advert.includes("-")) {
+    if (!advertId) {
       navigate("/404");
       return;
     }
-    dispatch(getAdvertAction(advert.split("-")[1]));
-  }, [advert, dispatch, navigate]);
+    dispatch(getAdvertAction(advertId));
+  }, [dispatch, navigate, advertId]);
 
   const checkedBuy = advertDetails?.sale === "buy";
 
