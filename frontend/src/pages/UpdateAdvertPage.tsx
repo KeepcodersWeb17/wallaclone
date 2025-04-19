@@ -1,8 +1,12 @@
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import type { Sale } from "../store/state/types";
-import { useAppDispatch } from "../store/store";
-import { createAdvert } from "../store/actions/creators";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { getAdvert } from "../store/selectors/selectors";
+import {
+  createAdvert,
+  getAdvert as getAdvertAction
+} from "../store/actions/creators";
 import TagsDiaglog from "../components/TagsDialog";
 
 const UpdateAdvertPage = () => {
@@ -12,8 +16,21 @@ const UpdateAdvertPage = () => {
   const lifestyleRef = useRef<HTMLParagraphElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { advert } = useParams();
+
+  const dispatch = useAppDispatch();
+  const advertDetails = useAppSelector(getAdvert);
+
+  useEffect(() => {
+    if (!advert || !advert.includes("-")) {
+      navigate("/404");
+      return;
+    }
+    dispatch(getAdvertAction(advert.split("-")[1]));
+  }, [advert, dispatch, navigate]);
+
+  const checkedBuy = advertDetails?.sale === "buy";
 
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -92,7 +109,7 @@ const UpdateAdvertPage = () => {
             id="name"
             minLength={3}
             required
-            placeholder="Name of the advert"
+            defaultValue={advertDetails?.name}
           />
         </div>
         <div>
@@ -105,13 +122,13 @@ const UpdateAdvertPage = () => {
             type="number"
             id="price"
             required
-            placeholder="Price of the advert"
+            defaultValue={advertDetails?.price}
             min={0}
           />
         </div>
         <div>
           <label htmlFor="image">Image</label>
-          <input type="text" id="image" placeholder="Image URL of the advert" />
+          <input type="text" id="image" defaultValue={advertDetails?.image} />
         </div>
         <button type="button" onClick={handleOpenModal}>
           TAGS
@@ -136,17 +153,29 @@ const UpdateAdvertPage = () => {
         </div>
         <fieldset className="flex justify-around">
           <div>
-            <input type="radio" id="buy" name="sale" value="buy" />
+            <input
+              type="radio"
+              id="buy"
+              name="sale"
+              value="buy"
+              defaultChecked={checkedBuy}
+            />
             <label htmlFor="buy">Buy</label>
           </div>
           <div>
-            <input type="radio" id="sell" name="sale" value="sell" />
+            <input
+              type="radio"
+              id="sell"
+              name="sale"
+              value="sell"
+              defaultChecked={!checkedBuy}
+            />
             <label htmlFor="sell">Sell</label>
           </div>
         </fieldset>
         <div>
           <button type="submit" onSubmit={handleCreateAdvert}>
-            Create
+            Update
           </button>
         </div>
       </form>
