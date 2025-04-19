@@ -29,6 +29,7 @@ const TagsDiaglog = ({ handleClose, handleSelected, ref }: Props) => {
       <ul className="sh flex w-full flex-col gap-5 text-center">
         {tags.map((tag) => (
           <li
+            id={tag.id}
             key={tag.id}
             className="cursor-pointer rounded hover:bg-gray-100"
             onClick={handleSelected}

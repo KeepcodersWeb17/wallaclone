@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import type { Sale } from "../store/state/types";
 import { useAppDispatch } from "../store/store";
 import { createAdvert } from "../store/actions/creators";
-import { Sale } from "../store/state/types";
+import TagsDiaglog from "../components/TagsDialog";
 
 const NewAdvertPage = () => {
-  const [tags, setTag] = useState<string>("");
-  const [sale, setSale] = useState<Sale>(undefined);
+  const workRef = useRef<HTMLParagraphElement>(null);
+  const motorRef = useRef<HTMLParagraphElement>(null);
+  const mobileRef = useRef<HTMLParagraphElement>(null);
+  const lifestyleRef = useRef<HTMLParagraphElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -25,31 +29,62 @@ const NewAdvertPage = () => {
     const image =
       event.currentTarget.querySelector<HTMLInputElement>("#image")?.value;
 
-    if (!name || !price) return;
+    const tagsArray = Array.from(
+      dialogRef.current!.querySelectorAll("li[selected]")
+    ).map((element) => element.getAttribute("id"));
+
+    const saleElement = event.currentTarget.querySelector<HTMLInputElement>(
+      "input[name='sale']:checked"
+    );
+
+    if (!name || !price || !tagsArray.length || !saleElement?.value) return;
+
+    const tags = tagsArray.join("-").toLowerCase();
+
+    const sale = saleElement.value as Sale;
 
     const advert = { name, price: +price, description, image, tags, sale };
 
     await dispatch(createAdvert(advert, navigate));
   };
 
-  const handleTagsAdvertChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setTag(event.target.value);
+  const handleOpenModal = async () => {
+    dialogRef.current?.showModal();
   };
 
-  const handleSaleAdvertChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    if (event.target.value === "buy" || event.target.value === "sell") {
-      setSale(event.target.value);
+  const handleClose = () => {
+    dialogRef.current?.close();
+  };
+
+  const handleSelected = (event: React.MouseEvent) => {
+    event.currentTarget.toggleAttribute("selected");
+    event.currentTarget.classList.toggle("bg-yellow-200");
+    if (motorRef.current?.textContent === event.currentTarget.textContent) {
+      motorRef.current.classList.toggle("hidden");
+    }
+    if (workRef.current?.textContent === event.currentTarget.textContent) {
+      workRef.current.classList.toggle("hidden");
+    }
+    if (mobileRef.current?.textContent === event.currentTarget.textContent) {
+      mobileRef.current.classList.toggle("hidden");
+    }
+    if (lifestyleRef.current?.textContent === event.currentTarget.textContent) {
+      lifestyleRef.current.classList.toggle("hidden");
     }
   };
 
   return (
     <>
-      <h2>New Advert</h2>
-      <form onSubmit={handleCreateAdvert}>
+      <TagsDiaglog
+        ref={dialogRef}
+        handleClose={handleClose}
+        handleSelected={handleSelected}
+      />
+      <h2 className="mb-5">New Advert</h2>
+      <form
+        onSubmit={handleCreateAdvert}
+        className="mx-auto flex max-w-3xl flex-col justify-center gap-5"
+      >
         <div>
           <label htmlFor="name"> Name</label>
           <input
@@ -78,34 +113,37 @@ const NewAdvertPage = () => {
           <label htmlFor="image">Image</label>
           <input type="text" id="image" placeholder="Image URL of the advert" />
         </div>
-        <div>
-          <label htmlFor="tags">Category:</label>
-          <select
-            name="tags"
-            id="tags"
-            value={tags}
-            onChange={handleTagsAdvertChange}
-          >
-            <option value="work">Select a category</option>
-            <option value="work">Work</option>
-            <option value="lifestyle">Lifestyle</option>
-            <option value="motor">Motor</option>
-            <option value="mobile">Mobile</option>
-          </select>
+        <button type="button" onClick={handleOpenModal}>
+          TAGS
+        </button>
+        <div className="flex justify-around">
+          <div>
+            <p ref={motorRef} className="hidden">
+              motor
+            </p>
+            <p ref={workRef} className="hidden">
+              work
+            </p>
+          </div>
+          <div>
+            <p ref={mobileRef} className="hidden">
+              mobile
+            </p>
+            <p ref={lifestyleRef} className="hidden">
+              lifestyle
+            </p>
+          </div>
         </div>
-        <div>
-          <label htmlFor="sale">Sale:</label>
-          <select
-            name="sale"
-            id="sale"
-            value={sale}
-            onChange={handleSaleAdvertChange}
-          >
-            <option value="buy">Select a category</option>
-            <option value="buy">Buy</option>
-            <option value="sell">Sell</option>
-          </select>
-        </div>
+        <fieldset className="flex justify-around">
+          <div>
+            <input type="radio" id="buy" name="sale" value="buy" />
+            <label htmlFor="buy">Buy</label>
+          </div>
+          <div>
+            <input type="radio" id="sell" name="sale" value="sell" />
+            <label htmlFor="sell">Sell</label>
+          </div>
+        </fieldset>
         <div>
           <button type="submit" onSubmit={handleCreateAdvert}>
             Create
