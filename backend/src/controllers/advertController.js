@@ -119,7 +119,9 @@ export const updateAdvert = async (req, res, next) => {
     const { id } = req.params;
     const updatedData = req.body;
 
-    updatedData.tags = updatedData.tags.split("-");
+    if (updatedData.tags) {
+      updatedData.tags = updatedData.tags.split("-");
+    }
 
     const foundAdvert = await Advert.findOneAndUpdate(
       {
