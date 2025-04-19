@@ -1,3 +1,4 @@
+import { setUser } from "../lib/setUser.js";
 import User from "../models/User.js";
 
 export const createUser = async (req, res, next) => {
@@ -50,13 +51,7 @@ export const getUser = async (req, res, next) => {
       return;
     }
 
-    const user = {
-      id: foundUser._id,
-      username: foundUser.username,
-      email: foundUser.email,
-      createdAt: foundUser.createdAt,
-      updatedAt: foundUser.updatedAt,
-    };
+    const user = setUser(foundUser);
 
     res.json({ user });
   } catch (error) {
@@ -98,13 +93,7 @@ export const updateUser = async (req, res, next) => {
       return;
     }
 
-    const user = {
-      id: foundUser._id,
-      username: foundUser.username,
-      email: foundUser.email,
-      createdAt: foundUser.createdAt,
-      updatedAt: foundUser.updatedAt,
-    };
+    const user = setUser(foundUser);
 
     res.status(200).json({ user });
   } catch (error) {

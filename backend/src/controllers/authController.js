@@ -42,13 +42,7 @@ export const login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    const user = {
-      id: foundUser._id,
-      username: foundUser.username,
-      email: foundUser.email,
-      createdAt: foundUser.createdAt,
-      updatedAt: foundUser.updatedAt,
-    };
+    const user = setUser(foundUser);
 
     res.status(200).json({ user });
   } catch (error) {

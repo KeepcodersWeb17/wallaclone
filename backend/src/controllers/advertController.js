@@ -7,33 +7,15 @@ import {
   normalizeTagsMongo,
   normalizeSortMongo,
 } from "../lib/normalize.js";
-import Tag from "../models/Tag.js";
+import { setAdvert } from "../lib/setAdvert.js";
+import { setFiltersOptions } from "../lib/setFiltersOptions.js";
 
 export const getAllAdverts = async (req, res, next) => {
   try {
-    // ejemplo query string
-    // ?username=agustin&name=iphone&price=500-1000&tags=tag1,tag2&sale=sell&skip=0&limit=5&sort=name-asc
-
-    //validamos los query params utilizando zod
     const validateQuery = queryZodSchema.parse(req.query);
+    const { username } = validateQuery;
 
-    // obtenemos todos los query params
-    const {
-      username,
-      name,
-      price,
-      tags,
-      favorites,
-      sale,
-      skip,
-      limit,
-      sort,
-      fields,
-    } = validateQuery;
-
-    const filters = {};
-
-    // si el query param existe lo agregamos al objeto filters luego de normalizarlo
+    const { filters, options } = setFiltersOptions(validateQuery);
 
     if (username) {
       const user = await User.findOne({ username });
@@ -47,56 +29,12 @@ export const getAllAdverts = async (req, res, next) => {
       filters.owner = user._id;
     }
 
-    if (favorites) {
-      filters.favorites = favorites;
-    }
-
-    if (name) {
-      filters.name = normalizeNameMongo(name);
-    }
-
-    if (price) {
-      filters.price = normalizePriceMongo(price);
-    }
-
-    if (tags) {
-      const tagsIds = normalizeTagsMongo(tags);
-      filters.tags = { $all: tagsIds };
-    }
-
-    if (sale) {
-      filters.sale = sale;
-    }
-
-    // creamos un objeto options para los filtros de mongoose
-    const options = {
-      limit: limit ? parseInt(limit) : 5,
-      skip: skip ? parseInt(skip) : 0,
-      sort: sort ? normalizeSortMongo(sort) : { updatedAt: -1 },
-      fields,
-    };
-
     const [foundAdverts, quantity] = await Promise.all([
       Advert.findAdverts(filters, options),
       Advert.countDocuments(filters),
     ]);
 
-    const adverts = foundAdverts.map((advert) => ({
-      id: advert._id,
-      name: advert.name,
-      description: advert.description,
-      price: advert.price,
-      sale: advert.sale,
-      image: advert.image,
-      tags: advert.tags.map((tag) => ({ id: tag._id, name: tag.name })),
-      owner: { id: advert.owner._id, username: advert.owner.username },
-      favorites: advert.favorites.map((user) => ({
-        id: user._id,
-        username: user.username,
-      })),
-      createdAt: advert.createdAt,
-      updatedAt: advert.updatedAt,
-    }));
+    const adverts = foundAdverts.map((advert) => setAdvert(advert));
 
     res.json({ adverts, quantity });
   } catch (error) {
@@ -111,9 +49,11 @@ export const createAdvert = async (req, res, next) => {
 
     const newAdvert = new Advert({ ...advertData, owner });
 
-    await newAdvert.save();
+    const savedAdvert = await newAdvert.save();
 
-    res.status(201).json({ advert: newAdvert });
+    const advert = setAdvert(savedAdvert);
+
+    res.status(201).json({ advert });
   } catch (error) {
     next(error);
   }
@@ -134,25 +74,7 @@ export const getAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    const advert = {
-      id: foundAdvert._id,
-      name: foundAdvert.name,
-      description: foundAdvert.description,
-      price: foundAdvert.price,
-      sale: foundAdvert.sale,
-      image: foundAdvert.image,
-      tags: foundAdvert.tags.map((tag) => ({ id: tag._id, name: tag.name })),
-      owner: {
-        id: foundAdvert.owner._id,
-        username: foundAdvert.owner.username,
-      },
-      favorites: foundAdvert.favorites.map((user) => ({
-        id: user._id,
-        username: user.username,
-      })),
-      createdAt: foundAdvert.createdAt,
-      updatedAt: foundAdvert.updatedAt,
-    };
+    const advert = setAdvert(foundAdvert);
 
     res.json({ advert });
   } catch (error) {
@@ -211,7 +133,9 @@ export const updateAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    res.json({ advert: foundAdvert });
+    const advert = setAdvert(foundAdvert);
+
+    res.json({ advert });
   } catch (error) {
     next(error);
   }
@@ -240,25 +164,7 @@ export const toogleFavoriteAdvert = async (req, res, next) => {
       return next(error);
     }
 
-    const advert = {
-      id: foundAdvert._id,
-      name: foundAdvert.name,
-      description: foundAdvert.description,
-      price: foundAdvert.price,
-      sale: foundAdvert.sale,
-      image: foundAdvert.image,
-      tags: foundAdvert.tags.map((tag) => ({ id: tag._id, name: tag.name })),
-      owner: {
-        id: foundAdvert.owner._id,
-        username: foundAdvert.owner.username,
-      },
-      favorites: foundAdvert.favorites.map((user) => ({
-        id: user._id,
-        username: user.username,
-      })),
-      createdAt: foundAdvert.createdAt,
-      updatedAt: foundAdvert.updatedAt,
-    };
+    const advert = setAdvert(foundAdvert);
 
     res.json({ advert });
   } catch (error) {
