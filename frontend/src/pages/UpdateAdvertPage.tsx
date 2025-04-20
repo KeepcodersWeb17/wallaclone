@@ -1,12 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { Advert, AdvertUpdate, Sale } from "../store/state/types";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getAdvert, getTags, getUi } from "../store/selectors/selectors";
-import {
-  getAdvert as getAdvertAction,
-  updateAdvert
-} from "../store/actions/creators";
+import { updateAdvert } from "../store/actions/creators";
 import TagsDiaglog from "../components/TagsDialog";
 
 const UpdateAdvertPage = () => {
@@ -23,14 +20,6 @@ const UpdateAdvertPage = () => {
 
   const tags = useAppSelector(getTags);
   const { error, loading } = useAppSelector(getUi);
-
-  useEffect(() => {
-    if (!advertId) {
-      navigate("/404");
-      return;
-    }
-    dispatch(getAdvertAction(advertId));
-  }, [dispatch, navigate, advertId]);
 
   const checkedBuy = advertDetails?.sale === "buy";
 
