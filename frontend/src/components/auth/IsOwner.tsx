@@ -15,6 +15,8 @@ const IsOwner = ({ children }: { children: React.ReactNode }) => {
   const user = useAppSelector(getUser) as User;
   const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
 
+  const isOwner = user.id === advertDetails?.owner.id;
+
   useEffect(() => {
     if (!advertId) {
       navigate("/404");
@@ -23,9 +25,15 @@ const IsOwner = ({ children }: { children: React.ReactNode }) => {
     dispatch(getAdvertAction(advertId));
   }, [dispatch, navigate, advertId]);
 
-  const isOwner = user.id === advertDetails?.owner.id;
+  if (!advertDetails) {
+    return <Navigate to={`/adverts/update/${advert}`} />;
+  }
 
-  return isOwner ? children : <Navigate to="/403" replace />;
+  if (advertDetails && !isOwner) {
+    return <Navigate to="/403" replace />;
+  }
+
+  return <>{children}</>;
 };
 
 export default IsOwner;
