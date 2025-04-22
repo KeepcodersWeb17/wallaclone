@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { io } from "socket.io-client";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getAdvert, getUi, getUser } from "../store/selectors/selectors";
 import {
@@ -55,6 +56,15 @@ const AdvertPage = () => {
     }
 
     dispatch(toogleFavorite(isFavorite, advertDetails.id));
+  };
+
+  const handleSendAMessage = () => {
+    const socket = io("http://localhost:4000", {
+      withCredentials: true,
+      autoConnect: false
+    });
+
+    socket.connect();
   };
 
   const textFavorite = isFavorite ? "unset" : "set";
@@ -140,7 +150,7 @@ const AdvertPage = () => {
             </div>
           ) : (
             <div>
-              <button>Send a message</button>
+              <button onClick={handleSendAMessage}>Send a message</button>
               <button>Buy</button>
             </div>
           )}
