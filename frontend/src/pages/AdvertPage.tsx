@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { io } from "socket.io-client";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import socket from "../store/services/socket";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { getAdvert, getUi, getUser } from "../store/selectors/selectors";
 import {
@@ -12,6 +12,7 @@ import { Advert } from "../store/state/types";
 
 const AdvertPage = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const location = useLocation();
   const navigate = useNavigate();
   const { advert } = useParams();
 
@@ -58,13 +59,23 @@ const AdvertPage = () => {
     dispatch(toogleFavorite(isFavorite, advertDetails.id));
   };
 
-  const handleSendAMessage = () => {
-    const socket = io("http://localhost:4000", {
-      withCredentials: true,
-      autoConnect: false
+  const handleJoinChat = () => {
+    if (!user?.id) {
+      navigate("/login", { state: { from: location }, replace: true });
+      return;
+    }
+
+    socket.emit("joinChat", {
+      advertId: advertDetails.id,
+      ownerId: advertDetails.owner.id,
+      userId: user?.id
     });
 
-    socket.connect();
+    socket.once("joinChat", (response) => {
+      if (!response.error) {
+        navigate(`/my-messages/${response.chatId}`);
+      }
+    });
   };
 
   const textFavorite = isFavorite ? "unset" : "set";
@@ -150,7 +161,8 @@ const AdvertPage = () => {
             </div>
           ) : (
             <div>
-              <button onClick={handleSendAMessage}>Send a message</button>
+              {/* <Link to="my-messages/1">Send a message</Link> */}
+              <button onClick={handleJoinChat}>Send a message</button>
               <button>Buy</button>
             </div>
           )}

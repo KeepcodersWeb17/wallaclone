@@ -57,7 +57,13 @@ const Header = () => {
                 to={`/adverts/favorites/${user?.username}`}
                 className="block w-full px-4 py-2 text-center text-sm hover:bg-gray-100"
               >
-                Favorites
+                My Favorites
+              </Link>
+              <Link
+                to="/my-messages"
+                className="block w-full px-4 py-2 text-center text-sm hover:bg-gray-100"
+              >
+                My Messages
               </Link>
               <button
                 onClick={handleLogout}

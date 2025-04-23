@@ -13,6 +13,8 @@ import UpdateAdvertPage from "./pages/UpdateAdvertPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ForbbidenPage from "./pages/Forbbiden";
 import IsOwner from "./components/auth/IsOwner";
+import Messages from "./pages/ChatsPage";
+import Chat from "./pages/ChatPage";
 
 function App() {
   return (
@@ -29,6 +31,22 @@ function App() {
         <Route index element={<Navigate to="/adverts" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route
+          path="/my-messages"
+          element={
+            <RequireAuth>
+              <Messages />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/my-messages/:chatId"
+          element={
+            <RequireAuth>
+              <Chat />
+            </RequireAuth>
+          }
+        />
         <Route path="/recoverypassword" element={<h2>RecoveryPage</h2>} />
         <Route
           path="/users/:username"

@@ -15,6 +15,7 @@ export const userSchema = z.object({
     .string()
     .trim()
     .min(6, { message: "Password must be at least 6 characters long" }),
+  chats: z.array(z.string()).optional(),
 });
 
 export const loginSchema = userSchema.pick({

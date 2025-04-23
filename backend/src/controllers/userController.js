@@ -42,7 +42,9 @@ export const getUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    const foundUser = await User.findById(userId);
+    const foundUser = await User.findById(userId).populate("chats");
+
+    console.log(foundUser);
 
     if (!foundUser) {
       const error = new Error("User not found");
@@ -84,7 +86,7 @@ export const updateUser = async (req, res, next) => {
       { _id: userId },
       updatedData,
       { new: true }
-    );
+    ).populate("chats");
 
     if (!foundUser) {
       const error = new Error("User not found");

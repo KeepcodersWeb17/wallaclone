@@ -45,10 +45,27 @@ export type UserSignup = UserLogin & {
 
 export type UserUpdate = Partial<UserSignup>;
 
+export type Message = {
+  id: string;
+  sender: string;
+  content: string;
+  createdAt: string;
+};
+
+export type Chat = {
+  id: string;
+  advert: string;
+  members: string[];
+  messages: Message[];
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type User = {
   id: string;
   username: string;
   email: string;
+  chats: Chat[];
   updatedAt: string;
   createdAt: string;
 };

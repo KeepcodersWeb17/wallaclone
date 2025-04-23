@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import { parse } from "cookie";
 import app from "./src/app.js";
 import { connectMongoDB } from "./src/lib/connectMongoDB.js";
+import Chat from "./src/models/Chat.js";
 
 const port = process.env.PORT || 3000;
 
@@ -37,7 +38,124 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
   console.log("SocketID:", socket.id);
-  console.log(socket);
+
+  socket.on("joinChat", async ({ advertId, ownerId, userId }) => {
+    let newChatId;
+    try {
+      if (!advertId || !ownerId || !userId) {
+        throw new Error("Missing required parameters");
+      }
+
+      const foundChat = await Chat.findOne({
+        advert: advertId,
+        members: { $all: [ownerId, userId] },
+      });
+
+      if (foundChat) {
+        socket.join(foundChat._id.toString());
+
+        socket.emit("joinChat", {
+          message: "Joined",
+          chatId: foundChat._id.toString(),
+        });
+        return;
+      }
+
+      const newChat = new Chat({
+        advert: advertId,
+        members: [ownerId, userId],
+      });
+
+      newChatId = await newChat.save().select("_id");
+
+      await User.findByIdAndUpdate(userId, {
+        $addToSet: { chats: newChatId },
+      });
+
+      await User.findByIdAndUpdate(ownerId, {
+        $addToSet: { chats: newChatId },
+      });
+
+      socket.join(newChat._id.toString());
+
+      socket.emit("joinChat", {
+        message: "Joined",
+        chatId: newChat._id.toString(),
+      });
+    } catch (error) {
+      await Chat.deleteOne({ _id: newChatId });
+      socket.emit("joinChat", {
+        error: error.message,
+      });
+    }
+  });
+
+  socket.on("rejoinChat", async ({ chatId }) => {
+    try {
+      console.log("Rejoining chat:", chatId);
+
+      if (!chatId) {
+        throw new Error("Missing required parameters");
+      }
+
+      const foundChat = await Chat.findById(chatId);
+
+      if (!foundChat) {
+        throw new Error("Chat not found");
+      }
+
+      socket.join(foundChat._id.toString());
+
+      socket.emit("rejoinChat", {
+        message: "Rejoined",
+        chatId: foundChat._id.toString(),
+        chat: foundChat,
+      });
+    } catch (error) {
+      socket.emit("rejoinChat", {
+        error: error.message,
+      });
+    }
+  });
+
+  socket.on("message", async ({ chatId, content, sender }) => {
+    try {
+      if (!chatId || !content || !sender) {
+        throw new Error("Missing required parameters");
+      }
+
+      const chat = await Chat.findById(chatId);
+
+      if (!chat) {
+        throw new Error("Chat not found");
+      }
+
+      const message = {
+        sender,
+        content,
+      };
+
+      chat.messages.push(message);
+
+      console.log("Chat messages:", chat.messages);
+
+      await chat.save();
+
+      io.to(chatId).emit("message", {
+        message: "Message saved",
+        chat: chat,
+      });
+    } catch (error) {
+      socket.emit("message", {
+        error: error.message,
+      });
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+    console.log(socket.rooms);
+  });
 });
 
 await connectMongoDB();
