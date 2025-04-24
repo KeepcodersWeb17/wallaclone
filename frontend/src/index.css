@@ -1,8 +1,24 @@
 @import "tailwindcss";
 
-#root {
-  @apply flex min-h-dvh flex-col items-center justify-center;
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
 }
+
+.btn {
+  @apply font-medium rounded-lg text-sm px-4 py-2 text-center me-2 mb-2 border;
+}
+
+.btn-primary {
+  @apply text-gray-900 hover:text-white  border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300  dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800;
+}
+
+
+  border  
+/* #root {
+  @apply flex min-h-dvh flex-col items-center justify-center;
+} */
 
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
