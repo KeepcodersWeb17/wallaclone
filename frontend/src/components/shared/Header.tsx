@@ -39,24 +39,23 @@ const Header = () => {
           id="menu"
           className="fixed top-0 right-0 bottom-0 left-0 z-100 bg-red-50"
         >
-          <div className="flex items-center justify-end p-4">
+          <div className="flex items-center justify-end pt-2 pr-4 pb-2 pl-4 leading-10">
             <button className="cursor-pointer" onClick={closeMenu}>
               <CloseIcon />
             </button>
           </div>
           <ul className="line-hi text-center text-3xl leading-24">
-            <Link to={`/users/${user?.username}`} onClick={closeMenu}>
-              <li className="hover:bg-gray-100">My profile</li>
-            </Link>
-            <Link to={`/adverts/user/${user?.username}`} onClick={closeMenu}>
-              <li className="hover:bg-gray-100">My Adverts</li>
-            </Link>
-            <Link
-              to={`/adverts/favorites/${user?.username}`}
-              onClick={closeMenu}
-            >
-              <li className="text-center hover:bg-gray-100">Favorites</li>
-            </Link>
+            <li onClick={closeMenu} className="hover:bg-gray-100">
+              <Link to={`/users/${user?.username}`}>My profile</Link>
+            </li>
+            <li onClick={closeMenu} className="hover:bg-gray-100">
+              <Link to={`/adverts/user/${user?.username}`}>My Adverts</Link>
+            </li>
+            <li onClick={closeMenu} className="hover:bg-gray-100">
+              <Link to={`/adverts/favorites/${user?.username}`}>
+                My Favorites
+              </Link>
+            </li>
             <li
               className="cursor-pointer text-center hover:bg-gray-100"
               onClick={handleLogout}
@@ -67,39 +66,33 @@ const Header = () => {
         </div>
       )}
 
-      <header className="w-full bg-red-50">
-        <div className="mx-auto flex max-w-7xl items-center justify-between p-2">
-          <div>
-            <Link to={"/adverts"} state={{ from: location.pathname }} replace>
-              <h1>Wallaclone</h1>
-            </Link>
-          </div>
-
-          <nav>
-            {user?.username ? (
-              <ul>
-                <li className="flex items-center justify-center gap-4">
-                  <button onClick={openMenu} className="cursor-pointer">
-                    <UserIcon />
-                  </button>
-                </li>
-              </ul>
-            ) : (
-              <ul className="flex items-center justify-around gap-4">
-                <Link
-                  to={"/signup"}
-                  state={{ from: location.pathname }}
-                  replace
-                >
-                  <li className="btn btn-primary">Sign up</li>
-                </Link>
-                <Link to={"/login"} state={{ from: location.pathname }} replace>
-                  <li className="btn btn-primary">Log in</li>
-                </Link>
-              </ul>
-            )}
-          </nav>
+      <header className="flex w-full items-center justify-between bg-red-50 pr-4 pl-4 leading-10">
+        <div>
+          <Link to={"/adverts"} state={{ from: location.pathname }} replace>
+            <h1>Wallaclone</h1>
+          </Link>
         </div>
+
+        <nav>
+          {user?.username ? (
+            <ul>
+              <li className="flex items-center justify-center gap-4">
+                <button onClick={openMenu} className="cursor-pointer">
+                  <UserIcon />
+                </button>
+              </li>
+            </ul>
+          ) : (
+            <ul className="flex items-center justify-around gap-4">
+              <Link to={"/signup"} state={{ from: location.pathname }} replace>
+                <li className="btn btn-primary">Sign up</li>
+              </Link>
+              <Link to={"/login"} state={{ from: location.pathname }} replace>
+                <li className="btn btn-primary">Log in</li>
+              </Link>
+            </ul>
+          )}
+        </nav>
       </header>
     </>
   );
