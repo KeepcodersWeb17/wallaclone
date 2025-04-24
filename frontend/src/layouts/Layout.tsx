@@ -3,9 +3,9 @@ import Header from "../components/shared/Header";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="relative flex flex-col items-center justify-center">
+    <div className="relative min-h-screen bg-red-200">
       <Header />
-      <div className="grow">{children}</div>
+      <div className="grow pr-4 pl-4">{children}</div>
       <Footer />
     </div>
   );
