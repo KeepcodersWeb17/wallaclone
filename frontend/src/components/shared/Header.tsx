@@ -68,7 +68,7 @@ const Header = () => {
 
       <header className="flex w-full items-center justify-between bg-red-50 pr-4 pl-4 leading-10">
         <div>
-          <Link to={"/adverts"} state={{ from: location.pathname }} replace>
+          <Link to={"/"} state={{ from: location.pathname }} replace>
             <h1>Wallaclone</h1>
           </Link>
         </div>
