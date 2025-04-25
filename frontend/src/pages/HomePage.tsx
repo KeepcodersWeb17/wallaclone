@@ -1,80 +1,30 @@
 import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "../components/icons/Search";
-import { useEffect, useState } from "react";
-import { Advert } from "../store/state/types";
+import { useEffect } from "react";
+import { Advert, Tag } from "../store/state/types";
 import UnlikeIcon from "../components/icons/Unlike";
-import { getUser } from "../store/selectors/selectors";
-import { useAppSelector } from "../store/store";
+import { getAdverts, getTags, getUser } from "../store/selectors/selectors";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import {
+  getAdverts as getAdvertsAction,
+  getAllTags as getTagsAction
+} from "../store/actions/creators";
 
 const HomePage = () => {
-  const [adverts, setAdverts] = useState<Advert[]>([]);
-  const [tags, setTags] = useState<{ id: string; name: string }[]>([]);
-
   const user = useAppSelector(getUser);
+  const adverts = useAppSelector(getAdverts) as Advert[];
+  const tags = useAppSelector(getTags) as Tag[];
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const fetchAdverts = async () => {
-      try {
-        const response = await fetch(
-          "https://api.wallaclone.keepcoders.duckdns.org/adverts",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch adverts");
-        }
-
-        const data = await response.json();
-
-        return data.adverts;
-      } catch (error) {
-        console.error(error);
-        return [];
-      }
-    };
-
-    fetchAdverts().then((data) => {
-      setAdverts(data);
-    });
-  }, []);
+    dispatch(getAdvertsAction(""));
+  }, [dispatch]);
 
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await fetch(
-          "https://api.wallaclone.keepcoders.duckdns.org/tags",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch tags");
-        }
-
-        const data = await response.json();
-
-        return data.tags;
-      } catch (error) {
-        console.error(error);
-        return [];
-      }
-    };
-
-    fetchTags().then((data) => {
-      setTags(data);
-    });
-  }, []);
+    dispatch(getTagsAction());
+  }, [dispatch]);
 
   const searchByAdvertName = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
