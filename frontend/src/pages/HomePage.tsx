@@ -70,6 +70,11 @@ const HomePage = () => {
 
     const advertName = event.currentTarget.advert.value;
 
+    if (!advertName) {
+      navigate("/adverts");
+      return;
+    }
+
     navigate(`/adverts?name=${advertName}`);
   };
 
