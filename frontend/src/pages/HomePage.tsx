@@ -81,12 +81,15 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-2">
+      <div className="flex flex-col items-center justify-center gap-2 bg-red-600">
         {/* Search form */}
-        <section className="flex flex-col items-center justify-center gap-2">
+        <section className="w-full bg-red-400">
           <h2 className="text-center"> What are you looking for? </h2>
           <div>
-            <form className="flex gap-2" onSubmit={searchByAdvertName}>
+            <form
+              className="flex items-center justify-center gap-2"
+              onSubmit={searchByAdvertName}
+            >
               <input
                 className="border"
                 type="text"
@@ -102,7 +105,7 @@ const HomePage = () => {
         </section>
 
         {/* Carrousel categories */}
-        <section className="">
+        <section className="w-full bg-red-400">
           <p>Categories</p>
           {tags.length === 0 ? (
             <p>No categories</p>
@@ -118,7 +121,7 @@ const HomePage = () => {
         </section>
 
         {/* Carrousel latest ads for sale */}
-        <section>
+        <section className="bg-red-400">
           <p>Lates ads for sale</p>
           {adverts.length === 0 ? (
             <p> No adverts </p>
@@ -162,7 +165,7 @@ const HomePage = () => {
         </section>
 
         {/* Carrousel latest ads to buy */}
-        <section>
+        <section className="bg-red-400">
           <p>People Are Looking For...</p>
           {adverts.length === 0 ? (
             <p> No adverts </p>
