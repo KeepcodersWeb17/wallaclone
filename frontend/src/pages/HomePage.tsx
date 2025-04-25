@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { Advert, Tag } from "../store/state/types";
-import SearchIcon from "../components/icons/Search";
+// import SearchIcon from "../components/icons/Search";
 import UnlikeIcon from "../components/icons/Unlike";
 import LikeIcon from "../components/icons/Like";
 import { getAdverts, getTags, getUser } from "../store/selectors/selectors";
@@ -103,53 +103,59 @@ const HomePage = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center gap-4 bg-red-600">
-        {/* Search form */}
-        <section className="w-full bg-red-400">
-          <h2 className="text-center"> What are you looking for? </h2>
-          <div>
-            <form
-              className="flex items-center justify-center gap-2"
-              onSubmit={searchByAdvertName}
-            >
-              <input
-                className="border"
-                type="text"
-                name="advert"
-                id="advert"
-                placeholder="Search..."
-              />
-              <button className="h-10 cursor-pointer" type="submit">
+        <div className="flex h-[85vh] w-full flex-col gap-4">
+          {/* Search form */}
+          <section className="flex w-full flex-grow flex-col items-center justify-center gap-4 bg-red-400">
+            <h2 className="text-center"> What are you looking for? </h2>
+            <div>
+              <form
+                className="flex items-center justify-center gap-2"
+                onSubmit={searchByAdvertName}
+              >
+                <input
+                  className="w-60 rounded-lg border p-1.5 text-xs"
+                  type="text"
+                  name="advert"
+                  id="advert"
+                  placeholder="Example: iPhone 14 Pro Max"
+                />
+                {/* // TODO no me convence el SearchIcon como boton */}
+                {/* <button className="h-10 cursor-pointer" type="submit">
                 <SearchIcon />
-              </button>
-            </form>
-          </div>
-        </section>
+              </button> */}
+              </form>
+            </div>
+          </section>
 
-        {/* Carrousel categories */}
-        <section className="flex w-full flex-col gap-4 bg-red-400">
-          <p>Categories</p>
-          {tags.length === 0 ? (
-            <p>No categories</p>
-          ) : (
-            <ul className="flex flex-row gap-4 overflow-y-auto">
-              {tags.map((tag) => (
-                // TODO refactorizar
-                <li
-                  key={tag.id}
-                  className="btn cursor-pointer"
-                  onClick={searchByCategory}
-                >
-                  <button
-                    className="cursor-pointer px-6"
-                    onClick={searchByCategory}
-                  >
-                    {tag.name}{" "}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+          {/* Carrousel categories */}
+          <section className="flex w-full flex-col gap-4 bg-red-400">
+            <p>Categories</p>
+            {tags.length === 0 ? (
+              <p>No categories</p>
+            ) : (
+              <ul className="flex flex-row gap-10 overflow-y-auto">
+                {tags.map((tag) => (
+                  // TODO refactorizar
+                  <li key={tag.id} className="">
+                    <button
+                      className="btn btn-tag cursor-pointer"
+                      onClick={searchByCategory}
+                    >
+                      {tag.name}{" "}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <section className="flex w-full flex-col gap-4 bg-red-400">
+            <p>Novedades de Wallaclone</p>
+            <Link to="/adverts?tags=lifestyle">
+              <img src="banner-wallaclone-lifestyles.png" alt="banner" />
+            </Link>
+          </section>
+        </div>
 
         {/* Carrousel favorites ads */}
         {likedAdverts?.length > 0 && (
