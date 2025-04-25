@@ -133,12 +133,12 @@ const HomePage = () => {
           ) : (
             <ul className="flex flex-row gap-4 overflow-y-auto">
               {tags.map((tag) => (
+                // TODO refactorizar
                 <li
                   key={tag.id}
                   className="btn cursor-pointer"
                   onClick={searchByCategory}
                 >
-                  {/* {tag.name} */}
                   <button
                     className="cursor-pointer px-6"
                     onClick={searchByCategory}
