@@ -137,7 +137,7 @@ const HomePage = () => {
           {tags.length === 0 ? (
             <p>No categories</p>
           ) : (
-            <ul className="flex gap-4 overflow-y-auto">
+            <ul className="flex flex-row gap-4 overflow-y-auto">
               {tags.map((tag) => (
                 <li key={tag.id} className="btn">
                   <button className="px-6" onClick={searchByCategory}>
