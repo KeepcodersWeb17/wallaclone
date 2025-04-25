@@ -2,10 +2,15 @@ import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "../components/icons/Search";
 import { useEffect, useState } from "react";
 import { Advert } from "../store/state/types";
+import UnlikeIcon from "../components/icons/Unlike";
+import { getUser } from "../store/selectors/selectors";
+import { useAppSelector } from "../store/store";
 
 const HomePage = () => {
   const [adverts, setAdverts] = useState<Advert[]>([]);
   const [tags, setTags] = useState<{ id: string; name: string }[]>([]);
+
+  const user = useAppSelector(getUser);
 
   const navigate = useNavigate();
 
@@ -90,6 +95,16 @@ const HomePage = () => {
     navigate(`/adverts?tags=${tagName}`);
   };
 
+  const handleLike = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    if (user?.id) {
+      navigate(`/adverts/user/${user.id}`);
+      return;
+    }
+
+    navigate("/login");
+  };
   return (
     <>
       <div className="flex flex-col items-center justify-center gap-4 bg-red-600">
@@ -143,7 +158,10 @@ const HomePage = () => {
               {adverts
                 .filter((advert) => advert.sale === "sell")
                 .map((advert) => (
-                  <li key={`${advert.name}-${advert.id}`} className="card">
+                  <li
+                    key={`${advert.name}-${advert.id}`}
+                    className="card relative"
+                  >
                     <Link to={`/adverts/${advert.name}-${advert.id}`}>
                       {/* //TODO conviene usar figure? */}
                       <figure>
@@ -164,13 +182,17 @@ const HomePage = () => {
                         <h3>{advert.name}</h3>
                         <p>{advert.description}</p>
                         <p>Price: {advert.price}</p>
-                        {/* //TODO esto se puede mejorar */}
-                        <p>{advert.sale === "sell" ? "For sell" : "To buy"}</p>
                       </div>
                     </Link>
                     <Link to={`/adverts/user/${advert.owner?.username}`}>
                       Published by: {advert.owner?.username}
                     </Link>
+                    <button
+                      className="absolute top-6 right-6"
+                      onClick={handleLike}
+                    >
+                      <UnlikeIcon />
+                    </button>
                   </li>
                 ))}
             </ul>
@@ -187,7 +209,10 @@ const HomePage = () => {
               {adverts
                 .filter((advert) => advert.sale === "buy")
                 .map((advert) => (
-                  <li key={`${advert.name}-${advert.id}`} className="card">
+                  <li
+                    key={`${advert.name}-${advert.id}`}
+                    className="card relative"
+                  >
                     <Link to={`/adverts/${advert.name}-${advert.id}`}>
                       {/* //TODO conviene usar figure? */}
                       <figure>
@@ -208,13 +233,17 @@ const HomePage = () => {
                         <h3>{advert.name}</h3>
                         <p>{advert.description}</p>
                         <p>Price: {advert.price}</p>
-                        {/* //TODO esto se puede mejorar */}
-                        <p>{advert.sale === "sell" ? "For sell" : "To buy"}</p>
                       </div>
                     </Link>
                     <Link to={`/adverts/user/${advert.owner?.username}`}>
                       Published by: {advert.owner?.username}
                     </Link>
+                    <button
+                      className="absolute top-6 right-6"
+                      onClick={handleLike}
+                    >
+                      <UnlikeIcon />
+                    </button>
                   </li>
                 ))}
             </ul>
