@@ -92,7 +92,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-2 bg-red-600">
+      <div className="flex flex-col items-center justify-center gap-4 bg-red-600">
         {/* Search form */}
         <section className="w-full bg-red-400">
           <h2 className="text-center"> What are you looking for? </h2>
@@ -116,15 +116,17 @@ const HomePage = () => {
         </section>
 
         {/* Carrousel categories */}
-        <section className="w-full bg-red-400">
+        <section className="flex w-full flex-col gap-4 bg-red-400">
           <p>Categories</p>
           {tags.length === 0 ? (
             <p>No categories</p>
           ) : (
-            <ul className="flex gap-4 overflow-x-auto scroll-smooth p-4">
+            <ul className="flex gap-4 overflow-y-auto">
               {tags.map((tag) => (
-                <li key={tag.id}>
-                  <button onClick={searchByCategory}>{tag.name}</button>
+                <li key={tag.id} className="btn">
+                  <button className="px-6" onClick={searchByCategory}>
+                    {tag.name}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -132,16 +134,16 @@ const HomePage = () => {
         </section>
 
         {/* Carrousel latest ads for sale */}
-        <section className="bg-red-400">
+        <section className="flex w-full flex-col gap-4 bg-red-400">
           <p>Lates ads for sale</p>
           {adverts.length === 0 ? (
             <p> No adverts </p>
           ) : (
-            <ul className="flex snap-x gap-4 overflow-x-auto scroll-smooth p-4">
+            <ul className="flex flex-row gap-4 overflow-y-auto">
               {adverts
                 .filter((advert) => advert.sale === "sell")
                 .map((advert) => (
-                  <li key={`${advert.name}-${advert.id}`} className="">
+                  <li key={`${advert.name}-${advert.id}`} className="card">
                     <Link to={`/adverts/${advert.name}-${advert.id}`}>
                       {/* //TODO conviene usar figure? */}
                       <figure>
@@ -176,16 +178,16 @@ const HomePage = () => {
         </section>
 
         {/* Carrousel latest ads to buy */}
-        <section className="bg-red-400">
+        <section className="flex w-full flex-col gap-4 bg-red-400">
           <p>People Are Looking For...</p>
           {adverts.length === 0 ? (
             <p> No adverts </p>
           ) : (
-            <ul className="flex snap-x gap-4 overflow-x-auto scroll-smooth p-4">
+            <ul className="flex flex-row gap-4 overflow-y-auto">
               {adverts
                 .filter((advert) => advert.sale === "buy")
                 .map((advert) => (
-                  <li key={`${advert.name}-${advert.id}`} className="">
+                  <li key={`${advert.name}-${advert.id}`} className="card">
                     <Link to={`/adverts/${advert.name}-${advert.id}`}>
                       {/* //TODO conviene usar figure? */}
                       <figure>
