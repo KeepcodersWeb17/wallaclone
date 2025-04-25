@@ -76,7 +76,7 @@ const Header = () => {
         <nav>
           {user?.username ? (
             <ul>
-              <li className="flex items-center justify-center gap-4">
+              <li className="flex items-center">
                 <button onClick={openMenu} className="cursor-pointer">
                   <UserIcon />
                 </button>
@@ -84,7 +84,12 @@ const Header = () => {
             </ul>
           ) : (
             <ul className="flex items-center justify-around gap-4">
-              <Link to={"/signup"} state={{ from: location.pathname }} replace>
+              <Link
+                className=""
+                to={"/signup"}
+                state={{ from: location.pathname }}
+                replace
+              >
                 <li className="btn btn-primary">Sign up</li>
               </Link>
               <Link to={"/login"} state={{ from: location.pathname }} replace>
