@@ -12,12 +12,15 @@ const HomePage = () => {
   useEffect(() => {
     const fetchAdverts = async () => {
       try {
-        const response = await fetch("http://localhost:4000/adverts", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
+        const response = await fetch(
+          "https://api.wallaclone.keepcoders.duckdns.org/adverts",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json"
+            }
           }
-        });
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch adverts");
@@ -40,12 +43,15 @@ const HomePage = () => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const response = await fetch("http://localhost:4000/tags", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
+        const response = await fetch(
+          "https://api.wallaclone.keepcoders.duckdns.org/tags",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json"
+            }
           }
-        });
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch tags");
