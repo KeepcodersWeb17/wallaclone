@@ -17,7 +17,7 @@ const Header = () => {
 
   const handleLogout = () => {
     closeMenu();
-    navigate("/adverts");
+    navigate("/");
     dispatch(authLogout());
   };
 
