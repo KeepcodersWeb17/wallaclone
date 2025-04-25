@@ -105,6 +105,7 @@ const HomePage = () => {
 
     navigate("/login");
   };
+
   return (
     <>
       <div className="flex flex-col items-center justify-center gap-4 bg-red-600">
