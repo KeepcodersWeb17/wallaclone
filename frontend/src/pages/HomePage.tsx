@@ -138,7 +138,7 @@ const HomePage = () => {
                           className="btn btn-tag btn-primary cursor-pointer"
                           onClick={searchByCategory}
                         >
-                          {tag.name}{" "}
+                          {tag.name}
                         </button>
                       </li>
                     ))}
@@ -158,8 +158,9 @@ const HomePage = () => {
 
         {/* Carrousel favorites ads */}
         {likedAdverts?.length > 0 && (
-          <section className="flex w-full flex-col gap-4 bg-red-400">
-            <ul className="flex flex-row gap-4 overflow-y-auto">
+          <section className="flex w-full flex-col gap-2">
+            <p className="leading-6 font-bold">Your saved ads</p>
+            <ul className="card-list">
               {likedAdverts.map((advert) => (
                 <li
                   key={`${advert.name}-${advert.id}`}
@@ -167,7 +168,7 @@ const HomePage = () => {
                 >
                   <Link to={`/adverts/${advert.name}-${advert.id}`}>
                     {/* //TODO conviene usar figure? */}
-                    <figure>
+                    <figure className="h-[150px] w-[150px] bg-red-200">
                       <picture>
                         <source srcSet={advert.image} type="image/webp" />
                         <source srcSet={advert.image} type="image/jpeg" />{" "}
@@ -179,15 +180,22 @@ const HomePage = () => {
                       </picture>
                     </figure>
                     <div>
-                      <h3>{advert.name}</h3>
-                      <p>{advert.description}</p>
-                      <p>Price: {advert.price}</p>
+                      <h3 className="text-lg leading-10 font-bold capitalize">
+                        {advert.name}
+                      </h3>
+                      <p>
+                        {advert.description.split(" ").slice(0, 3).join(" ") +
+                          "..."}
+                      </p>
+                      <p>
+                        Price: <strong>{advert.price}€</strong>
+                      </p>
                     </div>
                   </Link>
                   <p>
-                    Published by{" "}
+                    Published by <br />
                     <Link to={`/adverts/user/${advert.owner?.username}`}>
-                      <span>{advert.owner?.username}</span>
+                      <strong>{advert.owner?.username}</strong>
                     </Link>
                   </p>
                   <button
@@ -251,7 +259,7 @@ const HomePage = () => {
                       </div>
                     </Link>
                     <p>
-                      Published by{" "}
+                      Published by <br />
                       <Link to={`/adverts/user/${advert.owner?.username}`}>
                         <strong>{advert.owner?.username}</strong>
                       </Link>
@@ -320,7 +328,7 @@ const HomePage = () => {
                       </div>
                     </Link>
                     <p>
-                      Published by{" "}
+                      Published by <br />
                       <Link to={`/adverts/user/${advert.owner?.username}`}>
                         <strong>{advert.owner?.username}</strong>
                       </Link>

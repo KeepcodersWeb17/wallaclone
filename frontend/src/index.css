@@ -7,7 +7,7 @@ body {
 }
 
 .btn {
-  @apply font-medium rounded-lg text-xs px-3 py-1.5 text-center border;
+  @apply font-medium rounded-lg text-xs px-3 py-1.5 text-center border text-black;
 }
 
 .btn-tag{
