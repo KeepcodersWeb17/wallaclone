@@ -20,7 +20,7 @@ const TagsDiaglog = ({ handleClose, handleSelected, ref }: Props) => {
   return (
     <dialog
       ref={ref}
-      className="absolute top-1/2 left-1/2 z-200 h-1/2 w-1/2 -translate-x-1/2 -translate-y-1/2 rounded bg-white p-5 shadow-lg"
+      className="absolute top-1/2 left-1/2 z-200 w-1/2 -translate-x-1/2 -translate-y-1/2 rounded bg-white p-5 shadow-lg"
     >
       <div className="flex w-full flex-col items-center justify-between gap-4">
         <div className="flex w-full flex-row items-center justify-between">
