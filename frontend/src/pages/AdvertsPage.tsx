@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Link,
   useLocation,
@@ -13,6 +13,8 @@ import { getParamsFilters } from "../lib/getParamsFilter";
 import SortingButton from "../components/SortingButton";
 import { ShowUserAdverts } from "../components/ShowUserAdverts";
 import TagsDiaglog from "../components/TagsDialog";
+import CancelIcon from "../components/icons/Cancel";
+import CloseIcon from "../components/icons/Close";
 
 const AdvertsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -111,7 +113,7 @@ const AdvertsPage = () => {
     }
   };
 
-  const handleOpenModal = async () => {
+  const handleOpenCategories = async () => {
     dialogRef.current?.showModal();
   };
 
@@ -124,9 +126,150 @@ const AdvertsPage = () => {
     event.currentTarget.classList.toggle("bg-yellow-200");
   };
 
+  const handleSearchByName = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
+  const handleResetForm = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget.closest("form") as HTMLFormElement;
+    const input = form.querySelector(
+      "input[name='advertName']"
+    ) as HTMLInputElement;
+    input.value = "";
+  };
+
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+  const handleOpenFilters = () => {
+    setIsFiltersOpen(true);
+  };
+
+  const handleCloseFilters = () => {
+    setIsFiltersOpen(false);
+  };
+
+  const handleFiltersSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleCloseFilters();
+    // TODO: refactorizar la logica de los filtros aqui
+  };
+
+  const advertNameParam = searchParams.get("name");
+
   return (
     <>
-      <div className="bg-red-600">
+      {/* Modal - Filters */}
+      {isFiltersOpen && (
+        <div className="fixed top-0 right-0 bottom-0 left-0 z-100 bg-red-50 p-4">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-row items-center justify-between">
+              <h3 className="text-lg leading-10 font-bold">Filters</h3>
+              <button
+                className="cursor-pointer"
+                type="button"
+                onClick={handleCloseFilters}
+              >
+                <CloseIcon />
+              </button>
+            </div>
+            <form
+              className="flex w-full flex-col items-center justify-center gap-16"
+              onSubmit={handleFiltersSubmit}
+            >
+              <div className="flex w-full flex-col gap-4">
+                {/* Filter by price */}
+                <div className="flex w-full flex-col gap-2">
+                  <p className="leading-7 font-bold">Price</p>
+                  <div className="flex flex-row gap-2">
+                    <input
+                      className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                      type="number"
+                      name="minPrice"
+                      id="minPrice"
+                      min={0}
+                      placeholder="Min"
+                    />
+                    <input
+                      className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                      type="number"
+                      name="maxPrice"
+                      id="maxPrice"
+                      min={0}
+                      placeholder="Max"
+                    />
+                  </div>
+                </div>
+
+                {/* Filter by owner */}
+                <div className="flex w-full flex-col gap-2">
+                  <p className="leading-7 font-bold">Owner</p>
+                  <div className="flex flex-row gap-2">
+                    <input
+                      className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                      type="text"
+                      id="username"
+                      placeholder="Example: guille"
+                    />
+                  </div>
+                </div>
+
+                {/* Filter by category */}
+                <div className="flex w-full flex-col gap-2">
+                  <p className="leading-7 font-bold">Categories</p>
+                  <div className="flex flex-row gap-2">
+                    <div className="flex h-10 w-full flex-row items-center justify-between rounded-lg border border-gray-400 p-1.5 px-4 text-xs focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100">
+                      Hello
+                    </div>
+                    <button
+                      className="cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-400 hover:bg-black hover:text-white"
+                      onClick={handleOpenCategories}
+                      type="button"
+                    >
+                      Select
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-sm hover:bg-black hover:text-white"
+                type="submit"
+              >
+                Filter
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      <div className="">
+        <section className="flex flex-col items-center justify-center gap-4">
+          <form className="relative w-full" onSubmit={handleSearchByName}>
+            <input
+              className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+              type="text"
+              name="advertName"
+              id="advertName"
+              placeholder="Example: iPhone 14 Pro Max"
+              defaultValue={advertNameParam || ""}
+            />
+            <button
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={handleResetForm}
+            >
+              <CancelIcon />
+            </button>
+          </form>
+          <button
+            className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+            type="button"
+            onClick={handleOpenFilters}
+          >
+            Filters
+          </button>
+        </section>
+
         {/* Modal Cateogries */}
         <TagsDiaglog
           ref={dialogRef}
@@ -152,7 +295,7 @@ const AdvertsPage = () => {
             min={0}
             placeholder="Max"
           />
-          <button type="button" onClick={handleOpenModal}>
+          <button type="button" onClick={handleOpenCategories}>
             Category
           </button>
           {loading ? <p>Loading...</p> : <button type="submit">Filter</button>}
