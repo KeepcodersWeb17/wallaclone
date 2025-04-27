@@ -9,8 +9,10 @@ const SortingButton = ({
 }) => {
   const [param, setParam] = useState(queryParam);
 
-  const handleClick = () => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setSearchParams(param);
+
+    event.currentTarget.setAttribute("selected", "true");
 
     setParam((prevParam) =>
       prevParam.includes("-asc")
@@ -20,8 +22,18 @@ const SortingButton = ({
   };
 
   return (
-    <button type="button" onClick={handleClick} className="uppercase">
-      SORTING: {param}
+    <button
+      type="button"
+      onClick={handleClick}
+      className="w-1/3 cursor-pointer rounded-lg border p-1 text-[10px] hover:bg-black hover:text-white md:text-[0.85rem]"
+    >
+      {param === "date-asc" && "Newest first"}
+      {param === "date-desc" && "Oldest first"}
+      {param === "name-asc" && "A-Z"}
+      {param === "name-desc" && "Z-A"}
+      {param === "price-asc" && "Lowest price first"}
+      {param === "price-desc" && "Highest price first"}
+      {/* SORTING: {param} */}
     </button>
   );
 };
