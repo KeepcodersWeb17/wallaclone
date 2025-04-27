@@ -316,7 +316,7 @@ const AdvertsPage = () => {
             </button>
           </form>
           <button
-            className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic hover:bg-black hover:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+            className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 placeholder:italic hover:bg-black hover:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
             type="button"
             onClick={handleOpenFilters}
           >
@@ -356,7 +356,7 @@ const AdvertsPage = () => {
 
         {/* Sorting */}
         <section className="flex w-full flex-col justify-between gap-1 md:flex-row">
-          <p className="text-sm leading-10">Sort by: </p>
+          <p className="text-sm leading-10 text-gray-500">Sort by: </p>
           <div className="flex w-full flex-row items-center justify-between gap-2 md:w-16/18">
             <SortingButton
               queryParam="date-asc"
