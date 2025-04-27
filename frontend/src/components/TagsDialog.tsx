@@ -44,7 +44,7 @@ const TagsDiaglog = ({ handleClose, handleSelected, ref }: Props) => {
         </ul>
 
         <button
-          className="w-full cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-400 hover:bg-black hover:text-white"
+          className="w-full cursor-pointer rounded-lg border px-5 py-1.5 text-xs hover:bg-black hover:text-white"
           onClick={handleClose}
         >
           Confirm
