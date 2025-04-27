@@ -101,68 +101,133 @@ const HomePage = () => {
   }, [user?.id, adverts]);
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center gap-8">
-        <div className="flex h-[85vh] w-full flex-col gap-4">
-          {/* Search form */}
-          <section className="flex w-full flex-grow flex-col items-center justify-center gap-4">
-            <h2 className="text-center text-[1.4rem] leading-15 font-bold md:text-2xl lg:text-[2rem]">
-              {" "}
-              What are you looking for?{" "}
-            </h2>
-            <div className="flex w-full flex-col items-center justify-center gap-8">
-              <form
-                className="flex w-full items-center justify-center gap-2"
-                onSubmit={searchByAdvertName}
-              >
-                <input
-                  className="h-10 w-full rounded-lg p-1.5 px-4 text-xs shadow-lg shadow-gray-400 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
-                  type="text"
-                  name="advert"
-                  id="advert"
-                  placeholder="Example: iPhone 14 Pro Max"
-                />
-              </form>
+    <div className="flex flex-col items-center justify-center gap-8">
+      <div className="flex h-[85vh] w-full flex-col gap-4">
+        {/* Search form */}
+        <section className="flex w-full flex-grow flex-col items-center justify-center gap-4">
+          <h2 className="text-center text-[1.4rem] leading-15 font-bold md:text-2xl lg:text-[2rem]">
+            {" "}
+            What are you looking for?{" "}
+          </h2>
+          <div className="flex w-full flex-col items-center justify-center gap-8">
+            <form
+              className="flex w-full items-center justify-center gap-2"
+              onSubmit={searchByAdvertName}
+            >
+              <input
+                className="h-10 w-full rounded-lg p-1.5 px-4 text-xs shadow-lg shadow-gray-400 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                type="text"
+                name="advert"
+                id="advert"
+                placeholder="Example: iPhone 14 Pro Max"
+              />
+            </form>
 
-              {/* Carrousel categories */}
-              <div className="flex w-full flex-col gap-2">
-                <p className="leading-10 font-bold">Categories</p>
-                {tags.length === 0 ? (
-                  <p>No categories</p>
-                ) : (
-                  <ul className="flex flex-row gap-10 overflow-y-auto">
-                    {tags.map((tag) => (
-                      // TODO refactorizar
-                      <li key={tag.id} className="">
-                        <button
-                          className="btn btn-tag btn-primary cursor-pointer"
-                          onClick={searchByCategory}
-                        >
-                          {tag.name}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+            {/* Carrousel categories */}
+            <div className="flex w-full flex-col gap-2">
+              <p className="leading-10 font-bold">Categories</p>
+              {tags.length === 0 ? (
+                <p>No categories</p>
+              ) : (
+                <ul className="flex flex-row gap-10 overflow-y-auto">
+                  {tags.map((tag) => (
+                    // TODO refactorizar
+                    <li key={tag.id} className="">
+                      <button
+                        className="btn btn-tag btn-primary cursor-pointer"
+                        onClick={searchByCategory}
+                      >
+                        {tag.name}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* Banner */}
-          <section className="flex w-full flex-col gap-4">
-            {/* <p>Novedades de Wallaclone</p> */}
-            <Link to="/adverts?tags=lifestyle">
-              <img src="banner-wallaclone-lifestyles.png" alt="banner" />
-            </Link>
-          </section>
-        </div>
+        {/* Banner */}
+        <section
+          id="banner"
+          className="flex h-20 w-full flex-col items-center justify-center gap-4 bg-black"
+        >
+          {/* <p>Novedades de Wallaclone</p> */}
+          <Link to="/adverts?tags=lifestyle">
+            <p className="text-center text-white">Live better, shop smarter</p>
+            <p className="text-center text-white">
+              Find your lifestyle must-haves
+            </p>
+          </Link>
+        </section>
+      </div>
 
-        {/* Carrousel favorites ads */}
-        {likedAdverts?.length > 0 && (
-          <section className="flex w-full flex-col gap-2">
-            <p className="leading-6 font-bold">Your saved ads</p>
-            <ul className="card-list">
-              {likedAdverts.map((advert) => (
+      {/* Carrousel favorites ads */}
+      {likedAdverts?.length > 0 && (
+        <section className="flex w-full flex-col gap-2">
+          <p className="leading-6 font-bold">Your saved ads</p>
+          <ul className="card-list">
+            {likedAdverts.map((advert) => (
+              <li key={`${advert.name}-${advert.id}`} className="card relative">
+                <Link to={`/adverts/${advert.name}-${advert.id}`}>
+                  {/* //TODO conviene usar figure? */}
+                  <figure className="h-[150px] w-[150px] bg-red-200">
+                    <picture>
+                      <source srcSet={advert.image} type="image/webp" />
+                      <source srcSet={advert.image} type="image/jpeg" />{" "}
+                      <img
+                        src={advert.image}
+                        alt={advert.name}
+                        className="object-cover"
+                      />
+                    </picture>
+                  </figure>
+                  <div>
+                    <h3 className="text-lg leading-10 font-bold capitalize">
+                      {advert.name}
+                    </h3>
+                    <p>
+                      {advert.description.split(" ").slice(0, 3).join(" ") +
+                        "..."}
+                    </p>
+                    <p>
+                      Price: <strong>{advert.price}€</strong>
+                    </p>
+                  </div>
+                </Link>
+                <p>
+                  Published by <br />
+                  <Link to={`/adverts/user/${advert.owner?.username}`}>
+                    <strong>{advert.owner?.username}</strong>
+                  </Link>
+                </p>
+                <button
+                  className="absolute top-6 right-6 cursor-pointer"
+                  onClick={handleLike}
+                >
+                  {user?.id &&
+                  advert.favorites.find((owner) => owner.id === user.id) ? (
+                    <LikeIcon />
+                  ) : (
+                    <UnlikeIcon />
+                  )}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Carrousel latest ads for sale */}
+      <section className="flex w-full flex-col gap-2">
+        <p className="leading-6 font-bold">Lates ads for sale</p>
+        {adverts.length === 0 ? (
+          <p> No adverts </p>
+        ) : (
+          <ul className="card-list">
+            {adverts
+              .filter((advert) => advert.sale === "sell")
+              .map((advert) => (
                 <li
                   key={`${advert.name}-${advert.id}`}
                   className="card relative"
@@ -170,7 +235,7 @@ const HomePage = () => {
                   <Link to={`/adverts/${advert.name}-${advert.id}`}>
                     {/* //TODO conviene usar figure? */}
                     <figure className="h-[150px] w-[150px] bg-red-200">
-                      <picture>
+                      <picture className="h-full w-full">
                         <source srcSet={advert.image} type="image/webp" />
                         <source srcSet={advert.image} type="image/jpeg" />{" "}
                         <img
@@ -212,146 +277,76 @@ const HomePage = () => {
                   </button>
                 </li>
               ))}
-            </ul>
-          </section>
+          </ul>
         )}
+      </section>
 
-        {/* Carrousel latest ads for sale */}
-        <section className="flex w-full flex-col gap-2">
-          <p className="leading-6 font-bold">Lates ads for sale</p>
-          {adverts.length === 0 ? (
-            <p> No adverts </p>
-          ) : (
-            <ul className="card-list">
-              {adverts
-                .filter((advert) => advert.sale === "sell")
-                .map((advert) => (
-                  <li
-                    key={`${advert.name}-${advert.id}`}
-                    className="card relative"
+      {/* Carrousel latest ads to buy */}
+      <section className="flex w-full flex-col gap-2">
+        <p className="leading-6 font-bold">People Are Looking For...</p>
+        {adverts.length === 0 ? (
+          <p> No adverts </p>
+        ) : (
+          <ul className="card-list">
+            {adverts
+              .filter((advert) => advert.sale === "buy")
+              .map((advert) => (
+                <li
+                  key={`${advert.name}-${advert.id}`}
+                  className="card relative"
+                >
+                  <Link
+                    to={`/adverts/${advert.name}-${advert.id}`}
+                    className="flex flex-col gap-4"
                   >
-                    <Link to={`/adverts/${advert.name}-${advert.id}`}>
-                      {/* //TODO conviene usar figure? */}
-                      <figure className="h-[150px] w-[150px] bg-red-200">
-                        <picture className="h-full w-full">
-                          <source srcSet={advert.image} type="image/webp" />
-                          <source
-                            srcSet={advert.image}
-                            type="image/jpeg"
-                          />{" "}
-                          <img
-                            src={advert.image}
-                            alt={advert.name}
-                            className="object-cover"
-                          />
-                        </picture>
-                      </figure>
-                      <div>
-                        <h3 className="text-lg leading-10 font-bold capitalize">
-                          {advert.name}
-                        </h3>
-                        <p>
-                          {advert.description.split(" ").slice(0, 3).join(" ") +
-                            "..."}
-                        </p>
-                        <p>
-                          Price: <strong>{advert.price}€</strong>
-                        </p>
-                      </div>
+                    {/* //TODO conviene usar figure? */}
+                    <figure className="h-[150px] w-[150px] rounded-lg bg-red-200">
+                      <picture className="h-full w-full">
+                        <source srcSet={advert.image} type="image/webp" />
+                        <source srcSet={advert.image} type="image/jpeg" />{" "}
+                        <img
+                          src={advert.image}
+                          alt={advert.name}
+                          className="rounded-lg object-cover"
+                        />
+                      </picture>
+                    </figure>
+                    <div>
+                      <h3 className="text-lg leading-10 font-bold capitalize">
+                        {advert.name}
+                      </h3>
+                      <p>
+                        {advert.description.split(" ").slice(0, 3).join(" ") +
+                          "..."}
+                      </p>
+                      <p>
+                        Price: <strong>{advert.price}€</strong>
+                      </p>
+                    </div>
+                  </Link>
+                  <p>
+                    Published by <br />
+                    <Link to={`/adverts/user/${advert.owner?.username}`}>
+                      <strong>{advert.owner?.username}</strong>
                     </Link>
-                    <p>
-                      Published by <br />
-                      <Link to={`/adverts/user/${advert.owner?.username}`}>
-                        <strong>{advert.owner?.username}</strong>
-                      </Link>
-                    </p>
-                    <button
-                      className="absolute top-6 right-6 cursor-pointer"
-                      onClick={handleLike}
-                    >
-                      {user?.id &&
-                      advert.favorites.find((owner) => owner.id === user.id) ? (
-                        <LikeIcon />
-                      ) : (
-                        <UnlikeIcon />
-                      )}
-                    </button>
-                  </li>
-                ))}
-            </ul>
-          )}
-        </section>
-
-        {/* Carrousel latest ads to buy */}
-        <section className="flex w-full flex-col gap-2">
-          <p className="leading-6 font-bold">People Are Looking For...</p>
-          {adverts.length === 0 ? (
-            <p> No adverts </p>
-          ) : (
-            <ul className="card-list">
-              {adverts
-                .filter((advert) => advert.sale === "buy")
-                .map((advert) => (
-                  <li
-                    key={`${advert.name}-${advert.id}`}
-                    className="card relative"
+                  </p>
+                  <button
+                    className="absolute top-6 right-6 cursor-pointer"
+                    onClick={handleLike}
                   >
-                    <Link
-                      to={`/adverts/${advert.name}-${advert.id}`}
-                      className="flex flex-col gap-4"
-                    >
-                      {/* //TODO conviene usar figure? */}
-                      <figure className="h-[150px] w-[150px] rounded-lg bg-red-200">
-                        <picture className="h-full w-full">
-                          <source srcSet={advert.image} type="image/webp" />
-                          <source
-                            srcSet={advert.image}
-                            type="image/jpeg"
-                          />{" "}
-                          <img
-                            src={advert.image}
-                            alt={advert.name}
-                            className="rounded-lg object-cover"
-                          />
-                        </picture>
-                      </figure>
-                      <div>
-                        <h3 className="text-lg leading-10 font-bold capitalize">
-                          {advert.name}
-                        </h3>
-                        <p>
-                          {advert.description.split(" ").slice(0, 3).join(" ") +
-                            "..."}
-                        </p>
-                        <p>
-                          Price: <strong>{advert.price}€</strong>
-                        </p>
-                      </div>
-                    </Link>
-                    <p>
-                      Published by <br />
-                      <Link to={`/adverts/user/${advert.owner?.username}`}>
-                        <strong>{advert.owner?.username}</strong>
-                      </Link>
-                    </p>
-                    <button
-                      className="absolute top-6 right-6 cursor-pointer"
-                      onClick={handleLike}
-                    >
-                      {user?.id &&
-                      advert.favorites.find((owner) => owner.id === user.id) ? (
-                        <LikeIcon />
-                      ) : (
-                        <UnlikeIcon />
-                      )}
-                    </button>
-                  </li>
-                ))}
-            </ul>
-          )}
-        </section>
-      </div>
-    </>
+                    {user?.id &&
+                    advert.favorites.find((owner) => owner.id === user.id) ? (
+                      <LikeIcon />
+                    ) : (
+                      <UnlikeIcon />
+                    )}
+                  </button>
+                </li>
+              ))}
+          </ul>
+        )}
+      </section>
+    </div>
   );
 };
 
