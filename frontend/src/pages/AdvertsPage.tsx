@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   Link,
   useLocation,
+  useNavigate,
   useParams,
   useSearchParams
 } from "react-router-dom";
@@ -9,26 +10,31 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { getState } from "../store/selectors/selectors";
 import { getAdverts } from "../store/actions/creators";
 import { buildQueryString } from "../lib/buildQueryString";
-import { getParamsFilters } from "../lib/getParamsFilter";
+// import { getParamsFilters } from "../lib/getParamsFilter";
 import SortingButton from "../components/SortingButton";
-import { ShowUserAdverts } from "../components/ShowUserAdverts";
+// import { ShowUserAdverts } from "../components/ShowUserAdverts";
 import TagsDiaglog from "../components/TagsDialog";
 import CancelIcon from "../components/icons/Cancel";
 import CloseIcon from "../components/icons/Close";
 
 const AdvertsPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { user, tags, adverts, ui } = useAppSelector(getState);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const advertNameParam = searchParams.get("name");
+
+  const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
+
+  const { pathname } = useLocation();
   const { username } = useParams();
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const { user, tags, adverts, ui } = useAppSelector(getState);
-  const { error, loading } = ui;
-
-  const dispatch = useAppDispatch();
-
-  const { pathname } = useLocation();
+  const { error } = ui;
 
   useEffect(() => {
     const queryString = buildQueryString({
@@ -42,26 +48,27 @@ const AdvertsPage = () => {
     dispatch(getAdverts(queryString));
   }, [dispatch, searchParams, username, user, pathname, tags]);
 
-  const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
 
-    const filters = Array.from(
-      event.currentTarget.querySelectorAll("input")
-    ).map((element) => element.value);
+  //   const filters = Array.from(
+  //     event.currentTarget.querySelectorAll("input")
+  //   ).map((element) => element.value);
 
-    const tagsFilters = Array.from(
-      dialogRef.current!.querySelectorAll("li[selected]")
-    )
-      .map((element) => element.textContent)
-      .join("-")
-      .toLowerCase();
+  //   const tagsFilters = Array.from(
+  //     dialogRef.current!.querySelectorAll("li[selected]")
+  //   )
+  //     .map((element) => element.textContent)
+  //     .join("-")
+  //     .toLowerCase();
 
-    const params = getParamsFilters({ filters, tagsFilters, searchParams });
+  //   const params = getParamsFilters({ filters, tagsFilters, searchParams });
 
-    setSearchParams(params);
-  };
+  //   setSearchParams(params);
+  // };
 
   // Reutilizable para los 6 tipos de SORTING
+
   const handleSortParamsClick = (queryParam: string) => {
     const params = new URLSearchParams({
       ...Object.fromEntries(searchParams.entries()),
@@ -117,8 +124,16 @@ const AdvertsPage = () => {
     dialogRef.current?.showModal();
   };
 
-  const handleClose = () => {
+  const handleCloseCategories = () => {
     dialogRef.current?.close();
+
+    const selectedTags = dialogRef.current?.querySelectorAll("li[selected]");
+
+    const selectedValues = Array.from(selectedTags!).map(
+      (tag) => tag.textContent?.toLocaleLowerCase().trim() || ""
+    );
+
+    setCategories(selectedValues);
   };
 
   const handleSelected = (event: React.MouseEvent) => {
@@ -139,28 +154,56 @@ const AdvertsPage = () => {
     input.value = "";
   };
 
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-
   const handleOpenFilters = () => {
-    setIsFiltersOpen(true);
+    setIsModalFiltersOpen(true);
   };
 
   const handleCloseFilters = () => {
-    setIsFiltersOpen(false);
+    setIsModalFiltersOpen(false);
   };
 
   const handleFiltersSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleCloseFilters();
-    // TODO: refactorizar la logica de los filtros aqui
-  };
 
-  const advertNameParam = searchParams.get("name");
+    const formData = new FormData(event.currentTarget);
+
+    const min = formData.get("min") as string;
+    const max = formData.get("max") as string;
+    const owner = formData.get("owner") as string;
+    const categories = formData.get("categories") as string;
+
+    const params = new URLSearchParams();
+
+    if (min || max) {
+      // si hay alguno de los dos, armamos el price
+      const price = `${min ?? ""}-${max ?? ""}`;
+      params.set("price", price);
+    }
+
+    let path = "/adverts";
+
+    if (owner) {
+      path += `/user/${encodeURIComponent(owner)}`;
+    }
+
+    if (categories) {
+      params.set("tags", categories);
+    }
+
+    const queryString = params.toString();
+
+    if (queryString) {
+      path += `?${queryString}`;
+    }
+
+    navigate(path);
+  };
 
   return (
     <>
-      {/* Modal - Filters */}
-      {isFiltersOpen && (
+      {/* Modal Filters */}
+      {isModalFiltersOpen && (
         <div className="fixed top-0 right-0 bottom-0 left-0 z-100 bg-red-50 p-4">
           <div className="flex flex-col gap-8">
             <div className="flex flex-row items-center justify-between">
@@ -185,16 +228,14 @@ const AdvertsPage = () => {
                     <input
                       className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
                       type="number"
-                      name="minPrice"
-                      id="minPrice"
+                      name="min"
                       min={0}
                       placeholder="Min"
                     />
                     <input
                       className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
                       type="number"
-                      name="maxPrice"
-                      id="maxPrice"
+                      name="max"
                       min={0}
                       placeholder="Max"
                     />
@@ -208,7 +249,7 @@ const AdvertsPage = () => {
                     <input
                       className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
                       type="text"
-                      id="username"
+                      name="owner"
                       placeholder="Example: guille"
                     />
                   </div>
@@ -218,9 +259,14 @@ const AdvertsPage = () => {
                 <div className="flex w-full flex-col gap-2">
                   <p className="leading-7 font-bold">Categories</p>
                   <div className="flex flex-row gap-2">
-                    <div className="flex h-10 w-full flex-row items-center justify-between rounded-lg border border-gray-400 p-1.5 px-4 text-xs focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100">
-                      Hello
-                    </div>
+                    <input
+                      className="flex h-10 w-full flex-row items-center justify-between rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                      type="text"
+                      name="categories"
+                      placeholder="Select categories"
+                      value={categories.join("-")}
+                      readOnly
+                    />
                     <button
                       className="cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-400 hover:bg-black hover:text-white"
                       onClick={handleOpenCategories}
@@ -243,11 +289,19 @@ const AdvertsPage = () => {
         </div>
       )}
 
-      <div className="">
-        <section className="flex flex-col items-center justify-center gap-4">
-          <form className="relative w-full" onSubmit={handleSearchByName}>
+      {/* Modal Cateogries */}
+      <TagsDiaglog
+        ref={dialogRef}
+        handleClose={handleCloseCategories}
+        handleSelected={handleSelected}
+      />
+
+      <div className="flex w-full flex-col items-center justify-center gap-6">
+        {/* Search by name + button open filters */}
+        <section className="flex w-full flex-col items-center justify-center gap-4 md:flex-row lg:gap-8">
+          <form className="relative flex w-full" onSubmit={handleSearchByName}>
             <input
-              className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+              className="h-10 w-full flex-grow rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
               type="text"
               name="advertName"
               id="advertName"
@@ -262,23 +316,19 @@ const AdvertsPage = () => {
             </button>
           </form>
           <button
-            className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+            className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic hover:bg-black hover:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
             type="button"
             onClick={handleOpenFilters}
           >
             Filters
           </button>
+          {error && (
+            <p className="w-full leading-10 text-red-500">{error.join(", ")}</p>
+          )}
         </section>
 
-        {/* Modal Cateogries */}
-        <TagsDiaglog
-          ref={dialogRef}
-          handleClose={handleClose}
-          handleSelected={handleSelected}
-        />
-
         {/* Filtros */}
-        {error && <p className="text-red-500">{error.join(", ")}</p>}
+        {/* {error && <p className="text-red-500">{error.join(", ")}</p>}
         <form className="bg-red-400" onSubmit={handleFilterSubmit}>
           <input type="text" name="advertName" placeholder="Advert name..." />
           <input
@@ -299,26 +349,29 @@ const AdvertsPage = () => {
             Category
           </button>
           {loading ? <p>Loading...</p> : <button type="submit">Filter</button>}
-        </form>
+        </form> */}
 
         {/* Filter by user */}
-        <ShowUserAdverts />
+        {/* <ShowUserAdverts /> */}
 
         {/* Sorting */}
-        <div className="flex justify-center gap-5">
-          <SortingButton
-            queryParam="date-asc"
-            setSearchParams={handleSortParamsClick}
-          />
-          <SortingButton
-            queryParam="name-asc"
-            setSearchParams={handleSortParamsClick}
-          />
-          <SortingButton
-            queryParam="price-desc"
-            setSearchParams={handleSortParamsClick}
-          />
-        </div>
+        <section className="flex w-full flex-col justify-between gap-1 md:flex-row">
+          <p className="text-sm leading-10">Sort by: </p>
+          <div className="flex w-full flex-row items-center justify-between gap-2 md:w-16/18">
+            <SortingButton
+              queryParam="date-asc"
+              setSearchParams={handleSortParamsClick}
+            />
+            <SortingButton
+              queryParam="name-asc"
+              setSearchParams={handleSortParamsClick}
+            />
+            <SortingButton
+              queryParam="price-desc"
+              setSearchParams={handleSortParamsClick}
+            />
+          </div>
+        </section>
 
         {/* Paginacion */}
         <div className="flex justify-center gap-5">
@@ -338,6 +391,7 @@ const AdvertsPage = () => {
           />
         </div>
 
+        {/* List of adverts */}
         <section>
           <p>Lates ads published</p>
           {adverts.list.length === 0 ? (
