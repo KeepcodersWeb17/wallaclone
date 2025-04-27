@@ -105,7 +105,7 @@ const HomePage = () => {
       <div className="flex h-[85vh] w-full flex-col gap-4">
         {/* Search form */}
         <section className="flex w-full flex-grow flex-col items-center justify-center gap-4">
-          <h2 className="text-center text-[1.4rem] leading-15 font-bold md:text-2xl lg:text-[2rem]">
+          <h2 className="text-xl leading-15 font-bold sm:text-2xl md:text-3xl">
             {" "}
             What are you looking for?{" "}
           </h2>
@@ -115,7 +115,7 @@ const HomePage = () => {
               onSubmit={searchByAdvertName}
             >
               <input
-                className="h-10 w-full rounded-lg p-1.5 px-4 text-xs shadow-lg shadow-gray-400 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
                 type="text"
                 name="advert"
                 id="advert"
@@ -125,16 +125,18 @@ const HomePage = () => {
 
             {/* Carrousel categories */}
             <div className="flex w-full flex-col gap-2">
-              <p className="leading-10 font-bold">Categories</p>
+              <p className="text-md leading-10 font-bold sm:text-lg md:text-xl">
+                Categories
+              </p>
               {tags.length === 0 ? (
                 <p>No categories</p>
               ) : (
                 <ul className="flex flex-row gap-10 overflow-y-auto">
                   {tags.map((tag) => (
                     // TODO refactorizar
-                    <li key={tag.id} className="">
+                    <li key={tag.id} className="flex flex-grow flex-row">
                       <button
-                        className="btn btn-tag btn-primary cursor-pointer"
+                        className="flex flex-grow cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 hover:bg-black hover:text-white sm:flex-grow sm:text-sm"
                         onClick={searchByCategory}
                       >
                         {tag.name}
@@ -165,7 +167,9 @@ const HomePage = () => {
       {/* Carrousel favorites ads */}
       {likedAdverts?.length > 0 && (
         <section className="flex w-full flex-col gap-2">
-          <p className="leading-6 font-bold">Your saved ads</p>
+          <p className="text-md leading-10 font-bold sm:text-lg md:text-xl">
+            Your saved ads
+          </p>
           <ul className="card-list">
             {likedAdverts.map((advert) => (
               <li key={`${advert.name}-${advert.id}`} className="card relative">
@@ -220,7 +224,9 @@ const HomePage = () => {
 
       {/* Carrousel latest ads for sale */}
       <section className="flex w-full flex-col gap-2">
-        <p className="leading-6 font-bold">Lates ads for sale</p>
+        <p className="text-md leading-10 font-bold sm:text-lg md:text-xl">
+          Lates ads for sale
+        </p>
         {adverts.length === 0 ? (
           <p> No adverts </p>
         ) : (
@@ -283,7 +289,9 @@ const HomePage = () => {
 
       {/* Carrousel latest ads to buy */}
       <section className="flex w-full flex-col gap-2">
-        <p className="leading-6 font-bold">People Are Looking For...</p>
+        <p className="text-md leading-10 font-bold sm:text-lg md:text-xl">
+          People Are Looking For...
+        </p>
         {adverts.length === 0 ? (
           <p> No adverts </p>
         ) : (
