@@ -101,7 +101,7 @@ const HomePage = () => {
   }, [user?.id, adverts]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
+    <div className="flex w-full flex-col items-center justify-center gap-8">
       <div className="flex h-[85vh] w-full flex-col gap-4">
         {/* Search form */}
         <section className="flex w-full flex-grow flex-col items-center justify-center gap-4">
