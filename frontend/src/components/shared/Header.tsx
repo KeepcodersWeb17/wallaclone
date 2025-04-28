@@ -37,7 +37,7 @@ const Header = () => {
       {isMenuOpen && (
         <div
           id="menu"
-          className="fixed top-0 right-0 bottom-0 left-0 z-300 flex flex-col gap-10 bg-red-50"
+          className="fixed top-0 right-0 bottom-0 left-0 z-300 flex flex-col gap-10 bg-gray-300"
         >
           <div className="flex w-full items-center justify-between pt-1 pr-4 pb-1 pl-4 shadow-sm sm:pt-2 sm:pb-2">
             <h3 className="text-xl leading-10 font-bold">Menu</h3>
@@ -49,7 +49,7 @@ const Header = () => {
             <li onClick={closeMenu} className="flex w-full flex-row">
               <Link
                 to={`/users/${user?.username}`}
-                className="w-full cursor-pointer text-center text-xl"
+                className="w-full cursor-pointer text-center text-xl leading-10"
               >
                 My Profile
               </Link>
@@ -57,7 +57,7 @@ const Header = () => {
             <li onClick={closeMenu} className="flex w-full flex-row">
               <Link
                 to={`/adverts/user/${user?.username}`}
-                className="w-full cursor-pointer text-center text-xl"
+                className="w-full cursor-pointer text-center text-xl leading-10"
               >
                 My Adverts
               </Link>
@@ -65,7 +65,7 @@ const Header = () => {
             <li onClick={closeMenu} className="flex w-full flex-row">
               <Link
                 to={`/adverts/favorites/${user?.username}`}
-                className="w-full cursor-pointer text-center text-xl"
+                className="w-full cursor-pointer text-center text-xl leading-10"
               >
                 My Favorites
               </Link>
@@ -73,7 +73,7 @@ const Header = () => {
             <li className="flex w-full flex-row">
               <button
                 onClick={handleLogout}
-                className="w-full cursor-pointer text-center text-xl"
+                className="w-full cursor-pointer text-center text-xl leading-10"
               >
                 Logout
               </button>
