@@ -44,7 +44,7 @@ const LoginPage = () => {
         <form className="flex w-full flex-col gap-5" onSubmit={handleLogin}>
           <div className="flex flex-col justify-between">
             <input
-              className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic sm:placeholder:text-sm"
+              className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
               type="text"
               name="username"
               id="username"
@@ -56,7 +56,7 @@ const LoginPage = () => {
           <div className="flex flex-col justify-between">
             <div className="relative">
               <input
-                className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic sm:placeholder:text-sm"
+                className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
                 type={toogleType}
                 name="password"
                 id="password"
