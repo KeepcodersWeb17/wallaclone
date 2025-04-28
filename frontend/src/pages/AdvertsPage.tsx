@@ -248,88 +248,86 @@ const AdvertsPage = () => {
     <>
       {/* Modal Filters */}
       {isModalFiltersOpen && (
-        <div className="fixed top-0 right-0 bottom-0 left-0 z-100 bg-red-50 p-4">
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-row items-center justify-between">
-              <h3 className="text-lg leading-10 font-bold">Filters</h3>
-              <button
-                className="cursor-pointer"
-                type="button"
-                onClick={handleCloseFilters}
-              >
-                <CloseIcon />
-              </button>
-            </div>
-            <form
-              className="flex w-full flex-col items-center justify-center gap-16 sm:mx-auto sm:w-7/8 md:mx-auto md:w-3/4"
-              onSubmit={handleFiltersSubmit}
+        <div className="fixed top-0 right-0 bottom-0 left-0 z-300 flex flex-col gap-10 bg-gray-300">
+          <div className="flex w-full items-center justify-between pt-1 pr-4 pb-1 pl-4 shadow-sm sm:pt-2 sm:pb-2">
+            <h3 className="text-lg leading-10 font-bold">Filters</h3>
+            <button
+              className="cursor-pointer"
+              type="button"
+              onClick={handleCloseFilters}
             >
-              <div className="flex w-full flex-col gap-4">
-                {/* Filter by price */}
-                <div className="flex w-full flex-col gap-2">
-                  <p className="leading-7 font-bold">Price</p>
-                  <div className="flex w-full flex-row gap-2">
-                    <input
-                      className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
-                      type="number"
-                      name="min"
-                      min={0}
-                      placeholder="Min"
-                    />
-                    <input
-                      className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
-                      type="number"
-                      name="max"
-                      min={0}
-                      placeholder="Max"
-                    />
-                  </div>
-                </div>
-
-                {/* Filter by owner */}
-                <div className="flex w-full flex-col gap-2">
-                  <p className="leading-7 font-bold">Owner</p>
-                  <div className="flex flex-row gap-2">
-                    <input
-                      className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:flex sm:flex-grow md:w-100"
-                      type="text"
-                      name="owner"
-                      placeholder="Example: guille"
-                    />
-                  </div>
-                </div>
-
-                {/* Filter by category */}
-                <div className="flex w-full flex-col gap-2">
-                  <p className="leading-7 font-bold">Categories</p>
-                  <div className="flex w-full flex-row gap-2">
-                    <input
-                      className="flex h-10 w-full flex-row items-center justify-between rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
-                      type="text"
-                      name="categories"
-                      placeholder="Select categories"
-                      value={categories.join("-")}
-                      readOnly
-                    />
-                    <button
-                      className="cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-400 hover:bg-black hover:text-white lg:w-1/5"
-                      onClick={handleOpenCategories}
-                      type="button"
-                    >
-                      Select
-                    </button>
-                  </div>
+              <CloseIcon />
+            </button>
+          </div>
+          <form
+            className="flex w-full flex-col items-center justify-center gap-16 p-4 sm:mx-auto sm:w-7/8 md:mx-auto md:w-3/4"
+            onSubmit={handleFiltersSubmit}
+          >
+            <div className="flex w-full flex-col gap-4">
+              {/* Filter by price */}
+              <div className="flex w-full flex-col gap-2">
+                <p className="leading-7 font-bold">Price</p>
+                <div className="flex w-full flex-row gap-2">
+                  <input
+                    className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
+                    type="number"
+                    name="min"
+                    min={0}
+                    placeholder="Min"
+                  />
+                  <input
+                    className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
+                    type="number"
+                    name="max"
+                    min={0}
+                    placeholder="Max"
+                  />
                 </div>
               </div>
 
-              <button
-                className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-sm text-gray-500 hover:bg-black hover:text-white"
-                type="submit"
-              >
-                Apply
-              </button>
-            </form>
-          </div>
+              {/* Filter by owner */}
+              <div className="flex w-full flex-col gap-2">
+                <p className="leading-7 font-bold">Owner</p>
+                <div className="flex flex-row gap-2">
+                  <input
+                    className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:flex sm:flex-grow md:w-100"
+                    type="text"
+                    name="owner"
+                    placeholder="Example: guille"
+                  />
+                </div>
+              </div>
+
+              {/* Filter by category */}
+              <div className="flex w-full flex-col gap-2">
+                <p className="leading-7 font-bold">Categories</p>
+                <div className="flex w-full flex-row gap-2">
+                  <input
+                    className="flex h-10 w-full flex-row items-center justify-between rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
+                    type="text"
+                    name="categories"
+                    placeholder="Select categories"
+                    value={categories.join("-")}
+                    readOnly
+                  />
+                  <button
+                    className="cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 hover:bg-black hover:text-white lg:w-1/5"
+                    onClick={handleOpenCategories}
+                    type="button"
+                  >
+                    Select
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-sm text-gray-500 hover:bg-black hover:text-white"
+              type="submit"
+            >
+              Apply
+            </button>
+          </form>
         </div>
       )}
 

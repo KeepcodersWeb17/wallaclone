@@ -46,7 +46,7 @@ const Header = () => {
               <CloseIcon />
             </button>
           </div>
-          <ul className="flex flex-col gap-10">
+          <ul className="flex flex-col gap-10 p-4">
             <li onClick={closeMenu} className="flex w-full flex-row">
               <Link
                 to={`/users/${user?.username}`}
