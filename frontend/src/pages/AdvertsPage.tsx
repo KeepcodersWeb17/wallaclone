@@ -111,16 +111,18 @@ const AdvertsPage = () => {
     setSearchParams(params);
   };
 
-  const handleLimit = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      const params = new URLSearchParams({
-        ...Object.fromEntries(searchParams.entries()),
-        limit: `${event.currentTarget.value}`,
-        skip: "0"
-      }).toString();
+  const handleLimit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const limit = formData.get("limit") as string;
 
-      setSearchParams(params);
-    }
+    const params = new URLSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      limit: `${limit}`,
+      skip: "0"
+    }).toString();
+
+    setSearchParams(params);
   };
 
   const handleOpenCategories = async () => {
@@ -320,30 +322,36 @@ const AdvertsPage = () => {
 
       <div className="flex w-full flex-col items-center justify-center gap-6">
         {/* Search by name + button open filters */}
-        <section className="flex w-full flex-col items-center justify-center gap-4 md:flex-row lg:gap-8">
-          <form className="relative flex w-full" onSubmit={handleSearchByName}>
-            <input
-              className="h-10 w-full flex-grow rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
-              type="text"
-              name="advertName"
-              id="advertName"
-              placeholder="Example: iPhone 14 Pro Max"
-              defaultValue={advertNameParam || ""}
-            />
-            <button
-              className="absolute top-2 right-2 cursor-pointer"
-              onClick={handleResetForm}
+        <section className="flex w-full flex-col justify-center gap-1">
+          <p className="text-sm leading-10 text-gray-500">Search </p>
+          <div className="flex flex-col gap-4 md:flex-row lg:gap-8">
+            <form
+              className="relative flex w-full"
+              onSubmit={handleSearchByName}
             >
-              <CancelIcon />
+              <input
+                className="h-10 w-full flex-grow rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                type="text"
+                name="advertName"
+                id="advertName"
+                placeholder="Example: iPhone 14 Pro Max"
+                defaultValue={advertNameParam || ""}
+              />
+              <button
+                className="absolute top-2 right-2 cursor-pointer"
+                onClick={handleResetForm}
+              >
+                <CancelIcon />
+              </button>
+            </form>
+            <button
+              className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 placeholder:italic hover:bg-black hover:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+              type="button"
+              onClick={handleOpenFilters}
+            >
+              Filters
             </button>
-          </form>
-          <button
-            className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 placeholder:italic hover:bg-black hover:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
-            type="button"
-            onClick={handleOpenFilters}
-          >
-            Filters
-          </button>
+          </div>
           {error && (
             <p className="w-full leading-10 text-red-500">{error.join(", ")}</p>
           )}
@@ -377,9 +385,9 @@ const AdvertsPage = () => {
         {/* <ShowUserAdverts /> */}
 
         {/* Sorting */}
-        <section className="flex w-full flex-col justify-between gap-1 md:flex-row">
+        <section className="flex w-full flex-col justify-between gap-1">
           <p className="text-sm leading-10 text-gray-500">Sort by: </p>
-          <div className="flex w-full flex-row items-center justify-between gap-2 md:w-16/18">
+          <div className="flex w-full flex-row items-center justify-between gap-4 lg:gap-8">
             <SortingButton
               queryParam="date-asc"
               setSearchParams={handleSortParamsClick}
@@ -396,28 +404,50 @@ const AdvertsPage = () => {
         </section>
 
         {/* Paginacion */}
-        <div className="flex justify-center gap-5">
-          <button type="button" onClick={handlePrevPage}>
-            Previous
-          </button>
-          <button type="button" onClick={handleNextPage}>
-            Next
-          </button>
-          <input
-            type="number"
-            step={2}
-            min={2}
-            max={10}
-            onKeyDown={handleLimit}
-            placeholder="Limit"
-          />
-        </div>
+        <section className="mt-[40px] flex w-full flex-row justify-center">
+          <div className="gap flex w-full flex-row gap-4 sm:w-1/2 lg:gap-8">
+            <button
+              className="h-10 w-1/2 cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 hover:bg-black hover:text-white"
+              type="button"
+              onClick={handlePrevPage}
+            >
+              Previous
+            </button>
+            <button
+              className="h-10 w-1/2 cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 hover:bg-black hover:text-white"
+              type="button"
+              onClick={handleNextPage}
+            >
+              Next
+            </button>
+          </div>
+        </section>
 
-        {/* List of adverts */}
+        {/* List of adverts and limit*/}
         <section className="mb-10 flex w-full flex-col gap-2">
-          <p className="text-md leading-10 font-bold sm:text-lg md:text-xl">
-            List of adverts
-          </p>
+          <div className="flex flex-row-reverse items-center justify-between">
+            <div className="relative flex flex-row items-center gap-4">
+              <p className="text-xs leading-10 text-gray-500">Display</p>
+              <form onSubmit={handleLimit}>
+                <input
+                  className="absolute top-3 left-10 w-7 appearance-none text-center text-xs font-semibold text-gray-500 placeholder:text-center placeholder:text-xs placeholder:italic [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  type="number"
+                  name="limit"
+                  step={1}
+                  min={1}
+                  max={10}
+                  placeholder="5"
+                />
+              </form>
+              <p className="text-xs leading-10 text-gray-500">
+                adverts per page
+              </p>
+            </div>
+
+            <p className="text-md relative leading-10 font-bold sm:text-lg md:text-xl">
+              List of adverts
+            </p>
+          </div>
           {adverts.list.length === 0 ? (
             <p> No adverts </p>
           ) : (

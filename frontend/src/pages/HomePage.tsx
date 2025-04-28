@@ -136,7 +136,7 @@ const HomePage = () => {
                     // TODO refactorizar
                     <li key={tag.id} className="flex flex-grow flex-row">
                       <button
-                        className="flex flex-grow cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 hover:bg-black hover:text-white sm:flex-grow sm:text-sm"
+                        className="flex h-10 flex-grow cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 hover:bg-black hover:text-white sm:flex-grow"
                         onClick={searchByCategory}
                       >
                         {tag.name}
