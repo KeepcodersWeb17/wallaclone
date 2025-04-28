@@ -17,6 +17,7 @@ const Header = () => {
 
   const handleLogout = () => {
     closeMenu();
+    // TODO revisar por qué se siguen viendo los favoritos después de hacer logout (desaparecen al refrescar la página)
     navigate("/");
     dispatch(authLogout());
   };
