@@ -49,7 +49,7 @@ const Header = () => {
             <li onClick={closeMenu} className="flex w-full flex-row">
               <Link
                 to={`/users/${user?.username}`}
-                className="w-full cursor-pointer text-center text-xl leading-10"
+                className="w-full cursor-pointer text-center text-xl leading-10 sm:hover:bg-gray-100"
               >
                 My Profile
               </Link>
@@ -57,7 +57,7 @@ const Header = () => {
             <li onClick={closeMenu} className="flex w-full flex-row">
               <Link
                 to={`/adverts/user/${user?.username}`}
-                className="w-full cursor-pointer text-center text-xl leading-10"
+                className="w-full cursor-pointer text-center text-xl leading-10 sm:hover:bg-gray-100"
               >
                 My Adverts
               </Link>
@@ -65,7 +65,7 @@ const Header = () => {
             <li onClick={closeMenu} className="flex w-full flex-row">
               <Link
                 to={`/adverts/favorites/${user?.username}`}
-                className="w-full cursor-pointer text-center text-xl leading-10"
+                className="w-full cursor-pointer text-center text-xl leading-10 sm:hover:bg-gray-100"
               >
                 My Favorites
               </Link>
@@ -73,7 +73,7 @@ const Header = () => {
             <li className="flex w-full flex-row">
               <button
                 onClick={handleLogout}
-                className="w-full cursor-pointer text-center text-xl leading-10"
+                className="w-full cursor-pointer text-center text-xl leading-10 sm:hover:bg-gray-100"
               >
                 Logout
               </button>
