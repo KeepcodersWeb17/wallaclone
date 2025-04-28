@@ -5,7 +5,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative flex min-h-screen flex-col bg-gray-300">
       <Header />
-      <div className="grow p-4 sm:mx-auto sm:w-7/8 md:mx-auto md:w-3/4">
+      <div className="flex w-full flex-grow flex-col items-center justify-center p-4 sm:mx-auto sm:w-7/8">
         {children}
       </div>
       <Footer />
