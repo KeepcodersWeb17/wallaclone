@@ -127,6 +127,26 @@ const AdvertsPage = () => {
 
   const handleOpenCategories = async () => {
     dialogRef.current?.showModal();
+
+    const tagsModal = dialogRef.current?.querySelectorAll("li");
+
+    if (!tagsModal) return;
+
+    const tagsParams = searchParams.get("tags")?.split("-") || [];
+
+    if (!tagsParams.length) return;
+
+    tagsModal.forEach((tag) => {
+      const tagName = tag.textContent?.toLocaleLowerCase().trim() || "";
+      const isSelected = tagsParams.includes(tagName);
+      if (isSelected) {
+        tag.setAttribute("selected", "true");
+        tag.classList.add("bg-yellow-200");
+      } else {
+        tag.removeAttribute("selected");
+        tag.classList.remove("bg-yellow-200");
+      }
+    });
   };
 
   const handleCloseCategories = () => {
@@ -241,23 +261,23 @@ const AdvertsPage = () => {
               </button>
             </div>
             <form
-              className="flex w-full flex-col items-center justify-center gap-16"
+              className="flex w-full flex-col items-center justify-center gap-16 sm:mx-auto sm:w-7/8 md:mx-auto md:w-3/4"
               onSubmit={handleFiltersSubmit}
             >
               <div className="flex w-full flex-col gap-4">
                 {/* Filter by price */}
                 <div className="flex w-full flex-col gap-2">
                   <p className="leading-7 font-bold">Price</p>
-                  <div className="flex flex-row gap-2">
+                  <div className="flex w-full flex-row gap-2">
                     <input
-                      className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                      className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
                       type="number"
                       name="min"
                       min={0}
                       placeholder="Min"
                     />
                     <input
-                      className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                      className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
                       type="number"
                       name="max"
                       min={0}
@@ -271,7 +291,7 @@ const AdvertsPage = () => {
                   <p className="leading-7 font-bold">Owner</p>
                   <div className="flex flex-row gap-2">
                     <input
-                      className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                      className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:flex sm:flex-grow md:w-100"
                       type="text"
                       name="owner"
                       placeholder="Example: guille"
@@ -282,9 +302,9 @@ const AdvertsPage = () => {
                 {/* Filter by category */}
                 <div className="flex w-full flex-col gap-2">
                   <p className="leading-7 font-bold">Categories</p>
-                  <div className="flex flex-row gap-2">
+                  <div className="flex w-full flex-row gap-2">
                     <input
-                      className="flex h-10 w-full flex-row items-center justify-between rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                      className="flex h-10 w-full flex-row items-center justify-between rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
                       type="text"
                       name="categories"
                       placeholder="Select categories"
@@ -292,7 +312,7 @@ const AdvertsPage = () => {
                       readOnly
                     />
                     <button
-                      className="cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-400 hover:bg-black hover:text-white"
+                      className="cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-400 hover:bg-black hover:text-white lg:w-1/5"
                       onClick={handleOpenCategories}
                       type="button"
                     >
@@ -303,10 +323,10 @@ const AdvertsPage = () => {
               </div>
 
               <button
-                className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-sm hover:bg-black hover:text-white"
+                className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-sm text-gray-500 hover:bg-black hover:text-white"
                 type="submit"
               >
-                Filter
+                Apply
               </button>
             </form>
           </div>
