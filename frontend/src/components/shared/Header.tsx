@@ -37,39 +37,57 @@ const Header = () => {
       {isMenuOpen && (
         <div
           id="menu"
-          className="fixed top-0 right-0 bottom-0 left-0 z-100 bg-red-50"
+          className="fixed top-0 right-0 bottom-0 left-0 z-300 flex flex-col gap-10 bg-red-50"
         >
-          <div className="flex items-center justify-end pt-2 pr-4 pb-2 pl-4 leading-10">
+          <div className="flex w-full items-center justify-between pt-1 pr-4 pb-1 pl-4 shadow-sm sm:pt-2 sm:pb-2">
+            <h3 className="text-xl leading-10 font-bold">Menu</h3>
             <button className="cursor-pointer" onClick={closeMenu}>
               <CloseIcon />
             </button>
           </div>
-          <ul className="line-hi text-center text-3xl leading-24">
-            <li onClick={closeMenu} className="hover:bg-gray-100">
-              <Link to={`/users/${user?.username}`}>My profile</Link>
+          <ul className="flex flex-col gap-10">
+            <li onClick={closeMenu} className="flex w-full flex-row">
+              <Link
+                to={`/users/${user?.username}`}
+                className="w-full cursor-pointer text-center text-xl"
+              >
+                My Profile
+              </Link>
             </li>
-            <li onClick={closeMenu} className="hover:bg-gray-100">
-              <Link to={`/adverts/user/${user?.username}`}>My Adverts</Link>
+            <li onClick={closeMenu} className="flex w-full flex-row">
+              <Link
+                to={`/adverts/user/${user?.username}`}
+                className="w-full cursor-pointer text-center text-xl"
+              >
+                My Adverts
+              </Link>
             </li>
-            <li onClick={closeMenu} className="hover:bg-gray-100">
-              <Link to={`/adverts/favorites/${user?.username}`}>
+            <li onClick={closeMenu} className="flex w-full flex-row">
+              <Link
+                to={`/adverts/favorites/${user?.username}`}
+                className="w-full cursor-pointer text-center text-xl"
+              >
                 My Favorites
               </Link>
             </li>
-            <li
-              className="cursor-pointer text-center hover:bg-gray-100"
-              onClick={handleLogout}
-            >
-              Logout
+            <li className="flex w-full flex-row">
+              <button
+                onClick={handleLogout}
+                className="w-full cursor-pointer text-center text-xl"
+              >
+                Logout
+              </button>
             </li>
           </ul>
         </div>
       )}
 
-      <header className="flex w-full items-center justify-between bg-red-50 pr-4 pl-4 leading-10">
+      <header className="flex w-full flex-row items-center justify-between bg-gray-300 pt-1 pr-4 pb-1 pl-4 shadow-sm sm:pt-2 sm:pb-2">
         <div>
           <Link to={"/"} state={{ from: location.pathname }} replace>
-            <h1>Wallaclone</h1>
+            <h1 className="text-md leading-10 font-bold sm:text-lg md:text-xl">
+              Wallaclone
+            </h1>
           </Link>
         </div>
 
