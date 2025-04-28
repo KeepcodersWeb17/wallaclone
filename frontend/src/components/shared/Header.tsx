@@ -109,10 +109,18 @@ const Header = () => {
                 state={{ from: location.pathname }}
                 replace
               >
-                <li className="btn btn-primary">Sign up</li>
+                <li>
+                  <button className="cursor-pointer rounded-lg border border-black px-2 py-1 text-xs text-black hover:bg-black hover:text-white sm:px-3 sm:py-1.5 sm:text-sm md:px-4 md:py-2">
+                    Sign up
+                  </button>
+                </li>
               </Link>
               <Link to={"/login"} state={{ from: location.pathname }} replace>
-                <li className="btn btn-primary">Log in</li>
+                <li>
+                  <button className="cursor-pointer rounded-lg border border-black px-2 py-1 text-xs text-black hover:bg-black hover:text-white sm:px-3 sm:py-1.5 sm:text-sm md:px-4 md:py-2">
+                    Log in
+                  </button>
+                </li>
               </Link>
             </ul>
           )}
