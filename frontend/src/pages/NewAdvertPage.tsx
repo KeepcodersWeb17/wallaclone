@@ -81,99 +81,136 @@ const NewAdvertPage = () => {
 
   return (
     <>
-      <TagsDiaglog
-        ref={dialogRef}
-        handleClose={handleClose}
-        handleSelected={handleSelected}
-      />
-      <h2 className="mb-5">New Advert</h2>
-      <form
-        onSubmit={handleCreateAdvert}
-        className="mx-auto flex max-w-3xl flex-col justify-center gap-5"
-      >
-        <div>
-          <label htmlFor="name"> Name</label>
-          <input
-            type="text"
-            id="name"
-            minLength={3}
-            required
-            placeholder="Name of the advert"
-          />
-        </div>
-        <div>
-          <label htmlFor="description">Description</label>
-          <textarea id="description" rows={3}></textarea>
-        </div>
-        <div>
-          <label htmlFor="price">Price</label>
-          <input
-            type="number"
-            id="price"
-            required
-            placeholder="Price of the advert"
-            min={0}
-          />
-        </div>
-        <div>
-          <label htmlFor="image">Image</label>
-          <input type="text" id="image" placeholder="Image URL of the advert" />
-        </div>
-        <button
-          className="cursor-pointer"
-          type="button"
-          onClick={handleOpenModal}
+      <div className="md:mx-auto md:max-w-4xl md:px-6">
+        <TagsDiaglog
+          ref={dialogRef}
+          handleClose={handleClose}
+          handleSelected={handleSelected}
+        />
+
+        <h2 className="mb-6 text-xl font-bold text-black md:text-2xl">
+          New Advert
+        </h2>
+
+        <form
+          onSubmit={handleCreateAdvert}
+          className="space-y-6 rounded-lg bg-white p-4 shadow md:p-6"
         >
-          TAGS
-        </button>
-        <ul ref={tagsContainerRef} className="hidden">
-          {tags.map((tag) => (
-            <li title={tag.name} key={tag.id} className="hidden">
-              {tag.name}
-            </li>
-          ))}
-        </ul>
-        <fieldset className="flex justify-around">
-          <div>
-            <input
-              className="cursor-pointer"
-              type="radio"
-              id="buy"
-              name="sale"
-              value="buy"
-            />
-            <label className="cursor-pointer" htmlFor="buy">
-              Buy
+          {/* Name */}
+          <div className="space-y-1">
+            <label htmlFor="name" className="text-sm text-black">
+              Name
             </label>
-          </div>
-          <div>
             <input
-              className="cursor-pointer"
-              type="radio"
-              id="sell"
-              name="sale"
-              value="sell"
+              id="name"
+              name="name"
+              type="text"
+              minLength={3}
+              required
+              placeholder="Name of the advert"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
             />
-            <label className="cursor-pointer" htmlFor="sell">
-              Sell
-            </label>
           </div>
-        </fieldset>
-        {error && <p className="text-red-500">{error.join(", ")}</p>}
-        <div>
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
+
+          {/* Description */}
+          <div className="space-y-1">
+            <label htmlFor="description" className="text-sm text-black">
+              Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              rows={3}
+              placeholder="Advert description"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
+            />
+          </div>
+
+          {/* Price */}
+          <div className="space-y-1">
+            <label htmlFor="price" className="text-sm text-black">
+              Price
+            </label>
+            <input
+              id="price"
+              name="price"
+              type="number"
+              min={0}
+              required
+              placeholder="Price of the advert"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
+            />
+          </div>
+
+          {/* Image */}
+          <div className="space-y-1">
+            <label htmlFor="image" className="text-sm text-black">
+              Image URL
+            </label>
+            <input
+              id="image"
+              name="image"
+              type="text"
+              placeholder="Image URL of the advert"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
+            />
+          </div>
+
+          {/* Tags */}
+          <div className="space-y-1">
             <button
-              className="cursor-pointer"
+              type="button"
+              onClick={handleOpenModal}
+              className="cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-gray-50"
+            >
+              Select Tags
+            </button>
+            <ul
+              ref={tagsContainerRef}
+              className="mt-2 flex hidden flex-wrap gap-2"
+            >
+              {tags.map((t) => (
+                <li
+                  key={t.id}
+                  id={t.id}
+                  title={t.name}
+                  className="hidden rounded bg-gray-100 px-2 py-1 text-sm text-gray-900"
+                >
+                  {t.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Sale Type */}
+          <fieldset className="flex space-x-6">
+            <label className="flex items-center space-x-2 text-sm text-black">
+              <input type="radio" name="sale" value="buy" defaultChecked />
+              <span>Buy</span>
+            </label>
+            <label className="flex items-center space-x-2 text-sm text-black">
+              <input type="radio" name="sale" value="sell" />
+              <span>Sell</span>
+            </label>
+          </fieldset>
+
+          {/* Feedback */}
+          {error?.length && (
+            <p className="text-sm text-red-600">{error.join(", ")}</p>
+          )}
+          {loading && <p className="text-sm text-black">Loading...</p>}
+
+          {/* Submit */}
+          {!loading && (
+            <button
               type="submit"
-              onSubmit={handleCreateAdvert}
+              className="block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-gray-50 md:inline-block md:w-auto"
             >
               Create
             </button>
           )}
-        </div>
-      </form>
+        </form>
+      </div>
     </>
   );
 };
