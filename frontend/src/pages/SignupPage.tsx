@@ -93,7 +93,7 @@ const SignupPage = () => {
               <p className="text-center text-xs sm:text-sm">loading...</p>
             ) : (
               <button
-                className="h-10 w-full transform cursor-pointer rounded-lg border border-gray-400 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 active:bg-gray-900 sm:text-sm"
+                className="h-10 w-full transform cursor-pointer rounded-lg border border-gray-400 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 sm:text-sm"
                 type="submit"
               >
                 Create
