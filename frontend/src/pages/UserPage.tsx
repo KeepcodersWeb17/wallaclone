@@ -27,12 +27,9 @@ const UserPage = () => {
     setIsModalOpen(false);
   };
 
-  const initial = user.email
-    ? user.email.split("@")[0].charAt(0).toUpperCase()
-    : "";
-
   return (
     <>
+      {/* Main container */}
       <div className="md:mx-auto md:max-w-4xl md:px-6">
         {/* Go back */}
         <nav className="mb-6">
@@ -45,23 +42,25 @@ const UserPage = () => {
         </nav>
 
         {/* Heading */}
-        <h2 className="mb-1 text-xl font-bold text-gray-900 md:text-2xl">
+        <h2 className="mb-1 text-xl font-bold text-black md:text-2xl">
           My profile
         </h2>
         <p className="mb-6 text-sm text-gray-700">
           Member since {user.createdAt?.split("T")[0]}
         </p>
 
-        {/* Profile Card */}
+        {/* Profile card */}
         <div className="relative space-y-4 rounded-lg bg-white p-4 shadow md:space-y-6 md:p-6">
           {/* Avatar */}
-          <div className="absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-xl font-medium text-gray-700">
-            {initial}
+          <div className="flex items-center justify-center text-xl font-medium text-gray-700">
+            <p className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200">
+              {user.username[0].toUpperCase()}
+            </p>
           </div>
 
           {/* Username */}
           <div className="space-y-1">
-            <p className="text-sm text-gray-700">Username</p>
+            <p className="text-sm text-black">Username</p>
             <p className="text-gray-900">{user.username}</p>
           </div>
 
@@ -75,7 +74,7 @@ const UserPage = () => {
 
           {/* Password */}
           <div className="space-y-1">
-            <p className="text-sm text-gray-700">Password</p>
+            <p className="text-sm text-black">Password</p>
             <p className="text-gray-900">******</p>
           </div>
 
@@ -83,13 +82,13 @@ const UserPage = () => {
           <div className="flex flex-col space-y-1 md:flex-row md:space-x-4">
             <Link
               to={`/users/${user.username}/edit`}
-              className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-50 md:flex-1"
+              className="h-10 flex-1 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-50"
             >
               Edit profile
             </Link>
             <button
               onClick={handleDeleteClick}
-              className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-red-600 hover:bg-gray-50 md:flex-1"
+              className="h-10 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-red-600 hover:bg-gray-50"
             >
               Delete account
             </button>
@@ -99,13 +98,13 @@ const UserPage = () => {
           {error?.length && (
             <p className="text-sm text-red-600">{error.join(", ")}</p>
           )}
-          {loading && <p className="text-sm text-gray-700">loading...</p>}
+          {loading && <p className="text-sm text-black">loading...</p>}
         </div>
       </div>
 
       {/* Confirm Delete Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/20 px-4 backdrop-blur-sm">
+        <div className="fixed inset-0 flex items-center justify-center bg-white/20 px-4 backdrop-blur-sm">
           <div className="w-full max-w-sm space-y-4 rounded-lg bg-white p-6">
             <h3 className="text-lg font-semibold text-gray-900">
               Confirm account deletion
@@ -117,13 +116,13 @@ const UserPage = () => {
             <div className="flex flex-col space-y-2 md:flex-row md:space-x-4">
               <button
                 onClick={cancelDelete}
-                className="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-900 hover:bg-gray-50 md:flex-1"
+                className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-900 hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDelete}
-                className="w-full rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700 md:flex-1"
+                className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
               >
                 Delete
               </button>
