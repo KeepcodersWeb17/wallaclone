@@ -54,7 +54,7 @@ const UpdateUserPage = () => {
           </Link>
         </nav>
 
-        <h2 className="mb-6 text-xl font-bold text-gray-900 md:text-2xl">
+        <h2 className="mb-6 text-xl font-bold text-black md:text-2xl">
           Update user
         </h2>
 
@@ -64,7 +64,7 @@ const UpdateUserPage = () => {
         >
           {/* Username */}
           <div className="space-y-1">
-            <label htmlFor="username" className="text-sm text-gray-700">
+            <label htmlFor="username" className="text-sm text-black">
               Username
             </label>
             <input
@@ -79,7 +79,7 @@ const UpdateUserPage = () => {
 
           {/* Email */}
           <div className="space-y-1">
-            <label htmlFor="email" className="text-sm text-gray-700">
+            <label htmlFor="email" className="text-sm text-black">
               Email
             </label>
             <input
@@ -94,7 +94,7 @@ const UpdateUserPage = () => {
 
           {/* Password */}
           <div className="space-y-1">
-            <label htmlFor="password" className="text-sm text-gray-700">
+            <label htmlFor="password" className="text-sm text-black">
               Password
             </label>
             <input
@@ -108,7 +108,7 @@ const UpdateUserPage = () => {
 
           {/* Confirm Password */}
           <div className="space-y-1">
-            <label htmlFor="confirmPassword" className="text-sm text-gray-700">
+            <label htmlFor="confirmPassword" className="text-sm text-black">
               Confirm Password
             </label>
             <input
@@ -124,13 +124,13 @@ const UpdateUserPage = () => {
           {error?.length && (
             <p className="text-sm text-red-600">{error.join(", ")}</p>
           )}
-          {loading && <p className="text-sm text-gray-700">loading...</p>}
+          {loading && <p className="text-sm text-black">loading...</p>}
 
           {/* Submit */}
           {!loading && (
             <button
               type="submit"
-              className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium hover:bg-gray-50 md:inline-block md:w-auto"
+              className="block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 md:w-auto"
             >
               Update
             </button>
