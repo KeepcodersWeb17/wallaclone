@@ -311,7 +311,7 @@ const AdvertsPage = () => {
                     readOnly
                   />
                   <button
-                    className="cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 hover:bg-black hover:text-white lg:w-1/5"
+                    className="transform cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95 lg:w-1/5"
                     onClick={handleOpenCategories}
                     type="button"
                   >
@@ -322,7 +322,7 @@ const AdvertsPage = () => {
             </div>
 
             <button
-              className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-sm text-gray-500 hover:bg-black hover:text-white"
+              className="h-10 w-full transform cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-sm text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99"
               type="submit"
             >
               Apply
@@ -363,7 +363,7 @@ const AdvertsPage = () => {
               </button>
             </form>
             <button
-              className="h-10 w-full cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 placeholder:italic hover:bg-black hover:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+              className="h-10 w-full transform cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 transition duration-150 placeholder:italic hover:bg-black hover:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none active:scale-95 md:w-100"
               type="button"
               onClick={handleOpenFilters}
             >
@@ -425,14 +425,14 @@ const AdvertsPage = () => {
         <section className="mt-[40px] flex w-full flex-row justify-center">
           <div className="gap flex w-full flex-row gap-4 sm:w-1/2 lg:gap-8">
             <button
-              className="h-10 w-1/2 cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 hover:bg-black hover:text-white"
+              className="h-10 w-1/2 transform cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
               type="button"
               onClick={handlePrevPage}
             >
               Previous
             </button>
             <button
-              className="h-10 w-1/2 cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 hover:bg-black hover:text-white"
+              className="h-10 w-1/2 transform cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
               type="button"
               onClick={handleNextPage}
             >
@@ -473,7 +473,7 @@ const AdvertsPage = () => {
               {adverts.list.map((advert) => (
                 <li
                   key={`${advert.name}-${advert.id}`}
-                  className="card relative"
+                  className="card relative transform transition duration-150 active:scale-95"
                 >
                   <Link
                     className="relative flex h-full w-full flex-col gap-2"

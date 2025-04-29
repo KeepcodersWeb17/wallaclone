@@ -136,7 +136,7 @@ const HomePage = () => {
                     // TODO refactorizar
                     <li key={tag.id} className="flex flex-grow flex-row">
                       <button
-                        className="flex h-10 flex-grow cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 hover:bg-black hover:text-white sm:flex-grow"
+                        className="flex h-10 flex-grow transform cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95 active:bg-gray-900 sm:flex-grow"
                         onClick={searchByCategory}
                       >
                         {tag.name}
@@ -174,7 +174,7 @@ const HomePage = () => {
             {likedAdverts.map((advert) => (
               <li
                 key={`${advert.name}-${advert.id}`}
-                className="card relative min-w-70"
+                className="card relative min-w-70 transform transition duration-150 active:scale-95"
               >
                 <Link
                   className="relative flex h-full w-full flex-col gap-2"
@@ -247,7 +247,7 @@ const HomePage = () => {
               .map((advert) => (
                 <li
                   key={`${advert.name}-${advert.id}`}
-                  className="card relative min-w-70"
+                  className="card relative min-w-70 transform transition duration-150 active:scale-95"
                 >
                   <Link
                     className="relative flex h-full w-full flex-col gap-2"
@@ -320,7 +320,7 @@ const HomePage = () => {
               .map((advert) => (
                 <li
                   key={`${advert.name}-${advert.id}`}
-                  className="card relative min-w-70"
+                  className="card relative min-w-70 transform transition duration-150 active:scale-95"
                 >
                   <Link
                     className="relative flex h-full w-full flex-col gap-2"

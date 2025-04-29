@@ -25,7 +25,7 @@ const SortingButton = ({
     <button
       type="button"
       onClick={handleClick}
-      className="h-10 w-1/3 cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 hover:bg-black hover:text-white"
+      className="h-10 w-1/3 transform cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
     >
       {param === "date-asc" && "Newest first"}
       {param === "date-desc" && "Oldest first"}
