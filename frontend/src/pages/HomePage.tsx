@@ -165,7 +165,7 @@ const HomePage = () => {
       </div>
 
       {/* Carrousel favorites ads */}
-      {likedAdverts?.length > 0 && (
+      {user?.id && likedAdverts?.length > 0 && (
         <section className="flex w-full flex-col gap-2">
           <p className="text-md leading-10 font-bold sm:text-lg md:text-xl">
             Your saved ads
