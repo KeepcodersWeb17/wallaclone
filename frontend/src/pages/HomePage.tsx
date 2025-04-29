@@ -155,7 +155,7 @@ const HomePage = () => {
           className="flex h-20 w-full flex-col items-center justify-center gap-4 bg-black"
         >
           {/* <p>Novedades de Wallaclone</p> */}
-          <Link to="/adverts?tags=lifestyle">
+          <Link className="w-full" to="/adverts?tags=lifestyle">
             <p className="text-center text-white">Live better, shop smarter</p>
             <p className="text-center text-white">
               Find your lifestyle must-haves
