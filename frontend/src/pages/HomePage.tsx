@@ -187,46 +187,44 @@ const HomePage = () => {
                       className="h-full object-cover"
                     />
                   </div>
-                  <div className="flex flex-col">
-                    <div className="flex flex-col">
-                      <h3 className="text-lg leading-10 font-bold capitalize">
-                        {advert.name}
-                      </h3>
-                      <p>
-                        {advert.description.split(" ").slice(0, 3).join(" ") +
-                          "..."}
-                      </p>
-                      <p>
-                        Price: <strong>{advert.price}€</strong>
-                      </p>
-                      {/* //TODO esto se puede mejorar */}
-                      <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
-                        {advert.sale === "sell" ? "For sell" : "To buy"}
-                      </p>
-                    </div>
-                    <div className="">
-                      <p>
-                        Published by:{" "}
-                        <Link to={`/adverts/user/${advert.owner?.username}`}>
-                          <strong>{advert.owner.username}</strong>
-                        </Link>
-                      </p>
-                      <button
-                        className="absolute top-0 right-0 cursor-pointer"
-                        onClick={handleLike}
-                      >
-                        {user?.id &&
-                        advert.favorites.find(
-                          (owner) => owner.id === user.id
-                        ) ? (
-                          <LikeIcon />
-                        ) : (
-                          <UnlikeIcon />
-                        )}
-                      </button>
-                    </div>
-                  </div>
                 </Link>
+                <div className="flex flex-col">
+                  <div className="flex flex-col">
+                    <h3 className="text-lg leading-10 font-bold capitalize">
+                      {advert.name}
+                    </h3>
+                    <p>
+                      {advert.description.split(" ").slice(0, 3).join(" ") +
+                        "..."}
+                    </p>
+                    <p>
+                      Price: <strong>{advert.price}€</strong>
+                    </p>
+                    {/* //TODO esto se puede mejorar */}
+                    <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
+                      {advert.sale === "sell" ? "For sell" : "To buy"}
+                    </p>
+                  </div>
+                  <div className="">
+                    <p>
+                      Published by:{" "}
+                      <Link to={`/adverts/user/${advert.owner?.username}`}>
+                        <strong>{advert.owner.username}</strong>
+                      </Link>
+                    </p>
+                    <button
+                      className="absolute top-6 right-6 cursor-pointer"
+                      onClick={handleLike}
+                    >
+                      {user?.id &&
+                      advert.favorites.find((owner) => owner.id === user.id) ? (
+                        <LikeIcon />
+                      ) : (
+                        <UnlikeIcon />
+                      )}
+                    </button>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
@@ -260,46 +258,46 @@ const HomePage = () => {
                         className="h-full object-cover"
                       />
                     </div>
-                    <div className="flex flex-col">
-                      <div className="flex flex-col">
-                        <h3 className="text-lg leading-10 font-bold capitalize">
-                          {advert.name}
-                        </h3>
-                        <p>
-                          {advert.description.split(" ").slice(0, 3).join(" ") +
-                            "..."}
-                        </p>
-                        <p>
-                          Price: <strong>{advert.price}€</strong>
-                        </p>
-                        {/* //TODO esto se puede mejorar */}
-                        <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
-                          {advert.sale === "sell" ? "For sell" : "To buy"}
-                        </p>
-                      </div>
-                      <div className="">
-                        <p>
-                          Published by:{" "}
-                          <Link to={`/adverts/user/${advert.owner?.username}`}>
-                            <strong>{advert.owner.username}</strong>
-                          </Link>
-                        </p>
-                        <button
-                          className="absolute top-0 right-0 cursor-pointer"
-                          onClick={handleLike}
-                        >
-                          {user?.id &&
-                          advert.favorites.find(
-                            (owner) => owner.id === user.id
-                          ) ? (
-                            <LikeIcon />
-                          ) : (
-                            <UnlikeIcon />
-                          )}
-                        </button>
-                      </div>
-                    </div>
                   </Link>
+                  <div className="flex flex-col">
+                    <div className="flex flex-col">
+                      <h3 className="text-lg leading-10 font-bold capitalize">
+                        {advert.name}
+                      </h3>
+                      <p>
+                        {advert.description.split(" ").slice(0, 3).join(" ") +
+                          "..."}
+                      </p>
+                      <p>
+                        Price: <strong>{advert.price}€</strong>
+                      </p>
+                      {/* //TODO esto se puede mejorar */}
+                      <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
+                        {advert.sale === "sell" ? "For sell" : "To buy"}
+                      </p>
+                    </div>
+                    <div className="">
+                      <p>
+                        Published by:{" "}
+                        <Link to={`/adverts/user/${advert.owner?.username}`}>
+                          <strong>{advert.owner.username}</strong>
+                        </Link>
+                      </p>
+                      <button
+                        className="absolute top-6 right-6 cursor-pointer"
+                        onClick={handleLike}
+                      >
+                        {user?.id &&
+                        advert.favorites.find(
+                          (owner) => owner.id === user.id
+                        ) ? (
+                          <LikeIcon />
+                        ) : (
+                          <UnlikeIcon />
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </li>
               ))}
           </ul>
@@ -333,46 +331,46 @@ const HomePage = () => {
                         className="h-full object-cover"
                       />
                     </div>
-                    <div className="flex flex-col">
-                      <div className="flex flex-col">
-                        <h3 className="text-lg leading-10 font-bold capitalize">
-                          {advert.name}
-                        </h3>
-                        <p>
-                          {advert.description.split(" ").slice(0, 3).join(" ") +
-                            "..."}
-                        </p>
-                        <p>
-                          Price: <strong>{advert.price}€</strong>
-                        </p>
-                        {/* //TODO esto se puede mejorar */}
-                        <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
-                          {advert.sale === "sell" ? "For sell" : "To buy"}
-                        </p>
-                      </div>
-                      <div className="">
-                        <p>
-                          Published by:{" "}
-                          <Link to={`/adverts/user/${advert.owner?.username}`}>
-                            <strong>{advert.owner.username}</strong>
-                          </Link>
-                        </p>
-                        <button
-                          className="absolute top-0 right-0 cursor-pointer"
-                          onClick={handleLike}
-                        >
-                          {user?.id &&
-                          advert.favorites.find(
-                            (owner) => owner.id === user.id
-                          ) ? (
-                            <LikeIcon />
-                          ) : (
-                            <UnlikeIcon />
-                          )}
-                        </button>
-                      </div>
-                    </div>
                   </Link>
+                  <div className="flex flex-col">
+                    <div className="flex flex-col">
+                      <h3 className="text-lg leading-10 font-bold capitalize">
+                        {advert.name}
+                      </h3>
+                      <p>
+                        {advert.description.split(" ").slice(0, 3).join(" ") +
+                          "..."}
+                      </p>
+                      <p>
+                        Price: <strong>{advert.price}€</strong>
+                      </p>
+                      {/* //TODO esto se puede mejorar */}
+                      <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
+                        {advert.sale === "sell" ? "For sell" : "To buy"}
+                      </p>
+                    </div>
+                    <div className="">
+                      <p>
+                        Published by:{" "}
+                        <Link to={`/adverts/user/${advert.owner?.username}`}>
+                          <strong>{advert.owner.username}</strong>
+                        </Link>
+                      </p>
+                      <button
+                        className="absolute top-6 right-6 cursor-pointer"
+                        onClick={handleLike}
+                      >
+                        {user?.id &&
+                        advert.favorites.find(
+                          (owner) => owner.id === user.id
+                        ) ? (
+                          <LikeIcon />
+                        ) : (
+                          <UnlikeIcon />
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </li>
               ))}
           </ul>
