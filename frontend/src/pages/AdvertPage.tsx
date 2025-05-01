@@ -70,7 +70,14 @@ const AdvertPage = () => {
 
   const handleShare = () => {};
 
-  const handleOpenChat = () => {};
+  const handleOpenChat = () => {
+    if (!user?.id) {
+      navigate("/login");
+      return;
+    }
+    //TODO arraglar la ruta
+    navigate(`/my-messages/chatID`);
+  };
 
   const handleDeleteAdvert = () => {
     dialogRef.current?.showModal();
