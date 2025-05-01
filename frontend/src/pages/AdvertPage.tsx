@@ -77,6 +77,10 @@ const AdvertPage = () => {
     console.log("click");
   };
 
+  if (!advertDetails) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       {/* modal */}
