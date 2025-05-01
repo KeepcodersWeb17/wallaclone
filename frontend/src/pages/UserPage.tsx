@@ -60,22 +60,26 @@ const UserPage = () => {
 
           {/* Username */}
           <div className="space-y-1">
-            <p className="text-sm text-black">Username</p>
-            <p className="text-gray-900">{user.username}</p>
+            <p className="text-sm font-semibold text-black sm:text-lg">
+              Username
+            </p>
+            <p className="text-sm text-gray-900 sm:text-lg">{user.username}</p>
           </div>
 
           {/* Email */}
           <div className="space-y-1">
-            <p className="text-sm text-black">Email</p>
-            <p className="text-gray-900">
+            <p className="text-sm font-semibold text-black sm:text-lg">Email</p>
+            <p className="text-sm text-gray-900 sm:text-lg">
               {user.email && maskedEmail(user.email)}
             </p>
           </div>
 
           {/* Password */}
           <div className="space-y-1">
-            <p className="text-sm text-black">Password</p>
-            <p className="text-gray-900">******</p>
+            <p className="text-sm font-semibold text-black sm:text-lg">
+              Password
+            </p>
+            <p className="text-sm text-gray-900 sm:text-lg">******</p>
           </div>
 
           {/* Actions */}
