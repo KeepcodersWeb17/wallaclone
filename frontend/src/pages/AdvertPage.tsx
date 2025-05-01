@@ -73,7 +73,7 @@ const AdvertPage = () => {
   const handleOpenChat = () => {};
 
   const handleDeleteAdvert = () => {
-    console.log("click");
+    dialogRef.current?.showModal();
   };
 
   if (!advertDetails) {
@@ -90,16 +90,24 @@ const AdvertPage = () => {
         <h3>Are you sure you want to delete this advert?</h3>
 
         {error && <p className="text-red-500">{error.join(", ")}</p>}
-        <div className="mt-4 flex justify-around">
-          <button className="cursor-pointer" onClick={handleCloseModal}>
-            Cancel
-          </button>
+        <div className="mt-4 flex w-full justify-around gap-4">
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <button className="cursor-pointer" onClick={handleDelete}>
-              Delete
-            </button>
+            <>
+              <button
+                className="h-10 w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
+                onClick={handleCloseModal}
+              >
+                Cancel
+              </button>
+              <button
+                className="h-10 w-full cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </>
           )}
         </div>
       </dialog>
