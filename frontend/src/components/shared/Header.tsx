@@ -57,6 +57,14 @@ const Header = () => {
             </li>
             <li onClick={closeMenu} className="flex w-full flex-row">
               <Link
+                to={`/adverts/new`}
+                className="w-full cursor-pointer text-center text-xl leading-10 sm:hover:bg-gray-100"
+              >
+                New Advert
+              </Link>
+            </li>
+            <li onClick={closeMenu} className="flex w-full flex-row">
+              <Link
                 to={`/adverts/user/${user?.username}`}
                 className="w-full cursor-pointer text-center text-xl leading-10 sm:hover:bg-gray-100"
               >
