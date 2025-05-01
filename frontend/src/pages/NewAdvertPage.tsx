@@ -81,7 +81,7 @@ const NewAdvertPage = () => {
 
   return (
     <>
-      <div className="md:mx-auto md:max-w-4xl md:px-6">
+      <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
         <TagsDiaglog
           ref={dialogRef}
           handleClose={handleClose}
@@ -161,14 +161,11 @@ const NewAdvertPage = () => {
             <button
               type="button"
               onClick={handleOpenModal}
-              className="cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-gray-50"
+              className="w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-black hover:text-white"
             >
               Select Tags
             </button>
-            <ul
-              ref={tagsContainerRef}
-              className="mt-2 flex hidden flex-wrap gap-2"
-            >
+            <ul ref={tagsContainerRef} className="mt-2 flex flex-wrap gap-2">
               {tags.map((t) => (
                 <li
                   key={t.id}
@@ -183,15 +180,22 @@ const NewAdvertPage = () => {
           </div>
 
           {/* Sale Type */}
-          <fieldset className="flex space-x-6">
-            <label className="flex items-center space-x-2 text-sm text-black">
-              <input type="radio" name="sale" value="buy" defaultChecked />
-              <span>Buy</span>
-            </label>
-            <label className="flex items-center space-x-2 text-sm text-black">
-              <input type="radio" name="sale" value="sell" />
-              <span>Sell</span>
-            </label>
+          <fieldset className="flex justify-center space-x-4">
+            {["buy", "sell"].map((val) => (
+              <label key={val} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="sale"
+                  value={val}
+                  className="peer sr-only"
+                />
+                <div
+                  className={`rounded-full border border-gray-300 bg-white px-4 py-2 text-gray-500 transition peer-checked:border-black peer-checked:bg-black peer-checked:text-white`}
+                >
+                  {val.charAt(0).toUpperCase() + val.slice(1)}
+                </div>
+              </label>
+            ))}
           </fieldset>
 
           {/* Feedback */}
@@ -204,7 +208,7 @@ const NewAdvertPage = () => {
           {!loading && (
             <button
               type="submit"
-              className="block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-gray-50 md:inline-block md:w-auto"
+              className="w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-black hover:text-white active:scale-95"
             >
               Create
             </button>
