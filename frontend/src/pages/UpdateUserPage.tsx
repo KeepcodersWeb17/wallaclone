@@ -98,7 +98,7 @@ const UpdateUserPage = () => {
           {/* Password */}
           <div className="space-y-1">
             <label htmlFor="password" className="text-sm text-black">
-              Password
+              New Password
             </label>
             <input
               id="password"
