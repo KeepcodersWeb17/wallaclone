@@ -92,7 +92,7 @@ const UpdateAdvertPage = () => {
 
   return (
     <>
-      <div className="md:mx-auto md:max-w-4xl md:px-6">
+      <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
         <TagsDiaglog
           ref={dialogRef}
           handleClose={handleClose}
@@ -178,7 +178,7 @@ const UpdateAdvertPage = () => {
                 {previousTags.map((tag) => (
                   <li
                     key={tag}
-                    className="rounded bg-gray-100 px-2 py-1 text-sm text-gray-900"
+                    className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-900"
                   >
                     {tag}
                   </li>
@@ -191,20 +191,17 @@ const UpdateAdvertPage = () => {
             <button
               type="button"
               onClick={handleOpenModal}
-              className="cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
+              className="block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Select Tags
             </button>
-            <ul
-              ref={tagsContainerRef}
-              className="mt-2 flex hidden flex-wrap gap-2"
-            >
+            <ul ref={tagsContainerRef} className="mt-2 flex flex-wrap gap-2">
               {tags.map((tag) => (
                 <li
                   key={tag.id}
                   id={tag.id}
                   title={tag.name}
-                  className="hidden rounded bg-gray-100 px-2 py-1 text-sm text-gray-900"
+                  className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-900"
                 >
                   {tag.name}
                 </li>
@@ -212,27 +209,23 @@ const UpdateAdvertPage = () => {
             </ul>
           </div>
           {/* Sale Type */}
-          <fieldset className="flex space-x-6">
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="sale"
-                value="buy"
-                defaultChecked={checkedBuy}
-                className="cursor-pointer"
-              />
-              <span className="text-sm text-black">Buy</span>
-            </label>
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="sale"
-                value="sell"
-                defaultChecked={!checkedBuy}
-                className="cursor-pointer"
-              />
-              <span className="text-sm text-black">Sell</span>
-            </label>
+          <fieldset className="flex justify-center space-x-4">
+            {["buy", "sell"].map((val) => (
+              <label key={val} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="sale"
+                  value={val}
+                  defaultChecked={val === (checkedBuy ? "buy" : "sell")}
+                  className="peer sr-only"
+                />
+                <div
+                  className={`rounded-full border border-gray-300 bg-white px-4 py-2 text-gray-500 transition peer-checked:border-black peer-checked:bg-black peer-checked:text-white`}
+                >
+                  {val.charAt(0).toUpperCase() + val.slice(1)}
+                </div>
+              </label>
+            ))}
           </fieldset>
           {/* Feedback */}
           {error?.length && (
@@ -243,7 +236,7 @@ const UpdateAdvertPage = () => {
           {!loading && (
             <button
               type="submit"
-              className="block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 md:w-auto"
+              className="block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Update
             </button>

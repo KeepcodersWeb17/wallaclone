@@ -44,7 +44,8 @@ const UpdateUserPage = () => {
 
   return (
     <>
-      <div className="md:mx-auto md:max-w-4xl md:px-6">
+      <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+        {/* Go back */}
         <nav className="mb-6">
           <Link
             to={`/users/${username}`}
@@ -73,6 +74,7 @@ const UpdateUserPage = () => {
               type="text"
               defaultValue={username}
               minLength={3}
+              required
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
             />
           </div>
@@ -88,6 +90,7 @@ const UpdateUserPage = () => {
               type="email"
               defaultValue={email}
               minLength={6}
+              required
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
             />
           </div>
@@ -130,7 +133,7 @@ const UpdateUserPage = () => {
           {!loading && (
             <button
               type="submit"
-              className="block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 md:w-auto"
+              className="flex h-10 w-full transform cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-1.5 text-sm text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Update
             </button>

@@ -30,7 +30,7 @@ const UserPage = () => {
   return (
     <>
       {/* Main container */}
-      <div className="md:mx-auto md:max-w-4xl md:px-6">
+      <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
         {/* Go back */}
         <nav className="mb-6">
           <Link
@@ -66,7 +66,7 @@ const UserPage = () => {
 
           {/* Email */}
           <div className="space-y-1">
-            <p className="text-sm text-gray-700">Email</p>
+            <p className="text-sm text-black">Email</p>
             <p className="text-gray-900">
               {user.email && maskedEmail(user.email)}
             </p>
@@ -79,16 +79,16 @@ const UserPage = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col space-y-1 md:flex-row md:space-x-4">
+          <div className="flex flex-col space-y-2 md:flex-row md:space-x-4">
             <Link
               to={`/users/${user.username}/edit`}
-              className="h-10 flex-1 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-50"
+              className="h-10 flex-1 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Edit profile
             </Link>
             <button
               onClick={handleDeleteClick}
-              className="h-10 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-red-600 hover:bg-gray-50"
+              className="h-10 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-red-600 hover:bg-black"
             >
               Delete account
             </button>
@@ -109,20 +109,20 @@ const UserPage = () => {
             <h3 className="text-lg font-semibold text-gray-900">
               Confirm account deletion
             </h3>
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-black">
               Are you sure you want to delete your account? This action cannot
               be undone.
             </p>
             <div className="flex flex-col space-y-2 md:flex-row md:space-x-4">
               <button
                 onClick={cancelDelete}
-                className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-900 hover:bg-gray-50"
+                className="h-10 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDelete}
-                className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
+                className="h-10 flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
               >
                 Delete
               </button>
