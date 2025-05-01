@@ -73,6 +73,10 @@ const AdvertPage = () => {
 
   const handleOpenChat = () => {};
 
+  const handleDeleteAdvert = () => {
+    console.log("click");
+  };
+
   return (
     <>
       {/* modal */}
@@ -102,7 +106,12 @@ const AdvertPage = () => {
           {/* navigation */}
           <nav className="flex w-full flex-row items-center justify-between">
             <div>
-              <button className="h-10 cursor-pointer">Go back</button>
+              <button
+                className="h-10 cursor-pointer"
+                onClick={() => navigate(-1)}
+              >
+                ← Go back
+              </button>
             </div>
             <div className="flex flex-row gap-4">
               {isLiked ? (
@@ -124,10 +133,16 @@ const AdvertPage = () => {
           <section className="fixed bottom-0 w-full p-4 sm:fixed sm:top-[144px] sm:left-[50%] sm:h-[72px] sm:w-[42.5%] sm:px-4">
             {user?.id === advertDetails?.owner.id ? (
               <div className="flex flex-row gap-4">
-                <button className="w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-xs text-white transition duration-150 active:scale-95 sm:h-10">
+                <Link
+                  to={`/adverts/update/${advertDetails.name}-${advertDetails.id}`}
+                  className="w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-center text-xs text-white transition duration-150 active:scale-95 sm:h-10"
+                >
                   Update
-                </button>
-                <button className="w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-xs text-white transition duration-150 active:scale-95 sm:h-10">
+                </Link>
+                <button
+                  onClick={handleDeleteAdvert}
+                  className="w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-xs text-white transition duration-150 active:scale-95 sm:h-10"
+                >
                   Delete
                 </button>
               </div>
