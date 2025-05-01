@@ -4,8 +4,8 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { getAdvert, getUi, getUser } from "../store/selectors/selectors";
 import {
   getAdvert as getAdvertAction,
-  deleteAdvert
-  // toogleFavorite
+  deleteAdvert,
+  toogleFavorite
 } from "../store/actions/creators";
 import { Advert } from "../store/state/types";
 import LikeIcon from "../components/icons/Like";
@@ -14,21 +14,24 @@ import ShareIcon from "../components/icons/Share";
 
 const AdvertPage = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { advert } = useParams();
 
   const advertId = advert?.split("-")[1] || "";
 
-  const dispatch = useAppDispatch();
   const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
   const user = useAppSelector(getUser);
+
   const { error, loading } = useAppSelector(getUi);
 
   const advertOwner = advertDetails?.owner.username;
   // const isOwner = user?.username === advertOwner;
-  // const isFavorite = !!advertDetails?.favorites.find(
-  //   (owner) => owner.id === user?.id
-  // );
+
+  const isFavorite = !!advertDetails?.favorites.find(
+    (owner) => owner.id === user?.id
+  );
 
   useEffect(() => {
     if (!advertId) {
@@ -51,23 +54,19 @@ const AdvertPage = () => {
     dispatch(deleteAdvert(advertDetails.id, navigate, handleCloseModal));
   };
 
-  // const handleFavorite = () => {
-  //   if (!user?.id || !advertDetails.id) {
-  //     navigate("/login");
-  //     return;
-  //   }
+  const [isLiked, setIsLiked] = useState(isFavorite);
 
-  //   dispatch(toogleFavorite(isFavorite, advertDetails.id));
-  // };
+  const handleLike = () => {
+    if (!user?.id) {
+      navigate("/login");
+      return;
+    }
 
-  // const textFavorite = isFavorite ? "unset" : "set";
+    if (!advertDetails.id) return;
 
-  // const textStatus =
-  //   advertDetails?.sale === "sell" ? "for sale" : "looking to buy";
-
-  const [isLiked, setIsLiked] = useState(false);
-
-  const handleLike = () => {};
+    dispatch(toogleFavorite(isFavorite, advertDetails.id));
+    setIsLiked((prev) => !prev);
+  };
 
   const handleShare = () => {};
 
@@ -134,25 +133,25 @@ const AdvertPage = () => {
           </nav>
 
           {/* actions */}
-          <section className="fixed bottom-0 w-full p-4 sm:fixed sm:top-[144px] sm:left-[50%] sm:h-[72px] sm:w-[42.5%] sm:px-4">
+          <section className="fixed bottom-0 left-0 w-full bg-gray-300 p-2 sm:fixed sm:top-[144px] sm:left-[50%] sm:h-[72px] sm:w-[42.5%] sm:px-4">
             {user?.id === advertDetails?.owner.id ? (
-              <div className="flex flex-row gap-4">
+              <div className="flex w-full flex-row gap-4">
                 <Link
                   to={`/adverts/update/${advertDetails.name}-${advertDetails.id}`}
-                  className="w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-center text-xs text-white transition duration-150 active:scale-95 sm:h-10"
+                  className="flex h-10 w-full transform cursor-pointer flex-row items-center justify-center rounded-lg border border-black bg-black px-5 py-1.5 text-center text-xs text-white transition duration-150 active:scale-95"
                 >
                   Update
                 </Link>
                 <button
                   onClick={handleDeleteAdvert}
-                  className="w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-xs text-white transition duration-150 active:scale-95 sm:h-10"
+                  className="h-10 w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-xs text-white transition duration-150 active:scale-95"
                 >
                   Delete
                 </button>
               </div>
             ) : (
               <button
-                className="w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-xs text-white transition duration-150 active:scale-95 sm:h-10 sm:text-base"
+                className="h-10 w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-xs text-white transition duration-150 active:scale-95 sm:text-base"
                 onClick={handleOpenChat}
               >
                 Message
