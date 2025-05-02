@@ -70,7 +70,7 @@ const HomePage = () => {
 
   const [likedAdverts, setLikedAdverts] = useState<Advert[]>([]);
 
-  //   TODO refactorizar
+  //   TODO refactorizar asd
   useEffect(() => {
     if (!user?.id) return;
 
