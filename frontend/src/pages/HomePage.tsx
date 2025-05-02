@@ -201,7 +201,7 @@ const HomePage = () => {
                       Price: <strong>{advert.price}€</strong>
                     </p>
                     {/* //TODO esto se puede mejorar */}
-                    <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
+                    <p className="absolute top-5 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
                       {advert.sale === "sell" ? "For sell" : "To buy"}
                     </p>
                   </div>
@@ -272,7 +272,7 @@ const HomePage = () => {
                         Price: <strong>{advert.price}€</strong>
                       </p>
                       {/* //TODO esto se puede mejorar */}
-                      <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
+                      <p className="absolute top-5 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
                         {advert.sale === "sell" ? "For sell" : "To buy"}
                       </p>
                     </div>
@@ -345,7 +345,7 @@ const HomePage = () => {
                         Price: <strong>{advert.price}€</strong>
                       </p>
                       {/* //TODO esto se puede mejorar */}
-                      <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
+                      <p className="absolute top-5 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
                         {advert.sale === "sell" ? "For sell" : "To buy"}
                       </p>
                     </div>
