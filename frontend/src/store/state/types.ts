@@ -53,6 +53,22 @@ export type User = {
   createdAt: string;
 };
 
+export type Message = {
+  id: string;
+  sender: string;
+  content: string;
+  createdAt: string;
+};
+
+export type Chat = {
+  id: string;
+  advert: string;
+  members: string[];
+  messages: Message[];
+  createdAt: string;
+  updatedAt: string;
+};
+
 type State = {
   user: User | null;
   adverts: { list: Advert[]; quantity: number };
