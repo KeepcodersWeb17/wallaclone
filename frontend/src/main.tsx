@@ -7,8 +7,13 @@ import configureStore from "./store/store";
 import App from "./App.tsx";
 import getPreloadedState from "./lib/preloadedState.ts";
 import { ErrorBoundary } from "./error/ErrorBoundary.tsx";
+import socket from "./store/services/sockets.ts";
 
 const preloadedState = await getPreloadedState();
+
+if (preloadedState.user) {
+  socket.connect();
+}
 
 const store = configureStore(preloadedState);
 
