@@ -14,6 +14,8 @@ import NotFoundPage from "./pages/NotFoundPage";
 import ForbbidenPage from "./pages/Forbbiden";
 import IsOwner from "./components/auth/IsOwner";
 import HomePage from "./pages/HomePage";
+import ChatsPage from "./pages/ChatsPage";
+import ChatPage from "./pages/ChatPage";
 
 function App() {
   return (
@@ -30,6 +32,22 @@ function App() {
         <Route path="/adverts" element={<AdvertsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route
+          path="/my-chats"
+          element={
+            <RequireAuth>
+              <ChatsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/my-chats/:chatId"
+          element={
+            <RequireAuth>
+              <ChatPage />
+            </RequireAuth>
+          }
+        />
         <Route path="/recoverypassword" element={<h2>RecoveryPage</h2>} />
         <Route
           path="/users/:username"
