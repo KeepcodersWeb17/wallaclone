@@ -44,7 +44,7 @@ const UpdateUserPage = () => {
 
   return (
     <>
-      <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div className="w-full sm:m-auto sm:w-7/8">
         {/* Go back */}
         <nav className="mb-6">
           <Link
@@ -112,7 +112,7 @@ const UpdateUserPage = () => {
           {/* Confirm Password */}
           <div className="space-y-1">
             <label htmlFor="confirmPassword" className="text-sm text-black">
-              Confirm Password
+              Confirm New Password
             </label>
             <input
               id="confirmPassword"
