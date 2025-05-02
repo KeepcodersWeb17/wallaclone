@@ -92,7 +92,7 @@ const UpdateAdvertPage = () => {
 
   return (
     <>
-      <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div className="w-full sm:m-auto sm:w-7/8">
         <TagsDiaglog
           ref={dialogRef}
           handleClose={handleClose}
