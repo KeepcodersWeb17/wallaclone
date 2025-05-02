@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { User, UserUpdate } from "../store/state/types";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { updateUser } from "../store/actions/creators";
@@ -44,49 +44,102 @@ const UpdateUserPage = () => {
 
   return (
     <>
-      <h2 className="text-center">Update user</h2>
-      <form
-        className="mx-auto flex max-w-3xl flex-col items-center justify-center gap-5"
-        onSubmit={handleUpdateUser}
-      >
-        <div>
-          <label htmlFor="username">Username: </label>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            defaultValue={username}
-            minLength={3}
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email: </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            defaultValue={email}
-            minLength={6}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input type="password" name="password" id="password" minLength={6} />
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password: </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            minLength={6}
-          />
-        </div>
-        <div>
-          {error?.length && <p style={{ color: "red" }}>{error.join(", ")}</p>}
-          {loading ? <p>loading...</p> : <button type="submit">Update</button>}
-        </div>
-      </form>
+      <div className="w-full sm:m-auto sm:w-7/8">
+        {/* Go back */}
+        <nav className="mb-6">
+          <Link
+            to={`/users/${username}`}
+            className="text-sm font-medium text-gray-700 hover:text-gray-900"
+          >
+            ← Go back
+          </Link>
+        </nav>
+
+        <h2 className="mb-6 text-xl font-bold text-black md:text-2xl">
+          Update user
+        </h2>
+
+        <form
+          onSubmit={handleUpdateUser}
+          className="space-y-6 rounded-lg bg-white p-4 shadow md:p-6"
+        >
+          {/* Username */}
+          <div className="space-y-1">
+            <label htmlFor="username" className="text-sm text-black">
+              Username
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              defaultValue={username}
+              minLength={3}
+              required
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
+            />
+          </div>
+
+          {/* Email */}
+          <div className="space-y-1">
+            <label htmlFor="email" className="text-sm text-black">
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              defaultValue={email}
+              minLength={6}
+              required
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
+            />
+          </div>
+
+          {/* Password */}
+          <div className="space-y-1">
+            <label htmlFor="password" className="text-sm text-black">
+              New Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              minLength={6}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
+            />
+          </div>
+
+          {/* Confirm Password */}
+          <div className="space-y-1">
+            <label htmlFor="confirmPassword" className="text-sm text-black">
+              Confirm New Password
+            </label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              minLength={6}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:outline-none"
+            />
+          </div>
+
+          {/* Feedback */}
+          {error?.length && (
+            <p className="text-sm text-red-600">{error.join(", ")}</p>
+          )}
+          {loading && <p className="text-sm text-black">loading...</p>}
+
+          {/* Submit */}
+          {!loading && (
+            <button
+              type="submit"
+              className="flex h-10 w-full transform cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-1.5 text-sm text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
+            >
+              Update
+            </button>
+          )}
+        </form>
+      </div>
     </>
   );
 };

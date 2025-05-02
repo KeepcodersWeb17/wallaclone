@@ -32,6 +32,11 @@ type UiRejected = {
   payload: string[];
 };
 
+type updatedAdvertsFulfilled = {
+  type: "UPDATED_ADVERTS_FULFILLED";
+  payload: Advert;
+};
+
 type Action =
   | UserLoginFulfilled
   | UserLogoutFulfilled
@@ -39,6 +44,7 @@ type Action =
   | TagsFulfilled
   | UiPending
   | UiFulfilled
-  | UiRejected;
+  | UiRejected
+  | updatedAdvertsFulfilled;
 
 export default Action;

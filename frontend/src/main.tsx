@@ -1,5 +1,5 @@
 import "./index.css";
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { Provider } from "react-redux";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -13,13 +13,13 @@ const preloadedState = await getPreloadedState();
 const store = configureStore(preloadedState);
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ErrorBoundary>
-      <BrowserRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </BrowserRouter>
-    </ErrorBoundary>
-  </StrictMode>
+  // <StrictMode>
+  <ErrorBoundary>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
+  </ErrorBoundary>
+  // </StrictMode>
 );
