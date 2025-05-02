@@ -12,44 +12,18 @@ type Message = {
 };
 
 const ChatPage = () => {
-  const messagesInitData = [
-    {
-      id: "1",
-      content: "Hello!",
-      sender: "User2",
-      createdAt: "2023-10-01T12:00:00Z"
-    },
-    {
-      id: "2",
-      content: "Hi! How are you?",
-      sender: "User1",
-      createdAt: "2023-10-01T12:05:00Z"
-    }
-  ] as Message[];
-
   const { chatId } = useParams();
   const user = useAppSelector(getUser);
-  const [messages, setMessages] = useState<Message[]>(messagesInitData);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     socket.emit("joinChat", { chatId });
 
-    socket.once("joinChat", (response) => {
-      if (response.error) {
-        socket.emit("rejoinChat", { chatId });
-        return;
-      }
+    socket.on("joinedChat", (response) => {
+      setMessages(response.chat.messages);
     });
 
-    socket.on("rejoinChat", (response) => {
-      if (response.chatId) {
-        console.log(response.message);
-        // console.log("chat: ", response.chat);
-      }
-    });
-
-    socket.on("message", (response) => {
-      console.log(response.chat.messages);
+    socket.on("receiveMessage", (response) => {
       setMessages(response.chat.messages);
     });
   }, [chatId]);
@@ -59,11 +33,12 @@ const ChatPage = () => {
     const content =
       event.currentTarget.querySelector<HTMLInputElement>("#content")?.value;
 
-    socket.emit("message", {
+    socket.emit("sendMessage", {
       chatId,
       content,
       sender: user?.id
     });
+
     event.currentTarget.reset();
   };
 
@@ -75,7 +50,7 @@ const ChatPage = () => {
       <div className="flex min-h-100 flex-col gap-2">
         {messages.map((message) => (
           <div key={message.id}>
-            <p>
+            <p key={message.id}>
               <strong>{message.sender} said:</strong> {message.content}{" "}
               <span>{message.createdAt}</span>
             </p>
