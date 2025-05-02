@@ -143,7 +143,7 @@ const AdvertPage = () => {
           </nav>
 
           {/* actions */}
-          <section className="fixed bottom-0 left-0 flex w-full items-center bg-gray-300 sm:fixed sm:top-[144px] sm:left-[50%] sm:h-[72px] sm:w-[42.5%] sm:px-4">
+          <section className="fixed bottom-0 left-0 flex w-full items-center bg-amber-700 sm:fixed sm:top-[144px] sm:left-[50%] sm:h-[72px] sm:w-[42.5%] sm:px-4">
             {user?.id === advertDetails?.owner.id ? (
               <div className="m-auto flex w-7/8 flex-row gap-4 py-2 sm:w-full sm:p-0">
                 <Link
@@ -184,7 +184,7 @@ const AdvertPage = () => {
           </p>
 
           {/* Owner data */}
-          <section className="w-full sm:fixed sm:top-[72px] sm:left-[50%] sm:h-[72px] sm:w-[42.5%] sm:px-4">
+          <section className="w-full bg-amber-200 sm:fixed sm:top-[72px] sm:left-[50%] sm:h-[72px] sm:w-[42.5%] sm:px-4">
             <p className="leading-10 sm:text-lg">Published by:</p>
             <Link
               className="flex w-full flex-col"
@@ -201,6 +201,27 @@ const AdvertPage = () => {
                 </p>
               </div>
             </Link>
+          </section>
+
+          {/* Share */}
+          <section className="sm: hidden bg-amber-400 sm:fixed sm:top-[216px] sm:left-[50%] sm:flex sm:w-[42.5%] sm:flex-col sm:justify-center sm:px-4">
+            <p className="">Share this advert on your social media</p>
+            <div className="flex w-full flex-row items-center justify-center gap-4 py-4">
+              <a
+                href={`https://twitter.com/intent/tweet?url=${window.location.href}&text=Check%20out%20this%20great%20deal!`}
+                target="_blank"
+                className="h-10 w-full cursor-pointer rounded-md bg-black px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
+              >
+                Twitter
+              </a>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
+                target="_blank"
+                className="h-10 w-full cursor-pointer rounded-md bg-black px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
+              >
+                Facebook
+              </a>
+            </div>
           </section>
 
           <div className="w-full">
