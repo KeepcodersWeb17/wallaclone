@@ -27,7 +27,6 @@ const AdvertPage = () => {
   const { error, loading } = useAppSelector(getUi);
 
   const advertOwner = advertDetails?.owner.username;
-  // const isOwner = user?.username === advertOwner;
 
   const isFavorite = !!advertDetails?.favorites.find(
     (owner) => owner.id === user?.id
@@ -40,10 +39,6 @@ const AdvertPage = () => {
     }
     dispatch(getAdvertAction(advertId));
   }, [advert, dispatch, navigate, advertId]);
-
-  // const handleOpenModal = () => {
-  //   dialogRef.current?.showModal();
-  // };
 
   const handleCloseModal = () => {
     dialogRef.current?.close();
@@ -232,7 +227,7 @@ const AdvertPage = () => {
         </div>
       </div>
 
-      {/* Carrousel de productos relacionados... */}
+      {/* //TODO Carrousel de productos relacionados...  */}
     </>
   );
 };
