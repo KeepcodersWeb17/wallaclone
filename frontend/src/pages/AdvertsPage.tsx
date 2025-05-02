@@ -375,33 +375,6 @@ const AdvertsPage = () => {
           )}
         </section>
 
-        {/* Filtros */}
-        {/* {error && <p className="text-red-500">{error.join(", ")}</p>}
-        <form className="bg-red-400" onSubmit={handleFilterSubmit}>
-          <input type="text" name="advertName" placeholder="Advert name..." />
-          <input
-            type="number"
-            name="minPrice"
-            id="minPrice"
-            min={0}
-            placeholder="Min"
-          />
-          <input
-            type="number"
-            name="maxPrice"
-            id="maxPrice"
-            min={0}
-            placeholder="Max"
-          />
-          <button type="button" onClick={handleOpenCategories}>
-            Category
-          </button>
-          {loading ? <p>Loading...</p> : <button type="submit">Filter</button>}
-        </form> */}
-
-        {/* Filter by user */}
-        {/* <ShowUserAdverts /> */}
-
         {/* Sorting */}
         <section className="flex w-full flex-col justify-between gap-1">
           <p className="text-sm leading-10 text-gray-500">Sort by: </p>
@@ -486,46 +459,46 @@ const AdvertsPage = () => {
                         className="h-full object-cover"
                       />
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex-col">
-                        <h3 className="text-lg leading-10 font-bold capitalize">
-                          {advert.name}
-                        </h3>
-                        <p>
-                          {advert.description.split(" ").slice(0, 3).join(" ") +
-                            "..."}
-                        </p>
-                        <p>
-                          Price: <strong>{advert.price}€</strong>
-                        </p>
-                        {/* //TODO esto se puede mejorar */}
-                        <p className="absolute top-0 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
-                          {advert.sale === "sell" ? "For sell" : "To buy"}
-                        </p>
-                      </div>
-                      <div className="">
-                        <p className="flex flex-row flex-wrap gap-2">
-                          Published by:
-                          <Link to={`/adverts/user/${advert.owner?.username}`}>
-                            <strong>{advert.owner?.username}</strong>
-                          </Link>
-                        </p>
-                        <button
-                          className="absolute top-0 right-0 cursor-pointer"
-                          onClick={handleLike}
-                        >
-                          {user?.id &&
-                          advert.favorites.find(
-                            (owner) => owner.id === user.id
-                          ) ? (
-                            <LikeIcon />
-                          ) : (
-                            <UnlikeIcon />
-                          )}
-                        </button>
-                      </div>
-                    </div>
                   </Link>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex flex-col">
+                      <h3 className="text-lg leading-10 font-bold capitalize">
+                        {advert.name}
+                      </h3>
+                      <p>
+                        {advert.description.split(" ").slice(0, 3).join(" ") +
+                          "..."}
+                      </p>
+                      <p>
+                        Price: <strong>{advert.price}€</strong>
+                      </p>
+                      {/* //TODO esto se puede mejorar */}
+                      <p className="absolute top-5 rounded-lg border-black bg-white p-1 text-xs text-black shadow-md">
+                        {advert.sale === "sell" ? "For sell" : "To buy"}
+                      </p>
+                    </div>
+                    <div className="">
+                      <p className="flex flex-row flex-wrap gap-2">
+                        Published by:
+                        <Link to={`/adverts/user/${advert.owner?.username}`}>
+                          <strong>{advert.owner?.username}</strong>
+                        </Link>
+                      </p>
+                      <button
+                        className="absolute top-6 right-6 cursor-pointer"
+                        onClick={handleLike}
+                      >
+                        {user?.id &&
+                        advert.favorites.find(
+                          (owner) => owner.id === user.id
+                        ) ? (
+                          <LikeIcon />
+                        ) : (
+                          <UnlikeIcon />
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
