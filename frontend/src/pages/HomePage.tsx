@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { Advert, Tag } from "../store/state/types";
-// import SearchIcon from "../components/icons/Search";
 import UnlikeIcon from "../components/icons/Unlike";
 import LikeIcon from "../components/icons/Like";
 import { getAdverts, getTags, getUser } from "../store/selectors/selectors";
@@ -71,7 +70,7 @@ const HomePage = () => {
   //TODO refactorizar. eliminar el useState
   const [likedAdverts, setLikedAdverts] = useState<Advert[]>([]);
 
-  //   TODO refactorizar
+  //   TODO refactorizar asd
   useEffect(() => {
     if (!user?.id) return;
 
@@ -107,8 +106,7 @@ const HomePage = () => {
         {/* Search form */}
         <section className="flex w-full flex-grow flex-col items-center justify-center gap-4">
           <h2 className="text-xl leading-15 font-bold sm:text-2xl md:text-3xl">
-            {" "}
-            What are you looking for?{" "}
+            What are you looking for?
           </h2>
           <div className="flex w-full flex-col items-center justify-center gap-8">
             <form
@@ -208,7 +206,7 @@ const HomePage = () => {
                   </div>
                   <div className="">
                     <p>
-                      Published by:{" "}
+                      Published by:
                       <Link to={`/adverts/user/${advert.owner?.username}`}>
                         <strong>{advert.owner.username}</strong>
                       </Link>
@@ -279,7 +277,7 @@ const HomePage = () => {
                     </div>
                     <div className="">
                       <p>
-                        Published by:{" "}
+                        Published by:
                         <Link to={`/adverts/user/${advert.owner?.username}`}>
                           <strong>{advert.owner.username}</strong>
                         </Link>
@@ -352,7 +350,7 @@ const HomePage = () => {
                     </div>
                     <div className="">
                       <p>
-                        Published by:{" "}
+                        Published by:
                         <Link to={`/adverts/user/${advert.owner?.username}`}>
                           <strong>{advert.owner.username}</strong>
                         </Link>
