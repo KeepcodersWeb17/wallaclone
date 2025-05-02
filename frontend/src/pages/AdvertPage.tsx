@@ -11,6 +11,7 @@ import { Advert } from "../store/state/types";
 import LikeIcon from "../components/icons/Like";
 import UnlikeIcon from "../components/icons/Unlike";
 import ShareIcon from "../components/icons/Share";
+import socket from "../store/services/socket";
 
 const AdvertPage = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -70,8 +71,18 @@ const AdvertPage = () => {
       navigate("/login");
       return;
     }
-    //TODO arraglar la ruta
-    navigate(`/my-messages/chatID`);
+
+    // Send a request to the server to create a chat
+    socket.emit("createChat", {
+      advertId: advertDetails.id,
+      userId: user.id,
+      ownerId: advertDetails.owner.id
+    });
+
+    // When the socket server responds with the chatId, navigate to the chat page
+    socket.on("createdChat", (response) => {
+      navigate(`/my-messages/${response.chatId}`);
+    });
   };
 
   const handleDeleteAdvert = () => {
