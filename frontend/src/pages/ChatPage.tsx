@@ -68,9 +68,11 @@ const ChatPage = () => {
   };
 
   return (
-    <>
-      <h2 className="text-center">Chat</h2>
-      <div>
+    <div className="sm:auto w-full rounded-lg border border-gray-400 sm:max-w-7/8">
+      <h2 className="text-md border-b border-gray-400 text-center leading-10 font-bold sm:text-lg md:text-xl">
+        Chat
+      </h2>
+      <div className="flex min-h-100 flex-col gap-2">
         {messages.map((message) => (
           <div key={message.id}>
             <p>
@@ -80,16 +82,25 @@ const ChatPage = () => {
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit}>
+      <form
+        className="flex h-10 flex-row border-t border-gray-400"
+        onSubmit={handleSubmit}
+      >
         <input
+          className="flex h-10 w-full flex-grow rounded-bl-lg p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-base md:w-100"
           type="text"
           name="content"
           id="content"
           placeholder="Type a message..."
         />
-        <button type="submit">Send</button>
+        <button
+          className="flex h-10 min-w-1/5 cursor-pointer items-center justify-center rounded-br-lg border-l border-gray-400 bg-black px-4 py-2.5 text-center text-xs font-medium text-white transition duration-150 active:scale-98 sm:text-base"
+          type="submit"
+        >
+          Send
+        </button>
       </form>
-    </>
+    </div>
   );
 };
 
