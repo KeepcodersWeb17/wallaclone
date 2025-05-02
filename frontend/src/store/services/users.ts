@@ -1,5 +1,6 @@
 import { handleFetchError } from "../../lib/handleFetchError";
 import type { User, UserLogin, UserSignup, UserUpdate } from "../state/types";
+import socket from "./socket";
 
 export const login = async (credentials: UserLogin) => {
   const response = await fetch("http://localhost:4000/auth/login", {
@@ -31,6 +32,8 @@ export const logout = async () => {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
+
+  socket.disconnect();
 };
 
 export const create = async (userData: UserSignup) => {
