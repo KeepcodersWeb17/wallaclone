@@ -39,7 +39,8 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
   console.log("SocketID:", socket.id);
 
-  socket.on("joinChat", async ({ advertId, ownerId, userId }) => {
+  socket.on("createChat", async ({ advertId, ownerId, userId }) => {
+    console.log("data:", advertId, ownerId, userId);
     let newChatId;
     try {
       if (!advertId || !ownerId || !userId) {
@@ -54,8 +55,7 @@ io.on("connection", (socket) => {
       if (foundChat) {
         socket.join(foundChat._id.toString());
 
-        socket.emit("joinChat", {
-          message: "Joined",
+        socket.emit("createdChat", {
           chatId: foundChat._id.toString(),
         });
         return;
@@ -78,22 +78,19 @@ io.on("connection", (socket) => {
 
       socket.join(newChat._id.toString());
 
-      socket.emit("joinChat", {
-        message: "Joined",
+      socket.emit("createdChat", {
         chatId: newChat._id.toString(),
       });
     } catch (error) {
       await Chat.deleteOne({ _id: newChatId });
-      socket.emit("joinChat", {
+      socket.emit("createdChat", {
         error: error.message,
       });
     }
   });
 
-  socket.on("rejoinChat", async ({ chatId }) => {
+  socket.on("joinChat", async ({ chatId }) => {
     try {
-      console.log("Rejoining chat:", chatId);
-
       if (!chatId) {
         throw new Error("Missing required parameters");
       }
@@ -106,19 +103,45 @@ io.on("connection", (socket) => {
 
       socket.join(foundChat._id.toString());
 
-      socket.emit("rejoinChat", {
-        message: "Rejoined",
-        chatId: foundChat._id.toString(),
+      socket.emit("joinedChat", {
         chat: foundChat,
       });
     } catch (error) {
-      socket.emit("rejoinChat", {
+      socket.emit("joinedChat", {
         error: error.message,
       });
     }
   });
 
-  socket.on("message", async ({ chatId, content, sender }) => {
+  // socket.on("rejoinChat", async ({ chatId }) => {
+  //   try {
+  //     console.log("Rejoining chat:", chatId);
+
+  //     if (!chatId) {
+  //       throw new Error("Missing required parameters");
+  //     }
+
+  //     const foundChat = await Chat.findById(chatId);
+
+  //     if (!foundChat) {
+  //       throw new Error("Chat not found");
+  //     }
+
+  //     socket.join(foundChat._id.toString());
+
+  //     socket.emit("rejoinChat", {
+  //       message: "Rejoined",
+  //       chatId: foundChat._id.toString(),
+  //       chat: foundChat,
+  //     });
+  //   } catch (error) {
+  //     socket.emit("rejoinChat", {
+  //       error: error.message,
+  //     });
+  //   }
+  // });
+
+  socket.on("sendMessage", async ({ chatId, content, sender }) => {
     try {
       if (!chatId || !content || !sender) {
         throw new Error("Missing required parameters");
@@ -141,8 +164,7 @@ io.on("connection", (socket) => {
 
       await chat.save();
 
-      io.to(chatId).emit("message", {
-        message: "Message saved",
+      io.to(chatId).emit("receiveMessage", {
         chat: chat,
       });
     } catch (error) {
