@@ -293,7 +293,12 @@ export const deleteAdvert = (
   };
 };
 
-//TODO: logica que tenemos en el AdvertPage para marcar y desmarcar favoritos
+// TODO es la manera que se me ocurrio para poder actualizar el anuncio tanto desde el detalle del anuncio como dsde la home
+const updatedAdvertFulfilled = (advert: Advert) => ({
+  type: "UPDATED_ADVERTS_FULFILLED",
+  payload: advert
+});
+
 export const toogleFavorite = (
   isFavorite: boolean,
   advertId: string
@@ -303,7 +308,7 @@ export const toogleFavorite = (
       dispatch(uiPending());
       const advert = await toogleFavoriteAPI(isFavorite, advertId);
       dispatch(uiFulfilled());
-      dispatch(advertsFulfilled({ list: [advert], quantity: 1 }));
+      dispatch(updatedAdvertFulfilled(advert));
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");

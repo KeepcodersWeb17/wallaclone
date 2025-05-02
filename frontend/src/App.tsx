@@ -13,6 +13,7 @@ import UpdateAdvertPage from "./pages/UpdateAdvertPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ForbbidenPage from "./pages/Forbbiden";
 import IsOwner from "./components/auth/IsOwner";
+import HomePage from "./pages/HomePage";
 import Messages from "./pages/ChatsPage";
 import Chat from "./pages/ChatPage";
 
@@ -27,8 +28,8 @@ function App() {
           </Layout>
         }
       >
+        <Route index element={<HomePage />} />
         <Route path="/adverts" element={<AdvertsPage />} />
-        <Route index element={<Navigate to="/adverts" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route

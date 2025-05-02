@@ -18,6 +18,7 @@ if (preloadedState.user) {
 const store = configureStore(preloadedState);
 
 createRoot(document.getElementById("root")!).render(
+  // <StrictMode>
   <ErrorBoundary>
     <BrowserRouter>
       <Provider store={store}>
@@ -25,4 +26,5 @@ createRoot(document.getElementById("root")!).render(
       </Provider>
     </BrowserRouter>
   </ErrorBoundary>
+  // </StrictMode>
 );
