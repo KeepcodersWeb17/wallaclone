@@ -26,6 +26,7 @@ import {
   update as updateUserAPI
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
+import socket from "../services/sockets";
 
 const uiPending = () => ({
   type: "UI_PENDING"
@@ -68,6 +69,7 @@ export const authLogin = (
     try {
       dispatch(uiPending());
       const user = await login(userData);
+      socket.connect();
       dispatch(uiFulfilled());
       dispatch(userLoginFulfilled(user));
       navigate(location.state?.from || "/adverts", { replace: true });
@@ -87,6 +89,7 @@ export const authLogout = (): AppThunk<Promise<void>> => {
     try {
       dispatch(uiPending());
       await logout();
+      socket.disconnect();
       dispatch(uiFulfilled());
       dispatch(userLogoutFulfilled());
     } catch (error) {
