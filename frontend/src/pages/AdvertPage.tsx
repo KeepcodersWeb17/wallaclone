@@ -21,16 +21,17 @@ const AdvertPage = () => {
 
   const advertId = advert?.split("-")[1] || "";
 
+  const { error, loading } = useAppSelector(getUi);
   const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
   const user = useAppSelector(getUser);
-
-  const { error, loading } = useAppSelector(getUi);
 
   const advertOwner = advertDetails?.owner.username;
 
   const isFavorite = !!advertDetails?.favorites.find(
     (owner) => owner.id === user?.id
   );
+
+  const [isLiked, setIsLiked] = useState(isFavorite);
 
   useEffect(() => {
     if (!advertId) {
@@ -48,8 +49,6 @@ const AdvertPage = () => {
     if (!advertDetails.id) return;
     dispatch(deleteAdvert(advertDetails.id, navigate, handleCloseModal));
   };
-
-  const [isLiked, setIsLiked] = useState(isFavorite);
 
   const handleLike = () => {
     if (!user?.id) {
