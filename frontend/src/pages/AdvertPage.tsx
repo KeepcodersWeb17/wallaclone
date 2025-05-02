@@ -143,18 +143,18 @@ const AdvertPage = () => {
           </nav>
 
           {/* actions */}
-          <section className="fixed bottom-0 left-0 w-full bg-gray-300 p-2 sm:fixed sm:top-[144px] sm:left-[50%] sm:h-[72px] sm:w-[42.5%] sm:px-4">
+          <section className="fixed bottom-0 left-0 flex w-full items-center bg-gray-300 sm:fixed sm:top-[144px] sm:left-[50%] sm:h-[72px] sm:w-[42.5%] sm:px-4">
             {user?.id === advertDetails?.owner.id ? (
-              <div className="flex w-full flex-row gap-4">
+              <div className="m-auto flex w-7/8 flex-row gap-4 py-2 sm:w-full sm:p-0">
                 <Link
                   to={`/adverts/update/${advertDetails.name}-${advertDetails.id}`}
-                  className="flex h-10 w-full transform cursor-pointer flex-row items-center justify-center rounded-lg border border-black bg-black px-5 py-1.5 text-center text-xs text-white transition duration-150 active:scale-95"
+                  className="h-10 w-full rounded-md bg-black px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
                 >
                   Update
                 </Link>
                 <button
                   onClick={handleDeleteAdvert}
-                  className="h-10 w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-xs text-white transition duration-150 active:scale-95"
+                  className="h-10 w-full cursor-pointer rounded-md bg-red-600 px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
                 >
                   Delete
                 </button>
@@ -191,12 +191,12 @@ const AdvertPage = () => {
               to={`/adverts/user/${advertOwner}`}
             >
               <div className="flex w-full flex-row items-center gap-4">
-                <div className="flex h-8 w-10 items-center justify-center rounded-full bg-black">
-                  <p className="flex items-center justify-center text-white sm:text-lg">
+                <div className="flex items-center justify-center rounded-full bg-black">
+                  <p className="flex h-8 w-8 items-center justify-center text-white sm:text-lg">
                     {advertDetails.owner.username[0].toUpperCase()}
                   </p>
                 </div>
-                <p className="w-full leading-10 capitalize sm:text-lg">
+                <p className="w-full capitalize sm:text-lg">
                   {advertDetails.owner.username}
                 </p>
               </div>
