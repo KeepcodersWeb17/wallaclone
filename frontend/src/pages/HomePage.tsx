@@ -68,6 +68,7 @@ const HomePage = () => {
     navigate("/login");
   };
 
+  //TODO refactorizar. eliminar el useState
   const [likedAdverts, setLikedAdverts] = useState<Advert[]>([]);
 
   //   TODO refactorizar
