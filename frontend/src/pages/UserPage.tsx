@@ -30,7 +30,7 @@ const UserPage = () => {
   return (
     <>
       {/* Main container */}
-      <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div className="w-full sm:m-auto sm:w-7/8">
         {/* Go back */}
         <nav className="mb-6">
           <Link
@@ -92,7 +92,7 @@ const UserPage = () => {
             </Link>
             <button
               onClick={handleDeleteClick}
-              className="h-10 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-red-600 hover:bg-black"
+              className="h-10 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white active:scale-95"
             >
               Delete account
             </button>
@@ -109,7 +109,7 @@ const UserPage = () => {
       {/* Confirm Delete Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-white/20 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-sm space-y-4 rounded-lg bg-white p-6">
+          <div className="w-full max-w-sm space-y-4 rounded-lg border border-gray-300 bg-white p-6">
             <h3 className="text-lg font-semibold text-gray-900">
               Confirm account deletion
             </h3>
