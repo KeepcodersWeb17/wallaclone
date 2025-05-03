@@ -17,7 +17,6 @@ const Header = () => {
 
   const handleLogout = () => {
     closeMenu();
-    // TODO revisar por qué se siguen viendo los favoritos después de hacer logout (desaparecen al refrescar la página)
     navigate("/");
     dispatch(authLogout());
   };
@@ -77,6 +76,14 @@ const Header = () => {
                 className="w-full cursor-pointer text-center text-xl leading-10 sm:hover:bg-gray-100"
               >
                 My Favorites
+              </Link>
+            </li>
+            <li onClick={closeMenu} className="flex w-full flex-row">
+              <Link
+                to="/my-chats"
+                className="w-full cursor-pointer text-center text-xl leading-10 sm:hover:bg-gray-100"
+              >
+                My Chats
               </Link>
             </li>
             <li className="flex w-full flex-row">
