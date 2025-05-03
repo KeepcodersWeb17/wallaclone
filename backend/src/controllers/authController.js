@@ -6,10 +6,22 @@ export const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    let foundUser = await User.findOne({ username });
+    let foundUser = await User.findOne({ username }).populate({
+      path: "chats",
+      populate: [
+        { path: "advert", model: "Advert" },
+        { path: "members", model: "User" },
+      ],
+    });
 
     if (!foundUser) {
-      foundUser = await User.findOne({ email: username });
+      foundUser = await User.findOne({ email: username }).populate({
+        path: "chats",
+        populate: [
+          { path: "advert", model: "Advert" },
+          { path: "members", model: "User" },
+        ],
+      });
 
       if (!foundUser) {
         const error = new Error("Incorrect username or password");
