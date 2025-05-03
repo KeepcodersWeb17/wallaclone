@@ -2,9 +2,12 @@ import { handleFetchError } from "../../lib/handleFetchError";
 import type { Tag } from "../state/types";
 
 export const getAll = async () => {
-  const response = await fetch("http://localhost:4000/tags", {
-    credentials: "include"
-  });
+  const response = await fetch(
+    "https://api.wallaclone.keepcoders.duckdns.org/tags",
+    {
+      credentials: "include"
+    }
+  );
 
   const data = await response.json();
 
