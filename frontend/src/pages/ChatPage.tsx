@@ -1,25 +1,30 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import socket from "../store/services/sockets";
 import { useAppSelector } from "../store/store";
 import { getUser } from "../store/selectors/selectors";
-import { Message } from "../store/state/types";
+import { Chat } from "../store/state/types";
 
 const ChatPage = () => {
   const { chatId } = useParams();
+  const navigate = useNavigate();
   const user = useAppSelector(getUser);
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [chat, setChat] = useState<Chat>();
 
   useEffect(() => {
-    socket.emit("joinChat", { chatId });
+    socket.emit("joinChat", { chatId, userId: user?.id });
 
     socket.on("chatJoined", (response) => {
-      if (response.error) {
-        console.error("Error:", response.error);
+      if (response.chat) {
+        setChat(response.chat);
         return;
       }
-      setMessages(response.chat.messages);
+
+      if (response.error.includes("Unauthorized")) {
+        navigate("/403");
+        return;
+      }
     });
 
     socket.on("messageReceived", (response) => {
@@ -27,13 +32,13 @@ const ChatPage = () => {
         console.error("Error:", response.error);
         return;
       }
-      setMessages(response.chat.messages);
+      setChat(response.chat);
     });
 
     socket.on("", (error) => {
       console.error("Error:", error);
     });
-  }, [chatId]);
+  }, [chatId, navigate, user?.id]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -52,15 +57,23 @@ const ChatPage = () => {
 
   return (
     <div className="sm:auto w-full rounded-lg border border-gray-400 sm:max-w-7/8">
-      <h2 className="text-md border-b border-gray-400 text-center leading-10 font-bold sm:text-lg md:text-xl">
-        Chat
+      <h2 className="text-md flex items-center justify-between border-b border-gray-400 px-4 text-center leading-10 font-bold sm:text-lg md:text-xl">
+        <Link to={`/adverts/${chat?.advert.name}-${chat?.advert._id}`}>
+          {chat?.advert.name} {""}
+        </Link>
+        <span className="block text-xs font-normal text-gray-500">
+          ref: {chat?.advert._id}
+        </span>
       </h2>
-      <div className="flex min-h-100 flex-col gap-2">
-        {messages.map((message) => (
+      <div className="flex max-h-24 min-h-100 flex-col gap-2 overflow-y-scroll px-6 py-2">
+        {chat?.messages.map((message) => (
           <div key={message.createdAt}>
-            <p key={message.id}>
-              <strong>{message.sender} said:</strong> {message.content}{" "}
-              <span>{message.createdAt}</span>
+            <p
+              key={message.id}
+              className="text-xs font-normal text-gray-500 sm:text-base"
+            >
+              <strong className="capitalize">{message.sender.username}:</strong>{" "}
+              {message.content}{" "}
             </p>
           </div>
         ))}
