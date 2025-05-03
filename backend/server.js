@@ -3,6 +3,7 @@ import app from "./src/app.js";
 import { Server } from "socket.io";
 import Chat from "./src/models/Chat.js";
 import { connectMongoDB } from "./src/lib/connectMongoDB.js";
+import User from "./src/models/User.js";
 
 const port = process.env.PORT || 3000;
 
@@ -49,6 +50,22 @@ io.on("connection", (socket) => {
         members: [userId, ownerId],
       });
 
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          $addToSet: { chats: newChat._id },
+        },
+        { new: true }
+      );
+
+      const updatedOwner = await User.findByIdAndUpdate(
+        ownerId,
+        {
+          $addToSet: { chats: newChat._id },
+        },
+        { new: true }
+      );
+
       socket.join(newChat._id.toString());
 
       socket.emit("chatCreated", {
@@ -59,6 +76,8 @@ io.on("connection", (socket) => {
     }
   });
 
+  // join a chat room when the user navigates to the chat page
+  // only if the user is a member of the chat
   socket.on("joinChat", async ({ chatId, userId }) => {
     try {
       if (!chatId) {
@@ -94,6 +113,7 @@ io.on("connection", (socket) => {
     }
   });
 
+  // receive a message and emit it to the chat room
   socket.on("sendMessage", async ({ chatId, content, sender }) => {
     try {
       if (!chatId || !content || !sender) {
