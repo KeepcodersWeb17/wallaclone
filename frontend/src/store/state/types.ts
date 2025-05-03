@@ -26,6 +26,7 @@ export type AdvertUpdate = Partial<AdvertCreate>;
 
 export type Advert = Required<AdvertOriginal> & {
   id: string;
+  _id?: string;
   tags: Tag[];
   owner: Owner;
   favorites: Owner[];
@@ -55,14 +56,14 @@ export type User = {
 
 export type Message = {
   id: string;
-  sender: string;
+  sender: { id: string; username: string };
   content: string;
   createdAt: string;
 };
 
 export type Chat = {
   id: string;
-  advert: string;
+  advert: Advert;
   members: string[];
   messages: Message[];
   createdAt: string;
