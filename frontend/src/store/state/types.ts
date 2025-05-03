@@ -25,7 +25,7 @@ export type AdvertCreate = AdvertOriginal & {
 export type AdvertUpdate = Partial<AdvertCreate>;
 
 export type Advert = Required<AdvertOriginal> & {
-  id: string;
+  id?: string;
   _id?: string;
   tags: Tag[];
   owner: Owner;
@@ -46,28 +46,29 @@ export type UserSignup = UserLogin & {
 
 export type UserUpdate = Partial<UserSignup>;
 
-export type User = {
-  id: string;
-  username: string;
-  email: string;
-  updatedAt: string;
-  createdAt: string;
-};
-
 export type Message = {
-  id: string;
   sender: { id: string; username: string };
   content: string;
   createdAt: string;
 };
 
 export type Chat = {
-  id: string;
+  _id: string;
   advert: Advert;
-  members: string[];
+  members: User[];
   messages: Message[];
   createdAt: string;
   updatedAt: string;
+};
+
+export type User = {
+  id?: string;
+  _id?: string;
+  username: string;
+  email: string;
+  chats: Chat[];
+  updatedAt: string;
+  createdAt: string;
 };
 
 type State = {
