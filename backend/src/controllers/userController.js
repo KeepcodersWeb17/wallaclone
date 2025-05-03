@@ -5,7 +5,9 @@ export const createUser = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
-    const user = await User.findOne({ $or: [{ email }, { username }] });
+    const user = await User.findOne({
+      $or: [{ email }, { username }],
+    });
 
     if (user) {
       if (user.email === email) {
@@ -42,7 +44,13 @@ export const getUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    const foundUser = await User.findById(userId);
+    const foundUser = await User.findById(userId).populate({
+      path: "chats",
+      populate: [
+        { path: "advert", model: "Advert" },
+        { path: "members", model: "User" },
+      ],
+    });
 
     if (!foundUser) {
       const error = new Error("User not found");
@@ -84,7 +92,13 @@ export const updateUser = async (req, res, next) => {
       { _id: userId },
       updatedData,
       { new: true }
-    );
+    ).populate({
+      path: "chats",
+      populate: [
+        { path: "advert", model: "Advert" },
+        { path: "members", model: "User" },
+      ],
+    });
 
     if (!foundUser) {
       const error = new Error("User not found");
