@@ -38,6 +38,8 @@ const ChatPage = () => {
     socket.on("", (error) => {
       console.error("Error:", error);
     });
+
+    // TODO pagar los listeners al salir del componente
   }, [chatId, navigate, user?.id]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,8 +58,8 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="sm:auto w-full rounded-lg border border-gray-400 sm:max-w-7/8">
-      <h2 className="text-md flex items-center justify-between border-b border-gray-400 px-4 text-center leading-10 font-bold sm:text-lg md:text-xl">
+    <div className="w-full rounded-lg border border-gray-400 sm:max-w-7/8">
+      <h2 className="flex items-center justify-between border-b border-gray-400 px-4 text-center leading-10 font-bold sm:text-lg md:text-xl">
         <Link to={`/adverts/${chat?.advert.name}-${chat?.advert._id}`}>
           {chat?.advert.name} {""}
         </Link>
