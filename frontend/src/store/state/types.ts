@@ -47,6 +47,7 @@ export type UserSignup = UserLogin & {
 export type UserUpdate = Partial<UserSignup>;
 
 export type Message = {
+  id: string;
   sender: { id: string; username: string };
   content: string;
   createdAt: string;
