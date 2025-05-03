@@ -76,7 +76,7 @@ const HomePage = () => {
     const fetchUserFavorites = async () => {
       try {
         const response = await fetch(
-          `https://api.wallaclone.keepcoders.duckdns.org/adverts?favorites=${user.id}`,
+          `http://localhost:4000/adverts?favorites=${user.id}`,
           {
             method: "GET",
             headers: {
