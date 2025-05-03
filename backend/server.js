@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
       const foundChat = await Chat.findOne({
         advert: advertId,
         members: { $all: [userId, ownerId] },
-      }).populate("members", "username");
+      });
 
       if (foundChat) {
         socket.join(foundChat._id.toString());
@@ -59,16 +59,27 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("joinChat", async ({ chatId }) => {
+  socket.on("joinChat", async ({ chatId, userId }) => {
     try {
       if (!chatId) {
         throw new Error("Missing required parameters");
       }
 
-      const foundChat = await Chat.findById(chatId);
+      const foundChat = await Chat.findById(chatId)
+        .populate("advert")
+        .populate("members")
+        .populate("messages.sender", "username");
 
       if (!foundChat) {
         throw new Error("Chat not found");
+      }
+
+      const isMember = foundChat.members.some(
+        (memberId) => memberId._id.toString() === userId
+      );
+
+      if (!isMember) {
+        throw new Error("Unauthorized access to this chat");
       }
 
       socket.join(foundChat._id.toString());
@@ -102,12 +113,15 @@ io.on("connection", (socket) => {
 
       foundChat.messages.push(message);
 
-      console.log("Message sent:", message);
-
       await foundChat.save();
 
+      const updatedChat = await Chat.findById(chatId)
+        .populate("advert")
+        .populate("members", "username")
+        .populate("messages.sender", "username");
+
       io.to(chatId).emit("messageReceived", {
-        chat: foundChat,
+        chat: updatedChat,
       });
     } catch (error) {
       socket.emit("messageReceived", {
