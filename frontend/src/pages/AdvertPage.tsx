@@ -40,6 +40,10 @@ const AdvertPage = () => {
       return;
     }
     dispatch(getAdvertAction(advertId));
+    return () => {
+      // Clean up the socket listener when the component unmounts
+      socket.off("chatCreated");
+    };
   }, [advert, dispatch, navigate, advertId]);
 
   const handleCloseModal = () => {
