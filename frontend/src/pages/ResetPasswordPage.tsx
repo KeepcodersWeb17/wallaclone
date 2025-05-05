@@ -48,7 +48,7 @@ const ResetPasswordPage = () => {
     try {
       dispatch(uiPending());
       const response = await fetch(
-        `http://localhost:4000/auth/reset-password/${token}`,
+        `https://api.wallaclone.keepcoders.duckdns.org/auth/reset-password/${token}`,
         {
           method: "PUT",
           headers: {
