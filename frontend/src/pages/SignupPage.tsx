@@ -20,10 +20,9 @@ const SignupPage = () => {
       e.currentTarget.querySelector<HTMLInputElement>(
         "[name='password']"
       )?.value;
-    const confirmPassword =
-      e.currentTarget.querySelector<HTMLInputElement>(
-        "#confirmPassword"
-      )?.value;
+    const confirmPassword = Array.from(
+      e.currentTarget.querySelectorAll<HTMLInputElement>("[name='password']")
+    )[1]?.value;
 
     if (!username || !email || !password || !confirmPassword) return;
 
