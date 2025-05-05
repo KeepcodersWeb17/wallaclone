@@ -27,6 +27,11 @@ const resetUsers = async () => {
     // insert DEFAULT users in the MONGODB and store them in 'defaultUsers'
     const defaultUsers = await User.insertMany([
       {
+        username: "wallaclone",
+        email: "wallaclone.keepcoders@gmail.com",
+        password: await User.hashPassword("123456"),
+      },
+      {
         username: "guille",
         email: "codesthenos@gtpm.com",
         password: await User.hashPassword("123456"),

@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { setUser } from "../lib/setUser.js";
+import { sendResetEmail } from "../lib/sendEmail.js";
 
 export const login = async (req, res, next) => {
   try {
@@ -96,6 +97,7 @@ export const recoveryPassword = async (req, res, next) => {
     });
 
     // enviar email
+    await sendResetEmail(email);
     res.status(200).json({
       token,
     });
