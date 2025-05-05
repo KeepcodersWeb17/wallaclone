@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { createUser } from "../store/actions/creators";
+import InputPassword from "../components/InputPassword";
 
 const SignupPage = () => {
   const { error, loading } = useAppSelector((state) => state.ui);
@@ -65,25 +66,11 @@ const SignupPage = () => {
               required
             />
           </div>
-          <div className="flex flex-col justify-between">
-            <input
-              className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Enter your password"
-              required
-            />
+          <div className="relative flex flex-col justify-between">
+            <InputPassword />
           </div>
-          <div className="flex flex-col justify-between">
-            <input
-              className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
-              type="password"
-              name="confirmPassword"
-              id="confirmPassword"
-              placeholder="Confirm your password"
-              required
-            />
+          <div className="relative flex flex-col justify-between">
+            <InputPassword placeholder="Confirm Password" />
           </div>
           <div className="mt-5 w-full">
             {error?.length && (
