@@ -10,8 +10,6 @@ const RecoveryPasswordPage = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    dispatch(uiPending());
-
     const email = event.currentTarget.querySelector(
       'input[type="email"]'
     ) as HTMLInputElement;
@@ -19,8 +17,9 @@ const RecoveryPasswordPage = () => {
     if (!email.value) return;
 
     try {
+      dispatch(uiPending());
       const response = await fetch(
-        "https://api.wallaclone.keepcoders.duckdns.org/recovery-password",
+        "http://localhost:4000/auth/recovery-password",
         {
           method: "POST",
           headers: {
