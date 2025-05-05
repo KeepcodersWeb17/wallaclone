@@ -1,0 +1,16 @@
+{
+  "name": "microservices",
+  "version": "1.0.0",
+  "main": "recoveryPassConsumer.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env recoveryPassConsumer.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "amqplib": "^0.10.8"
+  }
+}
