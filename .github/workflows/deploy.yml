@@ -27,6 +27,10 @@ jobs:
           npm ci
           npm run build
 
+      - name: Build Microservices
+        working-directory: microservices
+        run: npm i
+
       - name: Remove remote frontend folder
         uses: appleboy/ssh-action@master
         with:
@@ -48,6 +52,16 @@ jobs:
           port: 2405
           script: |
             sudo rm -rf /home/apps/wallaclone-node
+
+      - name: Remove remote microservices folder
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          port: 2405
+          script: |
+            sudo rm -rf /home/apps/microservices
 
       - name: Copy built frontend to AWS
         uses: appleboy/scp-action@master
@@ -71,6 +85,17 @@ jobs:
           target: "/home/ubuntu/wallaclone-node/"
           strip_components: 1
 
+      - name: Copy microservices to AWS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          port: 2405
+          source: "microservices/**"
+          target: "/home/ubuntu/microservices/"
+          strip_components: 1
+
       - name: Change permissions and reload supervisor
         uses: appleboy/ssh-action@master
         with:
@@ -81,4 +106,6 @@ jobs:
           script: |
             sudo mv /home/ubuntu/wallaclone-node /home/apps/wallaclone-node
             sudo chown -R apps:apps /home/apps/wallaclone-node
+            sudo mv /home/ubuntu/microservices /home/apps/microservices
+            sudo chown -R apps:apps /home/apps/microservices
             sudo systemctl reload supervisor
