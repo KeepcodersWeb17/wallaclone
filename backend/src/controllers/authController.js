@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { setUser } from "../lib/setUser.js";
 import { sendResetEmail } from "../lib/sendEmail.js";
+import { publishMessage } from "../lib/rabbitMqPublisher.js";
 
 export const login = async (req, res, next) => {
   try {
@@ -95,6 +96,9 @@ export const recoveryPassword = async (req, res, next) => {
     const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
+    // publicar mensaje en RabbitMQ
+    publishMessage(email, token);
 
     // enviar email
     await sendResetEmail(email, token);
