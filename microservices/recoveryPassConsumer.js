@@ -1,4 +1,5 @@
 import amqplib from "amqplib";
+import sendResetEmail from "./sendEmail.js";
 
 const QUEUE_NAME = "send-recovery-pass-email";
 
@@ -10,7 +11,9 @@ channel.assertQueue(QUEUE_NAME, {
   durable: true,
 });
 
-channel.consume(QUEUE_NAME, (msg) => {
-  console.log(msg.content.toString());
+channel.consume(QUEUE_NAME, async (msg) => {
+  const payload = msg.content.toString();
+  const { email, token } = JSON.parse(payload);
+  await sendResetEmail(email, token);
   channel.ack(msg);
 });
