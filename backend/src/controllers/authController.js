@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { setUser } from "../lib/setUser.js";
-import { sendResetEmail } from "../lib/sendEmail.js";
 import { publishMessage } from "../lib/recoveryPassPublisher.js";
 
 export const login = async (req, res, next) => {
@@ -100,8 +99,6 @@ export const recoveryPassword = async (req, res, next) => {
     // publicar mensaje en RabbitMQ
     publishMessage(email, token);
 
-    // enviar email
-    await sendResetEmail(email, token);
     res.status(200).json({
       token,
     });
