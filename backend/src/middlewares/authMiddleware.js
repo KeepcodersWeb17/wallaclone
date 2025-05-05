@@ -19,3 +19,25 @@ export const isAuthenticated = (req, res, next) => {
     next();
   });
 };
+
+export const validatePassToken = (req, res, next) => {
+  const { token } = req.params;
+
+  if (!token) {
+    const error = new Error("Token not provided");
+    error.status = 401;
+    next(error);
+    return;
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      const error = new Error("Invalid token");
+      error.status = 403;
+      next(error);
+      return;
+    }
+    req.user = user;
+    next();
+  });
+};

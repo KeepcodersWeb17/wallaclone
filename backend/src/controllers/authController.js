@@ -97,7 +97,7 @@ export const recoveryPassword = async (req, res, next) => {
     });
 
     // enviar email
-    await sendResetEmail(email);
+    await sendResetEmail(email, token);
     res.status(200).json({
       token,
     });

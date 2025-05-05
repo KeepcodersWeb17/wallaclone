@@ -8,8 +8,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendResetEmail = async (to) => {
-  const html = `<p>Haz clic para restablecer tu contraseña:</p>`;
+export const sendResetEmail = async (to, token) => {
+  const html = `<a href="http://localhost:5173/resetpassword/${token}">Click to reset your password</a>`;
 
   await transporter.sendMail({
     from: '"Wallaclone" <not-reply@wallaclone.com>',
