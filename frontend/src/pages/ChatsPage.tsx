@@ -8,7 +8,7 @@ const ChatsPage = () => {
   const chats = user?.chats as Chat[];
 
   return (
-    <div className="flex max-h-100 w-full flex-col rounded-lg border border-gray-400 sm:max-w-7/8">
+    <div className="flex min-h-80 w-full flex-col rounded-lg border border-gray-400 sm:max-w-7/8">
       <h2 className="flex items-center justify-between border-b border-gray-400 px-4 text-center leading-10 font-bold sm:text-lg md:text-xl">
         Chats
       </h2>
