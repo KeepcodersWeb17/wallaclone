@@ -17,7 +17,9 @@ const SignupPage = () => {
     const email =
       e.currentTarget.querySelector<HTMLInputElement>("#email")?.value;
     const password =
-      e.currentTarget.querySelector<HTMLInputElement>("#password")?.value;
+      e.currentTarget.querySelector<HTMLInputElement>(
+        "[name='password']"
+      )?.value;
     const confirmPassword =
       e.currentTarget.querySelector<HTMLInputElement>(
         "#confirmPassword"

@@ -17,7 +17,9 @@ const LoginPage = () => {
     const username =
       e.currentTarget.querySelector<HTMLInputElement>("#username")?.value;
     const password =
-      e.currentTarget.querySelector<HTMLInputElement>("#password")?.value;
+      e.currentTarget.querySelector<HTMLInputElement>(
+        "[name='password']"
+      )?.value;
 
     if (!username || !password) return;
 
