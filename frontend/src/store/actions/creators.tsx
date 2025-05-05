@@ -28,11 +28,11 @@ import {
 import { getAll as getAllTagsAPI } from "../services/tags";
 import socket from "../services/sockets";
 
-const uiPending = () => ({
+export const uiPending = () => ({
   type: "UI_PENDING"
 });
 
-const uiFulfilled = () => ({
+export const uiFulfilled = () => ({
   type: "UI_FULFILLED"
 });
 

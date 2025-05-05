@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post("/login", validateUser, login);
 router.get("/logout", logout);
+router.get("/recovery-password", recoveryPassword);
 
 export default router;

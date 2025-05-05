@@ -77,3 +77,29 @@ export const logout = (req, res) => {
     next(error);
   }
 };
+
+export const recoveryPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    const foundUser = await User.findOne({ email });
+
+    if (!foundUser) {
+      const error = new Error("User not found");
+      error.status = 404;
+      next(error);
+      return;
+    }
+
+    const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    // enviar email
+    res.status(200).json({
+      token,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
