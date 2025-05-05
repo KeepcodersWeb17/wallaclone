@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { uiFulfilled, uiPending, uiRejected } from "../store/actions/creators";
 import { getUi } from "../store/selectors/selectors";
 import { useAppDispatch, useAppSelector } from "../store/store";
@@ -7,6 +8,8 @@ const RecoveryPasswordPage = () => {
 
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -14,7 +17,10 @@ const RecoveryPasswordPage = () => {
       'input[type="email"]'
     ) as HTMLInputElement;
 
-    if (!email.value) return;
+    if (!email.value) {
+      dispatch(uiRejected(["Please fill all fields"]));
+      return;
+    }
 
     try {
       dispatch(uiPending());
@@ -35,9 +41,10 @@ const RecoveryPasswordPage = () => {
         throw new Error("Error recovery password");
       }
 
-      const data = await response.json();
+      await response.json();
 
-      console.log(data);
+      navigate("/");
+
       dispatch(uiFulfilled());
     } catch (error) {
       if (error instanceof Error) {
@@ -45,11 +52,6 @@ const RecoveryPasswordPage = () => {
         return;
       }
     }
-
-    // obtener el valor del input
-    // fetch a la api para verificar el email y enviar el correo
-    // si todo va bien, redirigir a la pagina de login
-    // si no, mostrar un mensaje de error
   };
   return (
     <>
