@@ -35,11 +35,14 @@ const ChatPage = () => {
       setChat(response.chat);
     });
 
-    socket.on("", (error) => {
-      console.error("Error:", error);
-    });
+    // socket.on("", (error) => {
+    //   console.error("Error:", error);
+    // });
 
-    // TODO pagar los listeners al salir del componente
+    return () => {
+      socket.off("chatJoined");
+      socket.off("messageReceived");
+    };
   }, [chatId, navigate, user?.id]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
