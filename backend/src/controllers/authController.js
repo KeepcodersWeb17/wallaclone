@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { setUser } from "../lib/setUser.js";
 import { sendResetEmail } from "../lib/sendEmail.js";
-import { publishMessage } from "../lib/rabbitMqPublisher.js";
+import { publishMessage } from "../lib/recoveryPassPublisher.js";
 
 export const login = async (req, res, next) => {
   try {
