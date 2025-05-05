@@ -41,7 +41,11 @@ const RecoveryPasswordPage = () => {
         throw new Error("Error recovery password");
       }
 
-      await response.json();
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
 
       navigate("/");
 

@@ -64,7 +64,11 @@ const ResetPasswordPage = () => {
         throw new Error("Error reseting password");
       }
 
-      await response.json();
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
 
       navigate("/login");
 
