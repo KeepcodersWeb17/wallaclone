@@ -35,7 +35,15 @@ const ChatsPage = () => {
                   <div className="flex w-full flex-col">
                     <div className="flex flex-row items-center justify-between">
                       <h3 className="text-sm font-semibold text-gray-500 sm:text-base">
-                        {chat.advert.name}
+                        {chat.advert.name} (
+                        <span className="text-xs">
+                          {
+                            chat.members.find(
+                              (member) => member._id !== user?.id
+                            )?.username
+                          }
+                        </span>
+                        )
                       </h3>
                       <p className="text-sm text-gray-500 sm:text-base">
                         {chat.updatedAt.split("T")[0]}
