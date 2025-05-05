@@ -1,6 +1,8 @@
 import http from "node:http";
-import app from "./src/app.js";
+import cookie from "cookie";
+import jwt from "jsonwebtoken";
 import { Server } from "socket.io";
+import app from "./src/app.js";
 import Chat from "./src/models/Chat.js";
 import { connectMongoDB } from "./src/lib/connectMongoDB.js";
 import User from "./src/models/User.js";
@@ -18,6 +20,30 @@ const io = new Server(server, {
     ],
     credentials: true,
   },
+});
+
+io.use((socket, next) => {
+  const raw = socket.handshake.headers.cookie;
+
+  if (!raw) {
+    return next(new Error("No tienes la cookie necesaria"));
+  }
+
+  const { accessToken } = cookie.parse(raw);
+
+  if (!accessToken) {
+    return next(new Error("accessToken no encontrado"));
+  }
+
+  jwt.verify(accessToken, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      const error = new Error("Invalid token");
+      error.status = 403;
+      next(error);
+      return;
+    }
+  });
+  next();
 });
 
 io.on("connection", (socket) => {
