@@ -16,6 +16,8 @@ import IsOwner from "./components/auth/IsOwner";
 import HomePage from "./pages/HomePage";
 import ChatsPage from "./pages/ChatsPage";
 import ChatPage from "./pages/ChatPage";
+import RecoveryPasswordPage from "./pages/RecoveryPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function App() {
   return (
@@ -48,7 +50,10 @@ function App() {
             </RequireAuth>
           }
         />
-        <Route path="/recoverypassword" element={<h2>RecoveryPage</h2>} />
+        <Route path="/recoverypassword" element={<RecoveryPasswordPage />} />
+        {/* Proteger la ruta resetpassword de alguna manera... */}
+        <Route path="/resetpassword" element={<ResetPasswordPage />} />
+
         <Route
           path="/users/:username"
           element={

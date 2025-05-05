@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { authLogin } from "../store/actions/creators";
 import { getUi } from "../store/selectors/selectors";
@@ -47,6 +47,9 @@ const LoginPage = () => {
             <div className="relative">
               <InputPassword />
             </div>
+          </div>
+          <div>
+            <Link to="/recoverypassword">forgot password?</Link>
           </div>
           <div className="mt-5 w-full">
             {error?.length && (
