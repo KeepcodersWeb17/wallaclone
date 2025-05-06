@@ -51,7 +51,6 @@ function App() {
           }
         />
         <Route path="/recovery-password" element={<RecoveryPasswordPage />} />
-        {/* Proteger la ruta resetpassword de alguna manera... */}
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
         <Route
