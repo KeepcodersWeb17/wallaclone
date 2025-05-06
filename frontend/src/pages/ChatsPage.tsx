@@ -6,6 +6,11 @@ import { getUser } from "../store/selectors/selectors";
 const ChatsPage = () => {
   const user = useAppSelector(getUser);
   const chats = user?.chats as Chat[];
+  const sortedChats = chats.sort((a, b) => {
+    const dateA = new Date(a.updatedAt).getTime();
+    const dateB = new Date(b.updatedAt).getTime();
+    return dateB - dateA; // Sort in descending order (most recent first)
+  });
 
   return (
     <div className="flex min-h-80 w-full flex-col rounded-lg border border-gray-400 sm:max-w-7/8">
@@ -19,7 +24,7 @@ const ChatsPage = () => {
       ) : (
         <div className="flex flex-grow justify-center overflow-y-scroll p-6">
           <ul className="flex w-full flex-col gap-4">
-            {chats.map((chat) => (
+            {sortedChats.map((chat) => (
               <li className="" key={chat._id}>
                 <Link
                   className="flex w-full flex-row items-center justify-between gap-2 rounded-lg border border-gray-400 p-2 text-gray-500 hover:bg-gray-200 hover:text-gray-800"
