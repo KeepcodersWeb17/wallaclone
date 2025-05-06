@@ -25,7 +25,7 @@ const RecoveryPasswordPage = () => {
     try {
       dispatch(uiPending());
       const response = await fetch(
-        "http://localhost:4000/auth/recovery-password",
+        "https://api.wallaclone.keepcoders.duckdns.org/auth/recovery-password",
         {
           method: "POST",
           headers: {

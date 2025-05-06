@@ -16,7 +16,7 @@ const ResetPasswordPage = () => {
   // useEffect(() => {
   //   const verifyToken = async () => {
   //     const response = await fetch(
-  //       `http://localhost:4000/auth/reset-password/${token}`
+  //       `https://api.wallaclone.keepcoders.duckdns.org/auth/reset-password/${token}`
   //     );
 
   // }, [token]);
