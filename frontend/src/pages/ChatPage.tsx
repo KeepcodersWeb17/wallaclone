@@ -12,10 +12,12 @@ const ChatPage = () => {
 
   const [chat, setChat] = useState<Chat>();
 
-  const chatContent = useRef<HTMLDivElement>(null);
+  // Scroll to the bottom of the chat content when it updates
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const chatContentElement = chatContent.current;
+    const chatContentElement = containerRef.current;
+
     if (chatContentElement) {
       chatContentElement.scrollTop = chatContentElement.scrollHeight;
     }
@@ -88,7 +90,7 @@ const ChatPage = () => {
           </span>
         </h2>
         <div
-          ref={chatContent}
+          ref={containerRef}
           className="flex max-h-80 min-h-80 flex-col gap-2 overflow-y-scroll px-6 py-2"
         >
           {chat?.messages.map((message) => (
