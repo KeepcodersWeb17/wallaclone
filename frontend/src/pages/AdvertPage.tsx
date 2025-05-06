@@ -39,7 +39,18 @@ const AdvertPage = () => {
       navigate("/404");
       return;
     }
+
     dispatch(getAdvertAction(advertId));
+
+    // when the server responds with the chatId, navigate to the chat page
+    socket.on("chatCreated", ({ chatId }) => {
+      if (chatId.error) {
+        console.error("Error:", chatId.error);
+        return;
+      }
+      navigate(`/my-chats/${chatId}`);
+    });
+
     return () => {
       // Clean up the socket listener when the component unmounts
       socket.off("chatCreated");
@@ -81,15 +92,6 @@ const AdvertPage = () => {
       advertId: advertDetails.id,
       userId: user.id,
       ownerId: advertDetails.owner.id
-    });
-
-    // when the server responds with the chatId, navigate to the chat page
-    socket.on("chatCreated", ({ chatId }) => {
-      if (chatId.error) {
-        console.error("Error:", chatId.error);
-        return;
-      }
-      navigate(`/my-chats/${chatId}`);
     });
   };
 
