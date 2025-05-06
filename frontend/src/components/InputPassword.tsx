@@ -13,7 +13,7 @@ const InputPassword = ({ placeholder = "Enter your password" }) => {
   return (
     <>
       <input
-        className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
+        className="w-full rounded-lg border border-gray-400 px-4 py-2 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
         type={toogleType}
         name="password"
         minLength={6}

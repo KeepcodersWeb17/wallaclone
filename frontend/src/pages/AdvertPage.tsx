@@ -116,13 +116,13 @@ const AdvertPage = () => {
           ) : (
             <>
               <button
-                className="h-10 w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
+                className="w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
                 onClick={handleCloseModal}
               >
                 Cancel
               </button>
               <button
-                className="h-10 w-full cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
+                className="w-full cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
                 onClick={handleDelete}
               >
                 Delete
@@ -138,7 +138,7 @@ const AdvertPage = () => {
           <nav className="flex w-full flex-row items-center justify-between">
             <div>
               <button
-                className="h-10 cursor-pointer"
+                className="cursor-pointer py-2"
                 onClick={() => navigate(-1)}
               >
                 ← Go back
@@ -146,15 +146,15 @@ const AdvertPage = () => {
             </div>
             <div className="flex flex-row gap-4">
               {isLiked ? (
-                <button className="h-10 cursor-pointer" onClick={handleLike}>
+                <button className="cursor-pointer py-2" onClick={handleLike}>
                   <LikeIcon />
                 </button>
               ) : (
-                <button className="h-10 cursor-pointer" onClick={handleLike}>
+                <button className="cursor-pointer py-2" onClick={handleLike}>
                   <UnlikeIcon />
                 </button>
               )}
-              <button className="h-10 cursor-pointer" onClick={handleShare}>
+              <button className="cursor-pointer py-2" onClick={handleShare}>
                 <ShareIcon />
               </button>
             </div>
@@ -167,20 +167,20 @@ const AdvertPage = () => {
                 <>
                   <Link
                     to={`/adverts/update/${advertDetails.name}-${advertDetails.id}`}
-                    className="h-10 w-full rounded-md bg-black px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
+                    className="w-full rounded-md bg-black px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
                   >
                     Update
                   </Link>
                   <button
                     onClick={handleDeleteAdvert}
-                    className="h-10 w-full cursor-pointer rounded-md bg-red-600 px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
+                    className="w-full cursor-pointer rounded-md bg-red-600 px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
                   >
                     Delete
                   </button>
                 </>
               ) : (
                 <button
-                  className="h-10 w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-1.5 text-xs text-white transition duration-150 active:scale-95 sm:text-base"
+                  className="w-full transform cursor-pointer rounded-lg border border-black bg-black px-5 py-2 text-xs text-white transition duration-150 active:scale-95 sm:text-base"
                   onClick={handleOpenChat}
                 >
                   Message
@@ -230,14 +230,14 @@ const AdvertPage = () => {
               <a
                 href={`https://twitter.com/intent/tweet?url=${window.location.href}&text=Check%20out%20this%20great%20deal!`}
                 target="_blank"
-                className="h-10 w-full cursor-pointer rounded-md bg-black px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
+                className="w-full cursor-pointer rounded-md bg-black px-4 py-2 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
               >
                 Twitter
               </a>
               <a
                 href={`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
                 target="_blank"
-                className="h-10 w-full cursor-pointer rounded-md bg-black px-4 py-2.5 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
+                className="w-full cursor-pointer rounded-md bg-black px-4 py-2 text-center text-sm font-medium text-white transition duration-150 active:scale-95"
               >
                 Facebook
               </a>

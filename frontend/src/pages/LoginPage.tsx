@@ -36,7 +36,7 @@ const LoginPage = () => {
         <form className="flex w-full flex-col gap-5" onSubmit={handleLogin}>
           <div className="flex flex-col justify-between">
             <input
-              className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
+              className="w-full rounded-lg border border-gray-400 px-4 py-2 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
               type="text"
               name="username"
               id="username"
@@ -51,17 +51,24 @@ const LoginPage = () => {
             </div>
           </div>
           <div>
-            <Link to="/recoverypassword">forgot password?</Link>
+            <Link
+              className="text-xs text-blue-600 underline hover:text-blue-800 sm:text-sm"
+              to="/recovery-password"
+            >
+              Recover your password
+            </Link>
           </div>
-          <div className="mt-5 w-full">
+          <div className="w-full">
             {error?.length && (
-              <p style={{ color: "red" }}>{error.join(", ")}</p>
+              <p className="text-center text-xs text-red-600 sm:text-sm">
+                {error.join(", ")}
+              </p>
             )}
             {loading ? (
               <p className="text-center text-xs sm:text-sm">loading...</p>
             ) : (
               <button
-                className="h-10 w-full transform cursor-pointer rounded-lg border border-gray-400 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 sm:text-sm"
+                className="w-full transform cursor-pointer rounded-lg border border-gray-400 py-2.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 sm:text-sm"
                 type="submit"
               >
                 Login

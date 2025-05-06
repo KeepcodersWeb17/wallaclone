@@ -64,7 +64,7 @@ const ChatPage = () => {
     <>
       <nav className="flex w-full flex-row items-center justify-between sm:max-w-7/8">
         <div>
-          <button className="h-10 cursor-pointer" onClick={() => navigate(-1)}>
+          <button className="cursor-pointer py-2" onClick={() => navigate(-1)}>
             ← Go back
           </button>
         </div>
@@ -94,18 +94,18 @@ const ChatPage = () => {
           ))}
         </div>
         <form
-          className="flex h-10 flex-row border-t border-gray-400"
+          className="flex flex-row border-t border-gray-400"
           onSubmit={handleSubmit}
         >
           <input
-            className="flex h-10 w-full flex-grow rounded-bl-lg p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-base md:w-100"
+            className="flex w-full flex-grow rounded-bl-lg px-4 py-2.5 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-base md:w-100"
             type="text"
             name="content"
             id="content"
             placeholder="Type a message..."
           />
           <button
-            className="flex h-10 min-w-1/5 cursor-pointer items-center justify-center rounded-br-lg border-l border-gray-400 bg-black px-4 py-2.5 text-center text-xs font-medium text-white transition duration-150 active:scale-98 sm:text-base"
+            className="flex min-w-1/5 cursor-pointer items-center justify-center rounded-br-lg border-l border-gray-400 bg-black px-4 py-2 text-center text-xs font-medium text-white transition duration-150 active:scale-98 sm:text-base"
             type="submit"
           >
             Send

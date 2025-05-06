@@ -48,7 +48,7 @@ const SignupPage = () => {
         >
           <div className="flex flex-col justify-between">
             <input
-              className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
+              className="w-full rounded-lg border border-gray-400 px-4 py-2 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
               type="text"
               name="username"
               id="username"
@@ -59,7 +59,7 @@ const SignupPage = () => {
           </div>
           <div className="flex flex-col justify-between">
             <input
-              className="h-10 w-full rounded-lg border border-gray-400 p-1 px-4 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
+              className="w-full rounded-lg border border-gray-400 px-4 py-2 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
               type="email"
               name="email"
               id="email"
@@ -81,7 +81,7 @@ const SignupPage = () => {
               <p className="text-center text-xs sm:text-sm">loading...</p>
             ) : (
               <button
-                className="h-10 w-full transform cursor-pointer rounded-lg border border-gray-400 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 sm:text-sm"
+                className="w-full transform cursor-pointer rounded-lg border border-gray-400 py-2.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 sm:text-sm"
                 type="submit"
               >
                 Create

@@ -125,15 +125,19 @@ const UpdateUserPage = () => {
 
           {/* Feedback */}
           {error?.length && (
-            <p className="text-sm text-red-600">{error.join(", ")}</p>
+            <p className="text-center text-xs text-red-600 sm:text-sm">
+              {error.join(", ")}
+            </p>
           )}
-          {loading && <p className="text-sm text-black">loading...</p>}
+          {loading && (
+            <p className="text-center text-xs sm:text-sm">loading...</p>
+          )}
 
           {/* Submit */}
           {!loading && (
             <button
               type="submit"
-              className="flex h-10 w-full transform cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-1.5 text-sm text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
+              className="flex w-full transform cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-2 text-sm text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Update
             </button>

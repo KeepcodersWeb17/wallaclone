@@ -25,7 +25,7 @@ const RecoveryPasswordPage = () => {
     try {
       dispatch(uiPending());
       const response = await fetch(
-        "https://api.wallaclone.keepcoders.duckdns.org/auth/recovery-password",
+        "http://localhost:4000/auth/recovery-password",
         {
           method: "POST",
           headers: {
@@ -59,23 +59,42 @@ const RecoveryPasswordPage = () => {
   };
   return (
     <>
-      <h2>Recovery Password</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          className="rounded-lg border border-gray-400 px-4 py-2 placeholder:italic"
-          type="email"
-          placeholder="Enter your email"
-        />
-        {error && <p className="text-red-500">{error}</p>}
+      <div className="grid w-full grid-cols-1 place-items-center">
+        <div className="flex w-full max-w-125 flex-col rounded-lg border border-gray-400 p-4 sm:w-2/3">
+          <h2 className="mb-5 text-center text-lg leading-10 font-semibold text-gray-500 sm:text-xl">
+            Recovery Password
+          </h2>
+          <p className="mb-2 px-4 text-xs text-gray-500 sm:text-sm">
+            Enter your email and we will send you a link to reset your password.
+          </p>
+          <form
+            className="flex flex-grow flex-col gap-5 px-4 py-2"
+            onSubmit={handleSubmit}
+          >
+            <input
+              className="w-full rounded-lg border border-gray-400 px-4 py-2 placeholder:text-xs placeholder:text-gray-500 placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:placeholder:text-sm"
+              type="email"
+              placeholder="Enter your email"
+            />
+            {error && (
+              <p className="text-center text-xs text-red-600 sm:text-sm">
+                {error}
+              </p>
+            )}
 
-        {loading ? (
-          <p className="text-green-500">Loading...</p>
-        ) : (
-          <button className="btn btn-primary cursor-pointer">
-            Send recovery email
-          </button>
-        )}
-      </form>
+            {loading ? (
+              <p className="text-center text-xs sm:text-sm">Loading...</p>
+            ) : (
+              <button
+                type="submit"
+                className="w-full transform cursor-pointer rounded-lg border border-gray-400 py-2.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 sm:text-sm"
+              >
+                Send email
+              </button>
+            )}
+          </form>
+        </div>
+      </div>
     </>
   );
 };

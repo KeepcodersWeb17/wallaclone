@@ -269,14 +269,14 @@ const AdvertsPage = () => {
                 <p className="leading-7 font-bold">Price</p>
                 <div className="flex w-full flex-row gap-2">
                   <input
-                    className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
+                    className="w-1/2 rounded-lg border border-gray-400 px-5 py-3 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
                     type="number"
                     name="min"
                     min={0}
                     placeholder="Min"
                   />
                   <input
-                    className="h-10 w-1/2 rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
+                    className="w-1/2 rounded-lg border border-gray-400 px-5 py-3 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
                     type="number"
                     name="max"
                     min={0}
@@ -290,7 +290,7 @@ const AdvertsPage = () => {
                 <p className="leading-7 font-bold">Owner</p>
                 <div className="flex flex-row gap-2">
                   <input
-                    className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:flex sm:flex-grow md:w-100"
+                    className="w-full rounded-lg border border-gray-400 px-5 py-3 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none sm:flex sm:flex-grow md:w-100"
                     type="text"
                     name="owner"
                     placeholder="Example: guille"
@@ -303,7 +303,7 @@ const AdvertsPage = () => {
                 <p className="leading-7 font-bold">Categories</p>
                 <div className="flex w-full flex-row gap-2">
                   <input
-                    className="flex h-10 w-full flex-row items-center justify-between rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
+                    className="flex w-full flex-row items-center justify-between rounded-lg border border-gray-400 px-5 py-3 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none"
                     type="text"
                     name="categories"
                     placeholder="Select categories"
@@ -311,7 +311,7 @@ const AdvertsPage = () => {
                     readOnly
                   />
                   <button
-                    className="transform cursor-pointer rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95 lg:w-1/5"
+                    className="transform cursor-pointer rounded-lg border border-gray-400 px-5 py-3 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95 lg:w-1/5"
                     onClick={handleOpenCategories}
                     type="button"
                   >
@@ -322,7 +322,7 @@ const AdvertsPage = () => {
             </div>
 
             <button
-              className="h-10 w-full transform cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-sm text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99"
+              className="w-full transform cursor-pointer rounded-lg border border-gray-400 px-4 py-2.5 text-sm text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99"
               type="submit"
             >
               Apply
@@ -348,7 +348,7 @@ const AdvertsPage = () => {
               onSubmit={handleSearchByName}
             >
               <input
-                className="h-10 w-full flex-grow rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                className="w-full flex-grow rounded-lg border border-gray-400 px-4 py-2.5 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
                 type="text"
                 name="advertName"
                 id="advertName"
@@ -363,7 +363,7 @@ const AdvertsPage = () => {
               </button>
             </form>
             <button
-              className="h-10 w-full transform cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 transition duration-150 placeholder:italic hover:bg-black hover:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none active:scale-95 md:w-100"
+              className="w-full transform cursor-pointer rounded-lg border border-gray-400 px-4 py-2.5 text-xs text-gray-500 transition duration-150 placeholder:italic hover:bg-black hover:text-white focus:ring-1 focus:ring-gray-500 focus:outline-none active:scale-95 md:w-100"
               type="button"
               onClick={handleOpenFilters}
             >
@@ -398,14 +398,14 @@ const AdvertsPage = () => {
         <section className="mt-[40px] flex w-full flex-row justify-center">
           <div className="gap flex w-full flex-row gap-4 sm:w-1/2 lg:gap-8">
             <button
-              className="h-10 w-1/2 transform cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
+              className="w-1/2 transform cursor-pointer rounded-lg border border-gray-400 px-4 py-2.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
               type="button"
               onClick={handlePrevPage}
             >
               Previous
             </button>
             <button
-              className="h-10 w-1/2 transform cursor-pointer rounded-lg border border-gray-400 p-1.5 px-4 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
+              className="w-1/2 transform cursor-pointer rounded-lg border border-gray-400 px-4 py-2.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
               type="button"
               onClick={handleNextPage}
             >

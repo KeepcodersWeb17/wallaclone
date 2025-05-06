@@ -76,7 +76,7 @@ const HomePage = () => {
     const fetchUserFavorites = async () => {
       try {
         const response = await fetch(
-          `https://api.wallaclone.keepcoders.duckdns.org/adverts?favorites=${user.id}`,
+          `http://localhost:4000/adverts?favorites=${user.id}`,
           {
             method: "GET",
             headers: {
@@ -113,7 +113,7 @@ const HomePage = () => {
               onSubmit={searchByAdvertName}
             >
               <input
-                className="h-10 w-full rounded-lg border border-gray-400 p-1.5 px-4 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
+                className="w-full rounded-lg border border-gray-400 px-4 py-2.5 text-xs placeholder:italic focus:ring-1 focus:ring-gray-500 focus:outline-none md:w-100"
                 type="text"
                 name="advert"
                 id="advert"
@@ -134,7 +134,7 @@ const HomePage = () => {
                     // TODO refactorizar
                     <li key={tag.id} className="flex flex-grow flex-row">
                       <button
-                        className="flex h-10 flex-grow transform cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-1.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95 sm:flex-grow"
+                        className="flex flex-grow transform cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-2.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95 sm:flex-grow"
                         onClick={searchByCategory}
                       >
                         {tag.name}

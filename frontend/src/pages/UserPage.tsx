@@ -86,13 +86,13 @@ const UserPage = () => {
           <div className="flex flex-col space-y-2 md:flex-row md:space-x-4">
             <Link
               to={`/users/${user.username}/edit`}
-              className="h-10 flex-1 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
+              className="flex-1 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Edit profile
             </Link>
             <button
               onClick={handleDeleteClick}
-              className="h-10 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white active:scale-95"
+              className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white active:scale-95"
             >
               Delete account
             </button>
@@ -100,9 +100,13 @@ const UserPage = () => {
 
           {/* Feedback */}
           {error?.length && (
-            <p className="text-sm text-red-600">{error.join(", ")}</p>
+            <p className="text-center text-xs text-red-600 sm:text-sm">
+              {error.join(", ")}
+            </p>
           )}
-          {loading && <p className="text-sm text-black">loading...</p>}
+          {loading && (
+            <p className="text-center text-xs sm:text-sm">loading...</p>
+          )}
         </div>
       </div>
 
@@ -120,13 +124,13 @@ const UserPage = () => {
             <div className="flex flex-col space-y-2 md:flex-row md:space-x-4">
               <button
                 onClick={cancelDelete}
-                className="h-10 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
+                className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDelete}
-                className="h-10 flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
+                className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
               >
                 Delete
               </button>
