@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import socket from "../store/services/sockets";
 import { useAppSelector } from "../store/store";
@@ -11,6 +11,15 @@ const ChatPage = () => {
   const user = useAppSelector(getUser);
 
   const [chat, setChat] = useState<Chat>();
+
+  const chatContent = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const chatContentElement = chatContent.current;
+    if (chatContentElement) {
+      chatContentElement.scrollTop = chatContentElement.scrollHeight;
+    }
+  }, [chat]);
 
   useEffect(() => {
     socket.emit("joinChat", { chatId, userId: user?.id });
@@ -78,7 +87,10 @@ const ChatPage = () => {
             ref: {chat?.advert._id}
           </span>
         </h2>
-        <div className="flex min-h-80 flex-col gap-2 overflow-y-scroll px-6 py-2">
+        <div
+          ref={chatContent}
+          className="flex max-h-80 min-h-80 flex-col gap-2 overflow-y-scroll px-6 py-2"
+        >
           {chat?.messages.map((message) => (
             <div key={message.createdAt}>
               <p
