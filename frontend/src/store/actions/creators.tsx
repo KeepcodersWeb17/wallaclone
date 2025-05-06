@@ -27,6 +27,7 @@ import {
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
 import socket from "../services/sockets";
+import toast from "react-hot-toast";
 
 export const uiPending = () => ({
   type: "UI_PENDING"
@@ -41,7 +42,7 @@ export const uiRejected = (error: string[]) => ({
   payload: error
 });
 
-const userLoginFulfilled = (userData: User) => ({
+export const userLoginFulfilled = (userData: User) => ({
   type: "USER_LOGIN_FULFILLED",
   payload: userData
 });
@@ -72,11 +73,13 @@ export const authLogin = (
       socket.connect();
       dispatch(uiFulfilled());
       dispatch(userLoginFulfilled(user));
+      toast.success("Login successful");
       navigate(location.state?.from || "/adverts", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        toast.error(errors.join(", "));
         return;
       }
       alert(error);
