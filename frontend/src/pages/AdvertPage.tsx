@@ -67,6 +67,7 @@ const AdvertPage = () => {
     setIsLiked((prev) => !prev);
   };
 
+  //TODO: Implement share functionality
   const handleShare = () => {};
 
   const handleOpenChat = () => {

@@ -5,7 +5,9 @@ import { getUser } from "../store/selectors/selectors";
 
 const ChatsPage = () => {
   const user = useAppSelector(getUser);
+
   const chats = user?.chats as Chat[];
+
   const sortedChats = chats.sort((a, b) => {
     const dateA = new Date(a.updatedAt).getTime();
     const dateB = new Date(b.updatedAt).getTime();
