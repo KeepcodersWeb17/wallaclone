@@ -50,9 +50,9 @@ function App() {
             </RequireAuth>
           }
         />
-        <Route path="/recoverypassword" element={<RecoveryPasswordPage />} />
+        <Route path="/recovery-password" element={<RecoveryPasswordPage />} />
         {/* Proteger la ruta resetpassword de alguna manera... */}
-        <Route path="/resetpassword/:token" element={<ResetPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
         <Route
           path="/users/:username"
