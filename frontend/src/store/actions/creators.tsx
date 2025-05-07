@@ -325,11 +325,17 @@ export const toogleFavorite = (
     try {
       dispatch(uiPending());
       const advert = await toogleFavoriteAPI(isFavorite, advertId);
+      toast.success(
+        isFavorite
+          ? "Advert removed to favorites"
+          : "Advert added from favorites"
+      );
       dispatch(uiFulfilled());
       dispatch(updatedAdvertFulfilled(advert));
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
+        toast.error(errors.join(", "));
         dispatch(uiRejected(errors));
         return;
       }
