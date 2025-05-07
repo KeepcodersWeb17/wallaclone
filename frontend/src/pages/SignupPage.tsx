@@ -4,7 +4,7 @@ import { createUser } from "../store/actions/creators";
 import InputPassword from "../components/InputPassword";
 
 const SignupPage = () => {
-  const { error, loading } = useAppSelector((state) => state.ui);
+  const { loading } = useAppSelector((state) => state.ui);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -74,11 +74,10 @@ const SignupPage = () => {
             <InputPassword placeholder="Confirm Password" />
           </div>
           <div className="mt-5 w-full">
-            {error?.length && (
-              <p style={{ color: "red" }}>{error.join(", ")}</p>
-            )}
             {loading ? (
-              <p className="text-center text-xs sm:text-sm">loading...</p>
+              <p className="w-full transform cursor-pointer rounded-lg border border-gray-400 bg-black py-2.5 text-center text-xs text-white transition duration-150 active:scale-99 sm:text-sm">
+                Loading...
+              </p>
             ) : (
               <button
                 className="w-full transform cursor-pointer rounded-lg border border-gray-400 py-2.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 sm:text-sm"
