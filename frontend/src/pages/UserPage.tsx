@@ -83,10 +83,10 @@ const UserPage = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col space-y-2 md:flex-row md:space-x-4">
+          <div className="flex flex-col gap-4 space-y-2 md:flex-row md:space-x-4">
             <Link
               to={`/users/${user.username}/edit`}
-              className="flex-1 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
+              className="m-0 flex-1 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Edit profile
             </Link>
@@ -125,7 +125,7 @@ const UserPage = () => {
               ) : (
                 <button
                   onClick={confirmDelete}
-                  className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
+                  className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
                   type="submit"
                 >
                   Delete
