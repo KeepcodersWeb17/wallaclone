@@ -2,12 +2,21 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { createUser } from "../store/actions/creators";
 import InputPassword from "../components/InputPassword";
+import { getUser } from "../store/selectors/selectors";
+import { useEffect } from "react";
 
 const SignupPage = () => {
+  const user = useAppSelector(getUser);
   const { loading } = useAppSelector((state) => state.ui);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate, user]);
 
   const handleCreateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

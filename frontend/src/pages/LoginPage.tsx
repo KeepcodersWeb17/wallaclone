@@ -1,15 +1,23 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { authLogin } from "../store/actions/creators";
-import { getUi } from "../store/selectors/selectors";
+import { getUi, getUser } from "../store/selectors/selectors";
 import InputPassword from "../components/InputPassword";
+import { useEffect } from "react";
 
 const LoginPage = () => {
+  const user = useAppSelector(getUser);
   const { loading } = useAppSelector(getUi);
 
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate, user]);
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
