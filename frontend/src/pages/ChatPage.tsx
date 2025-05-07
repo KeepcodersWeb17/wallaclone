@@ -1,20 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import type { Chat } from "../store/state/types";
 import socket from "../store/services/sockets";
 import { useAppSelector } from "../store/store";
 import { getUser } from "../store/selectors/selectors";
-import { Chat } from "../store/state/types";
 
 const ChatPage = () => {
   const { chatId } = useParams();
+
   const navigate = useNavigate();
+
   const user = useAppSelector(getUser);
 
   const [chat, setChat] = useState<Chat>();
 
-  // Scroll to the bottom of the chat content when it updates
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Scroll to the bottom of the chat content when it updates
   useEffect(() => {
     const chatContentElement = containerRef.current;
 
@@ -45,10 +47,6 @@ const ChatPage = () => {
       }
       setChat(response.chat);
     });
-
-    // socket.on("", (error) => {
-    //   console.error("Error:", error);
-    // });
 
     return () => {
       socket.off("chatJoined");
