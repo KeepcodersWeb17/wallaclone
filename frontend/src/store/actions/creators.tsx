@@ -157,12 +157,15 @@ export const updateUser = (
       navigate(`/users/${updatedUser.username}`, { replace: true });
     } catch (error) {
       if (error instanceof Error) {
-        // TODO tuve que manejarlo asi para que el mensaje sea mas claro
+        // TODO refactorizar: descubri que el mensaje de error no era claro.
         if (error.message.includes("username")) {
           toast.error("Username already exists");
         }
         if (error.message.includes("email")) {
           toast.error("Email already exists");
+        }
+        if (error.message.includes("Password")) {
+          toast.error(error.message);
         }
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
