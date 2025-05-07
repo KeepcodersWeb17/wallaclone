@@ -37,7 +37,7 @@ const Header = () => {
       {isMenuOpen && (
         <div
           id="menu"
-          className="fixed top-0 right-0 bottom-0 left-0 z-300 flex flex-col gap-10 bg-gray-300"
+          className="fixed z-300 flex h-dvh w-dvw flex-col gap-5 bg-gray-300"
         >
           <div className="flex w-full items-center justify-between pt-1 pr-4 pb-1 pl-4 shadow-sm sm:pt-2 sm:pb-2">
             <h3 className="text-xl leading-10 font-bold">Menu</h3>
@@ -45,7 +45,7 @@ const Header = () => {
               <CloseIcon />
             </button>
           </div>
-          <ul className="flex flex-col gap-10 p-4">
+          <ul className="flex flex-col gap-7 p-4">
             <li onClick={closeMenu} className="flex w-full flex-row">
               <Link
                 to={`/users/${user?.username}`}
