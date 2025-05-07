@@ -121,12 +121,14 @@ export const createUser = (
       }
 
       await createUserAPI(userData);
+      toast.success("User created successfully");
       dispatch(uiFulfilled());
       dispatch(authLogin({ username, password }, navigate, location));
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        toast.error(errors.join(", "));
         return;
       }
       alert(error);
@@ -149,11 +151,19 @@ export const updateUser = (
       }
 
       const updatedUser = await updateUserAPI(userData);
+      toast.success("User updated successfully");
       dispatch(uiFulfilled());
       dispatch(userLoginFulfilled(updatedUser));
       navigate(`/users/${updatedUser.username}`, { replace: true });
     } catch (error) {
       if (error instanceof Error) {
+        // TODO tuve que manejarlo asi para que el mensaje sea mas claro
+        if (error.message.includes("username")) {
+          toast.error("Username already exists");
+        }
+        if (error.message.includes("email")) {
+          toast.error("Email already exists");
+        }
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
         return;
@@ -170,6 +180,7 @@ export const deleteUser = (
     try {
       dispatch(uiPending());
       await deleteUserAPI();
+      toast.success("User deleted successfully");
       dispatch(uiFulfilled());
       dispatch(authLogout());
       navigate("/adverts", { replace: true });
@@ -177,6 +188,7 @@ export const deleteUser = (
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        toast.error(errors.join(", "));
         return;
       }
       alert(error);

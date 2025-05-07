@@ -10,7 +10,7 @@ const UserPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser) as User;
-  const { error, loading } = useAppSelector(getUi);
+  const { loading } = useAppSelector(getUi);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -18,9 +18,9 @@ const UserPage = () => {
     setIsModalOpen(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
+    await dispatch(deleteUser(navigate));
     setIsModalOpen(false);
-    dispatch(deleteUser(navigate));
   };
 
   const cancelDelete = () => {
@@ -97,16 +97,6 @@ const UserPage = () => {
               Delete account
             </button>
           </div>
-
-          {/* Feedback */}
-          {error?.length && (
-            <p className="text-center text-xs text-red-600 sm:text-sm">
-              {error.join(", ")}
-            </p>
-          )}
-          {loading && (
-            <p className="text-center text-xs sm:text-sm">loading...</p>
-          )}
         </div>
       </div>
 
@@ -128,12 +118,19 @@ const UserPage = () => {
               >
                 Cancel
               </button>
-              <button
-                onClick={confirmDelete}
-                className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
-              >
-                Delete
-              </button>
+              {loading ? (
+                <p className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700">
+                  Loading...
+                </p>
+              ) : (
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
+                  type="submit"
+                >
+                  Delete
+                </button>
+              )}
             </div>
           </div>
         </div>
