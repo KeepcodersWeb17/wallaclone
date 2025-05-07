@@ -67,7 +67,10 @@ const HomePage = () => {
       const li = event.currentTarget.closest("li");
       const a = li?.querySelector("a") as HTMLAnchorElement;
       const advertId = a.href.split("-")[1];
-      const advert = adverts.find((advert) => advert.id === advertId);
+
+      const allAdverts = [...adverts, ...likedAdverts];
+
+      const advert = allAdverts.find((advert) => advert.id === advertId);
       const isFavorite = !!advert?.favorites.find(
         (owner) => owner.id === user.id
       );
