@@ -276,12 +276,14 @@ export const updateAdvert = (
     try {
       dispatch(uiPending());
       const updatedAdvert = await updateAdvertAPI(advert, advertId);
+      toast.success("Advert updated successfully");
       dispatch(uiFulfilled());
       dispatch(advertsFulfilled({ list: [updatedAdvert], quantity: 1 }));
       navigate(`/adverts/${updatedAdvert.name}-${updatedAdvert.id}`);
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
+        toast.error(errors.join(", "));
         dispatch(uiRejected(errors));
         return;
       }

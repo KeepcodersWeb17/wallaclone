@@ -19,7 +19,7 @@ const UpdateAdvertPage = () => {
   const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
 
   const tags = useAppSelector(getTags);
-  const { error, loading } = useAppSelector(getUi);
+  const { loading } = useAppSelector(getUi);
 
   const checkedBuy = advertDetails?.sale === "buy";
 
@@ -228,15 +228,14 @@ const UpdateAdvertPage = () => {
             ))}
           </fieldset>
           {/* Feedback */}
-          {error?.length && (
-            <p className="text-sm text-red-600">{error.join(", ")}</p>
-          )}
-          {loading && <p className="text-sm text-black">Loading...</p>}
-          {/* Submit */}
-          {!loading && (
+          {loading ? (
+            <p className="w-full transform cursor-pointer rounded-lg border border-gray-400 bg-black py-2.5 text-center text-xs text-white transition duration-150 active:scale-99 sm:text-sm">
+              Loading...
+            </p>
+          ) : (
             <button
+              className="w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-black hover:text-white active:scale-95"
               type="submit"
-              className="block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Update
             </button>
