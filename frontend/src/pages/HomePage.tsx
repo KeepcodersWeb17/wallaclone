@@ -215,7 +215,7 @@ const HomePage = () => {
       {/* Carrousel latest ads for sale */}
       <section className="flex w-full flex-col gap-2">
         <p className="text-md leading-10 font-bold sm:text-lg md:text-xl">
-          Lates ads for sale
+          Latest ads for sale
         </p>
         {adverts.length === 0 ? (
           <p> No adverts </p>
