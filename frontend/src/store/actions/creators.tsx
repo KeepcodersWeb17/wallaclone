@@ -333,8 +333,8 @@ export const toogleFavorite = (
       const advert = await toogleFavoriteAPI(isFavorite, advertId);
       toast.success(
         isFavorite
-          ? "Advert removed to favorites"
-          : "Advert added from favorites"
+          ? "Advert removed from favorites"
+          : "Advert added to favorites"
       );
       dispatch(uiFulfilled());
       dispatch(updatedAdvertFulfilled(advert));

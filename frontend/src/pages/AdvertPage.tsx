@@ -12,6 +12,7 @@ import LikeIcon from "../components/icons/Like";
 import UnlikeIcon from "../components/icons/Unlike";
 import ShareIcon from "../components/icons/Share";
 import socket from "../store/services/sockets";
+import toast from "react-hot-toast";
 
 const AdvertPage = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -80,6 +81,7 @@ const AdvertPage = () => {
 
   const handleShare = () => {
     //TODO: Implement share functionality
+    toast("Share functionality not implemented yet", { icon: "🤷‍♂️" });
   };
 
   const handleOpenChat = () => {

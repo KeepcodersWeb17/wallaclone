@@ -111,10 +111,10 @@ const UserPage = () => {
               Are you sure you want to delete your account? This action cannot
               be undone.
             </p>
-            <div className="flex flex-col space-y-2 md:flex-row md:space-x-4">
+            <div className="flex flex-col gap-4 space-y-2 md:flex-row md:space-x-4">
               <button
                 onClick={cancelDelete}
-                className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
+                className="m-0 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
               >
                 Cancel
               </button>
