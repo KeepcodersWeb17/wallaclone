@@ -252,11 +252,13 @@ export const createAdvert = (
     try {
       dispatch(uiPending());
       const createdAdvert = await createAdvertAPI(advert);
+      toast.success("Advert created successfully");
       dispatch(uiFulfilled());
       navigate(`/adverts/${createdAdvert.name}-${createdAdvert.id}`);
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
+        toast.error(errors.join(", "));
         dispatch(uiRejected(errors));
         return;
       }
