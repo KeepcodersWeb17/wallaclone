@@ -43,6 +43,8 @@ const AdvertPage = () => {
 
     dispatch(getAdvertAction(advertId));
 
+    setIsLiked(isFavorite);
+
     // when the server responds with the chatId, navigate to the chat page
     socket.on("chatCreated", ({ chatId }) => {
       if (chatId.error) {
@@ -56,7 +58,7 @@ const AdvertPage = () => {
       // Clean up the socket listener when the component unmounts
       socket.off("chatCreated");
     };
-  }, [advert, dispatch, navigate, advertId]);
+  }, [advert, dispatch, navigate, advertId, isFavorite]);
 
   const handleCloseModal = () => {
     dialogRef.current?.close();
@@ -76,7 +78,7 @@ const AdvertPage = () => {
     if (!advertDetails.id) return;
 
     dispatch(toogleFavorite(isFavorite, advertDetails.id));
-    setIsLiked((prev) => !prev);
+    setIsLiked(isFavorite);
   };
 
   const handleShare = () => {
