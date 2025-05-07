@@ -183,7 +183,7 @@ export const deleteUser = (
       toast.success("User deleted successfully");
       dispatch(uiFulfilled());
       dispatch(authLogout());
-      navigate("/adverts", { replace: true });
+      navigate("/", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
