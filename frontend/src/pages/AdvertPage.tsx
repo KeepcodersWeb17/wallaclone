@@ -22,7 +22,7 @@ const AdvertPage = () => {
 
   const advertId = advert?.split("-")[1] || "";
 
-  const { error, loading } = useAppSelector(getUi);
+  const { loading } = useAppSelector(getUi);
   const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
   const user = useAppSelector(getUser);
 
@@ -61,9 +61,9 @@ const AdvertPage = () => {
     dialogRef.current?.close();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!advertDetails.id) return;
-    dispatch(deleteAdvert(advertDetails.id, navigate, handleCloseModal));
+    await dispatch(deleteAdvert(advertDetails.id, navigate, handleCloseModal));
   };
 
   const handleLike = () => {
@@ -78,8 +78,9 @@ const AdvertPage = () => {
     setIsLiked((prev) => !prev);
   };
 
-  //TODO: Implement share functionality
-  const handleShare = () => {};
+  const handleShare = () => {
+    //TODO: Implement share functionality
+  };
 
   const handleOpenChat = () => {
     if (!user?.id) {
@@ -112,25 +113,25 @@ const AdvertPage = () => {
       >
         <h3>Are you sure you want to delete this advert?</h3>
 
-        {error && <p className="text-red-500">{error.join(", ")}</p>}
         <div className="mt-4 flex w-full justify-around gap-4">
+          <button
+            className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
+            onClick={handleCloseModal}
+          >
+            Cancel
+          </button>
           {loading ? (
-            <p>Loading...</p>
+            <p className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700">
+              Loading...
+            </p>
           ) : (
-            <>
-              <button
-                className="w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
-                onClick={handleCloseModal}
-              >
-                Cancel
-              </button>
-              <button
-                className="w-full cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
-                onClick={handleDelete}
-              >
-                Delete
-              </button>
-            </>
+            <button
+              onClick={handleDelete}
+              className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
+              type="submit"
+            >
+              Delete
+            </button>
           )}
         </div>
       </dialog>
@@ -254,7 +255,7 @@ const AdvertPage = () => {
                 Ref: {advertDetails.id}
               </p>
             </div>
-            <p className="min-h-10">{advertDetails.description}</p>
+            <p className="mb-2 min-h-10">{advertDetails.description}</p>
           </div>
 
           <div className="w-full">

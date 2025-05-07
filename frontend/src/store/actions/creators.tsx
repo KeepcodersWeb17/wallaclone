@@ -297,12 +297,14 @@ export const deleteAdvert = (
     try {
       dispatch(uiPending());
       await deleteAdvertAPI(advertId);
+      toast.success("Advert deleted successfully");
       dispatch(uiFulfilled());
       handleCloseModal();
       navigate("/adverts", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
+        toast.error(errors.join(", "));
         dispatch(uiRejected(errors));
         return;
       }
