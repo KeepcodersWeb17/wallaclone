@@ -27,6 +27,7 @@ import {
 } from "../services/users";
 import { getAll as getAllTagsAPI } from "../services/tags";
 import socket from "../services/sockets";
+import toast from "react-hot-toast";
 
 export const uiPending = () => ({
   type: "UI_PENDING"
@@ -41,7 +42,7 @@ export const uiRejected = (error: string[]) => ({
   payload: error
 });
 
-const userLoginFulfilled = (userData: User) => ({
+export const userLoginFulfilled = (userData: User) => ({
   type: "USER_LOGIN_FULFILLED",
   payload: userData
 });
@@ -72,11 +73,13 @@ export const authLogin = (
       socket.connect();
       dispatch(uiFulfilled());
       dispatch(userLoginFulfilled(user));
+      toast.success("Login successful");
       navigate(location.state?.from || "/adverts", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        toast.error(errors.join(", "));
         return;
       }
       alert(error);
@@ -118,12 +121,14 @@ export const createUser = (
       }
 
       await createUserAPI(userData);
+      toast.success("User created successfully");
       dispatch(uiFulfilled());
       dispatch(authLogin({ username, password }, navigate, location));
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        toast.error(errors.join(", "));
         return;
       }
       alert(error);
@@ -146,11 +151,22 @@ export const updateUser = (
       }
 
       const updatedUser = await updateUserAPI(userData);
+      toast.success("User updated successfully");
       dispatch(uiFulfilled());
       dispatch(userLoginFulfilled(updatedUser));
       navigate(`/users/${updatedUser.username}`, { replace: true });
     } catch (error) {
       if (error instanceof Error) {
+        // TODO refactorizar: descubri que el mensaje de error no era claro.
+        if (error.message.includes("username")) {
+          toast.error("Username already exists");
+        }
+        if (error.message.includes("email")) {
+          toast.error("Email already exists");
+        }
+        if (error.message.includes("Password")) {
+          toast.error(error.message);
+        }
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
         return;
@@ -167,13 +183,15 @@ export const deleteUser = (
     try {
       dispatch(uiPending());
       await deleteUserAPI();
+      toast.success("User deleted successfully");
       dispatch(uiFulfilled());
       dispatch(authLogout());
-      navigate("/adverts", { replace: true });
+      navigate("/", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
         dispatch(uiRejected(errors));
+        toast.error(errors.join(", "));
         return;
       }
       alert(error);
@@ -234,11 +252,13 @@ export const createAdvert = (
     try {
       dispatch(uiPending());
       const createdAdvert = await createAdvertAPI(advert);
+      toast.success("Advert created successfully");
       dispatch(uiFulfilled());
       navigate(`/adverts/${createdAdvert.name}-${createdAdvert.id}`);
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
+        toast.error(errors.join(", "));
         dispatch(uiRejected(errors));
         return;
       }
@@ -256,12 +276,14 @@ export const updateAdvert = (
     try {
       dispatch(uiPending());
       const updatedAdvert = await updateAdvertAPI(advert, advertId);
+      toast.success("Advert updated successfully");
       dispatch(uiFulfilled());
       dispatch(advertsFulfilled({ list: [updatedAdvert], quantity: 1 }));
       navigate(`/adverts/${updatedAdvert.name}-${updatedAdvert.id}`);
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
+        toast.error(errors.join(", "));
         dispatch(uiRejected(errors));
         return;
       }
@@ -279,12 +301,14 @@ export const deleteAdvert = (
     try {
       dispatch(uiPending());
       await deleteAdvertAPI(advertId);
+      toast.success("Advert deleted successfully");
       dispatch(uiFulfilled());
       handleCloseModal();
       navigate("/adverts", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
+        toast.error(errors.join(", "));
         dispatch(uiRejected(errors));
         return;
       }
@@ -307,11 +331,17 @@ export const toogleFavorite = (
     try {
       dispatch(uiPending());
       const advert = await toogleFavoriteAPI(isFavorite, advertId);
+      toast.success(
+        isFavorite
+          ? "Advert removed from favorites"
+          : "Advert added to favorites"
+      );
       dispatch(uiFulfilled());
       dispatch(updatedAdvertFulfilled(advert));
     } catch (error) {
       if (error instanceof Error) {
         const errors = error.message.split("---");
+        toast.error(errors.join(", "));
         dispatch(uiRejected(errors));
         return;
       }

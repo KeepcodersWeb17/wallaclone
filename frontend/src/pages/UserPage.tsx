@@ -10,7 +10,7 @@ const UserPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser) as User;
-  const { error, loading } = useAppSelector(getUi);
+  const { loading } = useAppSelector(getUi);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -18,9 +18,9 @@ const UserPage = () => {
     setIsModalOpen(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
+    await dispatch(deleteUser(navigate));
     setIsModalOpen(false);
-    dispatch(deleteUser(navigate));
   };
 
   const cancelDelete = () => {
@@ -83,10 +83,10 @@ const UserPage = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col space-y-2 md:flex-row md:space-x-4">
+          <div className="flex flex-col gap-4 space-y-2 md:flex-row md:space-x-4">
             <Link
               to={`/users/${user.username}/edit`}
-              className="flex-1 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
+              className="m-0 flex-1 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-center text-sm font-medium text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Edit profile
             </Link>
@@ -97,16 +97,6 @@ const UserPage = () => {
               Delete account
             </button>
           </div>
-
-          {/* Feedback */}
-          {error?.length && (
-            <p className="text-center text-xs text-red-600 sm:text-sm">
-              {error.join(", ")}
-            </p>
-          )}
-          {loading && (
-            <p className="text-center text-xs sm:text-sm">loading...</p>
-          )}
         </div>
       </div>
 
@@ -121,19 +111,26 @@ const UserPage = () => {
               Are you sure you want to delete your account? This action cannot
               be undone.
             </p>
-            <div className="flex flex-col space-y-2 md:flex-row md:space-x-4">
+            <div className="flex flex-col gap-4 space-y-2 md:flex-row md:space-x-4">
               <button
                 onClick={cancelDelete}
-                className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
+                className="m-0 flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
               >
                 Cancel
               </button>
-              <button
-                onClick={confirmDelete}
-                className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
-              >
-                Delete
-              </button>
+              {loading ? (
+                <p className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700">
+                  Loading...
+                </p>
+              ) : (
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
+                  type="submit"
+                >
+                  Delete
+                </button>
+              )}
             </div>
           </div>
         </div>

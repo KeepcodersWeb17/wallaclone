@@ -8,7 +8,7 @@ const UpdateUserPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { username, email } = useAppSelector(getUser) as User;
-  const { error, loading } = useAppSelector(getUi);
+  const { loading } = useAppSelector(getUi);
 
   const handleUpdateUser = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,21 +123,14 @@ const UpdateUserPage = () => {
             />
           </div>
 
-          {/* Feedback */}
-          {error?.length && (
-            <p className="text-center text-xs text-red-600 sm:text-sm">
-              {error.join(", ")}
+          {loading ? (
+            <p className="w-full transform cursor-pointer rounded-lg border border-gray-400 bg-black py-2.5 text-center text-xs text-white transition duration-150 active:scale-99 sm:text-sm">
+              Loading...
             </p>
-          )}
-          {loading && (
-            <p className="text-center text-xs sm:text-sm">loading...</p>
-          )}
-
-          {/* Submit */}
-          {!loading && (
+          ) : (
             <button
+              className="w-full transform cursor-pointer rounded-lg border border-gray-400 py-2.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 sm:text-sm"
               type="submit"
-              className="flex w-full transform cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-5 py-2 text-sm text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-95"
             >
               Update
             </button>

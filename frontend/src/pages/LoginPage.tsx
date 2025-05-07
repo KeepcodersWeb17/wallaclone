@@ -1,15 +1,23 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { authLogin } from "../store/actions/creators";
-import { getUi } from "../store/selectors/selectors";
+import { getUi, getUser } from "../store/selectors/selectors";
 import InputPassword from "../components/InputPassword";
+import { useEffect } from "react";
 
 const LoginPage = () => {
-  const { error, loading } = useAppSelector(getUi);
+  const user = useAppSelector(getUser);
+  const { loading } = useAppSelector(getUi);
 
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate, user]);
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,13 +67,10 @@ const LoginPage = () => {
             </Link>
           </div>
           <div className="w-full">
-            {error?.length && (
-              <p className="text-center text-xs text-red-600 sm:text-sm">
-                {error.join(", ")}
-              </p>
-            )}
             {loading ? (
-              <p className="text-center text-xs sm:text-sm">loading...</p>
+              <p className="w-full transform cursor-pointer rounded-lg border border-gray-400 bg-black py-2.5 text-center text-xs text-white transition duration-150 active:scale-99 sm:text-sm">
+                Loading...
+              </p>
             ) : (
               <button
                 className="w-full transform cursor-pointer rounded-lg border border-gray-400 py-2.5 text-xs text-gray-500 transition duration-150 hover:bg-black hover:text-white active:scale-99 sm:text-sm"

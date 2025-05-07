@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { createAdvert } from "../store/actions/creators";
 import TagsDiaglog from "../components/TagsDialog";
 import { getTags, getUi } from "../store/selectors/selectors";
+import toast from "react-hot-toast";
 
 const NewAdvertPage = () => {
   const tagsContainerRef = useRef<HTMLUListElement>(null);
@@ -14,7 +15,7 @@ const NewAdvertPage = () => {
   const navigate = useNavigate();
 
   const tags = useAppSelector(getTags);
-  const { error, loading } = useAppSelector(getUi);
+  const { loading } = useAppSelector(getUi);
 
   const handleCreateAdvert = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -37,6 +38,16 @@ const NewAdvertPage = () => {
     const saleElement = event.currentTarget.querySelector<HTMLInputElement>(
       "input[name='sale']:checked"
     );
+
+    if (!tagsArray.length) {
+      toast.error("Select at least one tag");
+      return;
+    }
+
+    if (!saleElement) {
+      toast.error("Don't forget to select a sale type");
+      return;
+    }
 
     if (!name || !price || !tagsArray.length || !saleElement?.value) return;
 
@@ -91,7 +102,6 @@ const NewAdvertPage = () => {
         <h2 className="mb-6 text-xl font-bold text-black md:text-2xl">
           New Advert
         </h2>
-
         <form
           onSubmit={handleCreateAdvert}
           className="space-y-6 rounded-lg bg-white p-4 shadow md:p-6"
@@ -199,16 +209,14 @@ const NewAdvertPage = () => {
           </fieldset>
 
           {/* Feedback */}
-          {error?.length && (
-            <p className="text-sm text-red-600">{error.join(", ")}</p>
-          )}
-          {loading && <p className="text-sm text-black">Loading...</p>}
-
-          {/* Submit */}
-          {!loading && (
+          {loading ? (
+            <p className="w-full transform cursor-pointer rounded-lg border border-gray-400 bg-black py-2.5 text-center text-xs text-white transition duration-150 active:scale-99 sm:text-sm">
+              Loading...
+            </p>
+          ) : (
             <button
-              type="submit"
               className="w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-black hover:text-white active:scale-95"
+              type="submit"
             >
               Create
             </button>

@@ -10,6 +10,7 @@ import {
   getAllTags as getTagsAction,
   toogleFavorite
 } from "../store/actions/creators";
+import { getFavorites } from "../lib/getFavorites";
 
 const HomePage = () => {
   const user = useAppSelector(getUser);
@@ -19,10 +20,21 @@ const HomePage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [likedAdverts, setLikedAdverts] = useState<Advert[]>([]);
+
+  // Favorites adverts
+  useEffect(() => {
+    if (!user?.id) return;
+
+    getFavorites(setLikedAdverts, user);
+  }, [user, adverts]);
+
+  // Latest adverts
   useEffect(() => {
     dispatch(getAdvertsAction(""));
   }, [dispatch]);
 
+  // Categories
   useEffect(() => {
     dispatch(getTagsAction());
   }, [dispatch]);
@@ -55,7 +67,10 @@ const HomePage = () => {
       const li = event.currentTarget.closest("li");
       const a = li?.querySelector("a") as HTMLAnchorElement;
       const advertId = a.href.split("-")[1];
-      const advert = adverts.find((advert) => advert.id === advertId);
+
+      const allAdverts = [...adverts, ...likedAdverts];
+
+      const advert = allAdverts.find((advert) => advert.id === advertId);
       const isFavorite = !!advert?.favorites.find(
         (owner) => owner.id === user.id
       );
@@ -66,38 +81,6 @@ const HomePage = () => {
 
     navigate("/login");
   };
-
-  const [likedAdverts, setLikedAdverts] = useState<Advert[]>([]);
-
-  //   TODO refactorizar asd
-  useEffect(() => {
-    if (!user?.id) return;
-
-    const fetchUserFavorites = async () => {
-      try {
-        const response = await fetch(
-          `https://api.wallaclone.keepcoders.duckdns.org/adverts?favorites=${user.id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Error fetching liked adverts");
-        }
-
-        const data = await response.json();
-
-        setLikedAdverts(data.adverts);
-      } catch (error) {
-        console.error("Error fetching liked adverts:", error);
-      }
-    };
-
-    fetchUserFavorites();
-  }, [user?.id, adverts]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-8">
@@ -232,7 +215,7 @@ const HomePage = () => {
       {/* Carrousel latest ads for sale */}
       <section className="flex w-full flex-col gap-2">
         <p className="text-md leading-10 font-bold sm:text-lg md:text-xl">
-          Lates ads for sale
+          Latest ads for sale
         </p>
         {adverts.length === 0 ? (
           <p> No adverts </p>

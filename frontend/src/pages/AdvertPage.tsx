@@ -12,6 +12,7 @@ import LikeIcon from "../components/icons/Like";
 import UnlikeIcon from "../components/icons/Unlike";
 import ShareIcon from "../components/icons/Share";
 import socket from "../store/services/sockets";
+import toast from "react-hot-toast";
 
 const AdvertPage = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -22,7 +23,7 @@ const AdvertPage = () => {
 
   const advertId = advert?.split("-")[1] || "";
 
-  const { error, loading } = useAppSelector(getUi);
+  const { loading } = useAppSelector(getUi);
   const advertDetails = useAppSelector(getAdvert(advertId)) as Advert;
   const user = useAppSelector(getUser);
 
@@ -39,20 +40,33 @@ const AdvertPage = () => {
       navigate("/404");
       return;
     }
+
     dispatch(getAdvertAction(advertId));
+
+    setIsLiked(isFavorite);
+
+    // when the server responds with the chatId, navigate to the chat page
+    socket.on("chatCreated", ({ chatId }) => {
+      if (chatId.error) {
+        console.error("Error:", chatId.error);
+        return;
+      }
+      navigate(`/my-chats/${chatId}`);
+    });
+
     return () => {
       // Clean up the socket listener when the component unmounts
       socket.off("chatCreated");
     };
-  }, [advert, dispatch, navigate, advertId]);
+  }, [advert, dispatch, navigate, advertId, isFavorite]);
 
   const handleCloseModal = () => {
     dialogRef.current?.close();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!advertDetails.id) return;
-    dispatch(deleteAdvert(advertDetails.id, navigate, handleCloseModal));
+    await dispatch(deleteAdvert(advertDetails.id, navigate, handleCloseModal));
   };
 
   const handleLike = () => {
@@ -64,10 +78,13 @@ const AdvertPage = () => {
     if (!advertDetails.id) return;
 
     dispatch(toogleFavorite(isFavorite, advertDetails.id));
-    setIsLiked((prev) => !prev);
+    setIsLiked(isFavorite);
   };
 
-  const handleShare = () => {};
+  const handleShare = () => {
+    //TODO: Implement share functionality
+    toast("Share functionality not implemented yet", { icon: "🤷‍♂️" });
+  };
 
   const handleOpenChat = () => {
     if (!user?.id) {
@@ -80,15 +97,6 @@ const AdvertPage = () => {
       advertId: advertDetails.id,
       userId: user.id,
       ownerId: advertDetails.owner.id
-    });
-
-    // when the server responds with the chatId, navigate to the chat page
-    socket.on("chatCreated", ({ chatId }) => {
-      if (chatId.error) {
-        console.error("Error:", chatId.error);
-        return;
-      }
-      navigate(`/my-chats/${chatId}`);
     });
   };
 
@@ -109,25 +117,25 @@ const AdvertPage = () => {
       >
         <h3>Are you sure you want to delete this advert?</h3>
 
-        {error && <p className="text-red-500">{error.join(", ")}</p>}
         <div className="mt-4 flex w-full justify-around gap-4">
+          <button
+            className="flex-1 cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
+            onClick={handleCloseModal}
+          >
+            Cancel
+          </button>
           {loading ? (
-            <p>Loading...</p>
+            <p className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700">
+              Loading...
+            </p>
           ) : (
-            <>
-              <button
-                className="w-full cursor-pointer rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-black hover:bg-gray-50"
-                onClick={handleCloseModal}
-              >
-                Cancel
-              </button>
-              <button
-                className="w-full cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
-                onClick={handleDelete}
-              >
-                Delete
-              </button>
-            </>
+            <button
+              onClick={handleDelete}
+              className="flex-1 cursor-pointer rounded-md bg-red-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-red-700"
+              type="submit"
+            >
+              Delete
+            </button>
           )}
         </div>
       </dialog>
@@ -251,7 +259,7 @@ const AdvertPage = () => {
                 Ref: {advertDetails.id}
               </p>
             </div>
-            <p className="min-h-10">{advertDetails.description}</p>
+            <p className="mb-2 min-h-10">{advertDetails.description}</p>
           </div>
 
           <div className="w-full">

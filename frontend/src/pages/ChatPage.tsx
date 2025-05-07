@@ -1,16 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import type { Chat } from "../store/state/types";
 import socket from "../store/services/sockets";
 import { useAppSelector } from "../store/store";
 import { getUser } from "../store/selectors/selectors";
-import { Chat } from "../store/state/types";
 
 const ChatPage = () => {
   const { chatId } = useParams();
+
   const navigate = useNavigate();
+
   const user = useAppSelector(getUser);
 
   const [chat, setChat] = useState<Chat>();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to the bottom of the chat content when it updates
+  useEffect(() => {
+    const chatContentElement = containerRef.current;
+
+    if (chatContentElement) {
+      chatContentElement.scrollTop = chatContentElement.scrollHeight;
+    }
+  }, [chat]);
 
   useEffect(() => {
     socket.emit("joinChat", { chatId, userId: user?.id });
@@ -34,10 +47,6 @@ const ChatPage = () => {
       }
       setChat(response.chat);
     });
-
-    // socket.on("", (error) => {
-    //   console.error("Error:", error);
-    // });
 
     return () => {
       socket.off("chatJoined");
@@ -78,7 +87,10 @@ const ChatPage = () => {
             ref: {chat?.advert._id}
           </span>
         </h2>
-        <div className="flex min-h-80 flex-col gap-2 overflow-y-scroll px-6 py-2">
+        <div
+          ref={containerRef}
+          className="flex max-h-80 min-h-80 flex-col gap-2 overflow-y-scroll px-6 py-2"
+        >
           {chat?.messages.map((message) => (
             <div key={message.createdAt}>
               <p
