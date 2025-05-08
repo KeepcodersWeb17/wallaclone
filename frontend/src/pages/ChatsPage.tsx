@@ -57,7 +57,7 @@ const ChatsPage = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 capitalize sm:text-base">
+                      <p className="text-sm text-gray-500 sm:text-base">
                         {
                           chat.members.find(
                             (member) => member._id !== user?._id
