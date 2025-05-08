@@ -6,7 +6,7 @@ export const getFavorites = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/adverts?favorites=${user.id}`,
+      `https://api.wallaclone.keepcoders.duckdns.org/adverts?favorites=${user.id}`,
       {
         method: "GET",
         headers: {
@@ -30,7 +30,8 @@ export const getFavorites = async (
     });
 
     setFavorites(adverts);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.error("Error fetching liked adverts:", error);
+    // console.error("Error fetching liked adverts:", error);
   }
 };

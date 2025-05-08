@@ -42,7 +42,6 @@ const ChatPage = () => {
 
     socket.on("messageReceived", (response) => {
       if (response.error) {
-        console.error("Error:", response.error);
         return;
       }
       setChat(response.chat);

@@ -48,7 +48,6 @@ const AdvertPage = () => {
     // when the server responds with the chatId, navigate to the chat page
     socket.on("chatCreated", ({ chatId }) => {
       if (chatId.error) {
-        console.error("Error:", chatId.error);
         return;
       }
       navigate(`/my-chats/${chatId}`);
